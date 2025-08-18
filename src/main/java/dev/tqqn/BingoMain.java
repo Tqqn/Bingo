@@ -5,11 +5,11 @@ import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Getter
-public final class TemplateMain extends JavaPlugin {
+public final class BingoMain extends JavaPlugin {
 
     @Getter
-    private static final String PREFIX = "[Template]";
-    private static TemplateMain INSTANCE;
+    private static final String PREFIX = "[Bingo]";
+    private static BingoMain INSTANCE;
 
     private PaperCommandManager commandManager;
     private ModuleManager moduleManager;
@@ -35,7 +35,7 @@ public final class TemplateMain extends JavaPlugin {
         moduleManager.disable();
     }
 
-    public static TemplateMain getInstance() {
+    public static BingoMain getInstance() {
         return INSTANCE;
     }
 }

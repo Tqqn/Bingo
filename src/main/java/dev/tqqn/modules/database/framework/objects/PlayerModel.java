@@ -1,6 +1,6 @@
 package dev.tqqn.modules.database.framework.objects;
 
-import dev.tqqn.TemplateMain;
+import dev.tqqn.BingoMain;
 import dev.tqqn.modules.database.DatabaseModule;
 import dev.tqqn.modules.database.framework.mongo.MongoItem;
 import dev.tqqn.modules.database.framework.mongo.MongoObject;
@@ -60,11 +60,11 @@ public final class PlayerModel extends MongoObject<UUID> {
         UUID uuid = MojangAPI.getUUIDFromName(playerName);
         if (uuid == null) return null;
 
-        return TemplateMain.getInstance().getModuleManager().getModule(DatabaseModule.class).getMongoDriver().read(PlayerModel.class, uuid);
+        return BingoMain.getInstance().getModuleManager().getModule(DatabaseModule.class).getMongoDriver().read(PlayerModel.class, uuid);
     }
 
     public void save() {
-        TemplateMain.getInstance().getModuleManager().getModule(DatabaseModule.class).getMongoDriver().saveAsync(this);
+        BingoMain.getInstance().getModuleManager().getModule(DatabaseModule.class).getMongoDriver().saveAsync(this);
     }
 
     public void cleanUp() {

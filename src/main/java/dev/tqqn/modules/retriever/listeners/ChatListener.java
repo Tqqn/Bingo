@@ -1,6 +1,6 @@
 package dev.tqqn.modules.retriever.listeners;
 
-import dev.tqqn.TemplateMain;
+import dev.tqqn.BingoMain;
 import dev.tqqn.modules.retriever.RetrieverModule;
 import dev.tqqn.modules.retriever.objects.AbstractRetriever;
 import dev.tqqn.utils.ChatUtils;
@@ -38,7 +38,7 @@ public final class ChatListener implements Listener {
             return;
         }
 
-        Bukkit.getScheduler().runTask(TemplateMain.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(BingoMain.getInstance(), () -> {
             module.removeRetriever(player);
 
             if (!retriever.handle(rawMessage)) {

@@ -1,6 +1,6 @@
 package dev.tqqn.modules.retriever;
 
-import dev.tqqn.TemplateMain;
+import dev.tqqn.BingoMain;
 import dev.tqqn.modules.AbstractModule;
 import dev.tqqn.modules.retriever.listeners.ChatListener;
 import dev.tqqn.modules.retriever.listeners.QuitListener;
@@ -19,8 +19,8 @@ public final class RetrieverModule extends AbstractModule {
 
     private static final Map<Player, AbstractRetriever<?>> CHAT_READERS = new HashMap<>();
 
-    public RetrieverModule(TemplateMain templateMain) {
-        super(templateMain, "Retrievers");
+    public RetrieverModule(BingoMain bingoMain) {
+        super(bingoMain, "Retrievers");
     }
 
     @Override

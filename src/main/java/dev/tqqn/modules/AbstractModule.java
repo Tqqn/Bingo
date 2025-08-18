@@ -2,7 +2,7 @@ package dev.tqqn.modules;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.PaperCommandManager;
-import dev.tqqn.TemplateMain;
+import dev.tqqn.BingoMain;
 import lombok.Getter;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public abstract class AbstractModule {
 
     @Getter
-    private final TemplateMain plugin;
+    private final BingoMain plugin;
     private PaperCommandManager commandManager;
     @Getter private final ModuleLogger logger;
 
@@ -26,7 +26,7 @@ public abstract class AbstractModule {
 
     @Getter private final String name;
 
-    public AbstractModule(TemplateMain plugin, String name) {
+    public AbstractModule(BingoMain plugin, String name) {
         this.plugin = plugin;
         this.logger = new ModuleLogger(plugin, name);
         this.name = name;

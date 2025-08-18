@@ -1,6 +1,6 @@
 package dev.tqqn.modules.menu.framework.objects;
 
-import dev.tqqn.TemplateMain;
+import dev.tqqn.BingoMain;
 import dev.tqqn.utils.ChatUtils;
 import dev.tqqn.utils.ItemBuilder;
 import lombok.Getter;
@@ -70,7 +70,7 @@ public abstract class Menu implements InventoryHolder {
      * Handles the closing of the menu by running the close 2 ticks later.
      */
     public void handleClose() {
-        Bukkit.getScheduler().runTaskLater(TemplateMain.getInstance(), () -> viewer.closeInventory(), 2L);
+        Bukkit.getScheduler().runTaskLater(BingoMain.getInstance(), () -> viewer.closeInventory(), 2L);
         onClose(viewer);
     }
 

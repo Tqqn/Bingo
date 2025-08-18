@@ -1,17 +1,17 @@
 package dev.tqqn.modules.database.framework.objects;
 
-import dev.tqqn.TemplateMain;
+import dev.tqqn.BingoMain;
 import dev.tqqn.modules.database.DatabaseModule;
 
 public final class DefaultConfig {
 
     private static DefaultConfig INSTANCE;
 
-    private final TemplateMain templateMain;
+    private final BingoMain bingoMain;
 
     private DefaultConfig(DatabaseModule databaseModule) {
-        this.templateMain = databaseModule.getPlugin();
-        templateMain.saveDefaultConfig();
+        this.bingoMain = databaseModule.getPlugin();
+        bingoMain.saveDefaultConfig();
     }
 
     public static DefaultConfig getInstance(DatabaseModule databaseModule) {
@@ -22,18 +22,18 @@ public final class DefaultConfig {
     }
 
     public String getDBHost() {
-        return templateMain.getConfig().getString("database.host");
+        return bingoMain.getConfig().getString("database.host");
     }
 
     public String getDBDataBase() {
-        return templateMain.getConfig().getString("database.database");
+        return bingoMain.getConfig().getString("database.database");
     }
 
     public String getDBUserName() {
-        return templateMain.getConfig().getString("database.username");
+        return bingoMain.getConfig().getString("database.username");
     }
 
     public String getDBPassword() {
-        return templateMain.getConfig().getString("database.password");
+        return bingoMain.getConfig().getString("database.password");
     }
 }

@@ -1,6 +1,6 @@
 package dev.tqqn.modules.database;
 
-import dev.tqqn.TemplateMain;
+import dev.tqqn.BingoMain;
 import dev.tqqn.modules.AbstractModule;
 import dev.tqqn.modules.database.framework.objects.DefaultConfig;
 import dev.tqqn.modules.database.framework.objects.MongoDriver;
@@ -13,7 +13,7 @@ public final class DatabaseModule extends AbstractModule {
     private MongoDriver mongoDriver;
     private final DefaultConfig defaultConfig;
 
-    public DatabaseModule(TemplateMain plugin) {
+    public DatabaseModule(BingoMain plugin) {
         super(plugin, "Database");
         this.defaultConfig = DefaultConfig.getInstance(this);
     }

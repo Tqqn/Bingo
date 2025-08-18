@@ -1,7 +1,7 @@
 package dev.tqqn.utils;
 
 import com.google.gson.JsonParser;
-import dev.tqqn.TemplateMain;
+import dev.tqqn.BingoMain;
 import lombok.experimental.UtilityClass;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ public final class MojangAPI {
 
                 return UUID.fromString(uuid.replaceAll(ADD_UUID_HYPHENS_REGEX, "$1-$2-$3-$4-$5"));
             } catch (IOException e) {
-                TemplateMain.getInstance().getLogger().log(Level.SEVERE, "Could not find UUID.");
+                BingoMain.getInstance().getLogger().log(Level.SEVERE, "Could not find UUID.");
                 return null;
             }
         });
