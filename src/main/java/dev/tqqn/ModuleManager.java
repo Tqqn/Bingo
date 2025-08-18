@@ -1,8 +1,10 @@
 package dev.tqqn;
 
 import dev.tqqn.modules.AbstractModule;
+import dev.tqqn.modules.bingo.BingoModule;
 import dev.tqqn.modules.database.DatabaseModule;
 import dev.tqqn.modules.menu.MenuModule;
+import dev.tqqn.modules.perks.PerkModule;
 import dev.tqqn.modules.retriever.RetrieverModule;
 
 import java.util.LinkedHashMap;
@@ -14,16 +16,18 @@ public final class ModuleManager {
 
     private final Map<Class<? extends AbstractModule>, AbstractModule> modules = new LinkedHashMap<>();
 
-    private ModuleManager(TemplateMain templateMain) {
+    private ModuleManager(BingoMain bingoMain) {
         INSTANCE = this;
-        addModule(new DatabaseModule(templateMain));
-        addModule(new MenuModule(templateMain));
-        addModule(new RetrieverModule(templateMain));
+        addModule(new DatabaseModule(bingoMain));
+        addModule(new MenuModule(bingoMain));
+        addModule(new RetrieverModule(bingoMain));
+        addModule(new BingoModule(bingoMain));
+        addModule(new PerkModule(bingoMain));
     }
 
-    public static ModuleManager getInstance(TemplateMain templateMain) {
+    public static ModuleManager getInstance(BingoMain bingoMain) {
         if (INSTANCE == null) {
-            INSTANCE = new ModuleManager(templateMain);
+            INSTANCE = new ModuleManager(bingoMain);
         }
         return INSTANCE;
     }
