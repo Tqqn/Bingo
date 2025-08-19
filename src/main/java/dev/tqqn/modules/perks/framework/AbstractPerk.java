@@ -1,5 +1,6 @@
 package dev.tqqn.modules.perks.framework;
 
+import dev.tqqn.utils.ItemBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.event.Event;
@@ -17,15 +18,15 @@ public abstract class AbstractPerk implements Listener {
 
     private final String prettyName;
     private final String[] description;
-    private final ItemStack icon;
+    private final ItemStack iconItem;
     private final int cost;
 
     @Setter private boolean isGlobalEnabled = true;
 
-    public AbstractPerk(String prettyName, String[] description, ItemStack icon, int cost) {
+    public AbstractPerk(String prettyName, String[] description, ItemStack iconItem, int cost) {
         this.prettyName = prettyName;
         this.description = description;
-        this.icon = icon;
+        this.iconItem = iconItem;
         this.cost = cost;
     }
 
@@ -39,6 +40,14 @@ public abstract class AbstractPerk implements Listener {
 
     public boolean isPlayerEnabled(UUID uuid) {
         return enabledPlayers.contains(uuid);
+    }
+
+    public ItemStack getIcon() {
+        final ItemBuilder itemBuilder = ItemBuilder.getBuilder(iconItem)
+                .setDisplayName(prettyName)
+                .setLore(description);
+
+        return itemBuilder.build();
     }
 
     public abstract void onUse(Event event);

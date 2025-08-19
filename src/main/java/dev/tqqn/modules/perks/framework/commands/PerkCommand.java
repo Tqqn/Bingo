@@ -5,6 +5,7 @@ import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.modules.perks.PerkModule;
+import dev.tqqn.modules.perks.framework.menu.PerkSelectorMenu;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -29,7 +30,7 @@ public final class PerkCommand extends BaseCommand {
     public void open(Player player) {
         final PlayerModel playerModel = PlayerModel.from(player);
         if (playerModel == null) return;
-        // TODO: Open Menu with perks.
+        new PerkSelectorMenu(player).open();
     }
 
 }
