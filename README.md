@@ -21,7 +21,7 @@ Welcome to the Bingo Game Project! This plugin allows players to engage in a fun
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+This project is licensed under the Apache-2.0 license. See the LICENSE file for more details.
 
 ## Contact
 
