@@ -1,27 +1,28 @@
-# PaperSpigot Project Template
+# Bingo Game Project
 
-A pre-configured **PaperSpigot** template designed for rapid plugin development, featuring ready-to-use frameworks and a powerful modular system.  
-This template is built to **save time** and **standardize structure** across future projects.
-
----
+Welcome to the Bingo Game Project! This plugin allows players to engage in a fun and interactive bingo game within Minecraft. Players can use a handheld map to track their bingo progress and complete tasks.
 
 ## Features
 
-### 📦 Module Management System
-- Easily create, register, and manage new modules.
-- Modules are automatically handled during plugin load and unload.
-- Designed for clean separation of features and scalable growth.
+- **Interactive Bingo Board**: Players receive a 5x5 bingo map that they can use to track their progress.
+- **Bingo Completion Check**: Automatically checks for bingo completion after each square is marked.
+- **Player Notifications**: Players receive notifications when they complete a bingo.
+- **Different Perks**: Players can choose from various perks that provide small advantages against other players.
+- **World with a Border**: The game world has a defined border to enhance gameplay.
 
-### 🗄️ Database Framework (MongoDB)
-- Built-in support for MongoDB connections and operations.
-- Simplified API for accessing and manipulating your database.
+## Usage
 
-### 🎨 Menu (GUI) Framework
-- Quickly create inventory-based GUIs.
-- Built-in event handling for clicks and custom behavior.
-- Easy to extend for complex menu systems.
+### Starting a Game
 
-### 💬 Chat Retriever Framework
-- Retrieve **int**, **double** and **String** input from players via chat seamlessly.
-- Perfect for command-based setup flows, name inputs, or number entries.
-- Handles timeouts, cancellations, and confirmation prompts.
+- When enough players have joined the game will automaticly start.
+- Each player will receive a bingo map with a 5x5 grid.
+- The plugin will automatically check for bingo completion after completing a task.
+- The plugin checks for bingo in horizontal, vertical, and diagonal lines.
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for more details.
+
+## Contact
+
+For questions or support, please reach to my Discord tqqn
