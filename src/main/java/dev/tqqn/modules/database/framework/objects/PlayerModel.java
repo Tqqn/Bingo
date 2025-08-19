@@ -1,6 +1,7 @@
 package dev.tqqn.modules.database.framework.objects;
 
 import dev.tqqn.BingoMain;
+import dev.tqqn.modules.bingo.framework.data.BingoData;
 import dev.tqqn.modules.database.DatabaseModule;
 import dev.tqqn.modules.database.framework.mongo.MongoItem;
 import dev.tqqn.modules.database.framework.mongo.MongoObject;
@@ -24,16 +25,17 @@ public final class PlayerModel extends MongoObject<UUID> {
 
     @Setter
     private String name;
-
     private transient WeakReference<Player> playerWeakReference;
+
+    private BingoData bingoData = new BingoData();
 
     public PlayerModel(UUID key, String name) {
         super(key);
         this.name = name;
     }
 
-    public static void cache(PlayerModel playerModel) {
-        CACHE.put(playerModel.getKey(), playerModel);
+    public void initialize() {
+        if (bingoData == null) this.bingoData = new BingoData(); // Yes a null check, sometimes its weirdly null :/
     }
 
     @Nullable
@@ -54,6 +56,10 @@ public final class PlayerModel extends MongoObject<UUID> {
 
     public static PlayerModel from(UUID uuid) {
         return CACHE.get(uuid);
+    }
+
+    public static void cache(PlayerModel playerModel) {
+        CACHE.put(playerModel.getKey(), playerModel);
     }
 
     public static PlayerModel fromOffline(String playerName) {

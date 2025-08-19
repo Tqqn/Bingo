@@ -63,6 +63,8 @@ public final class PlayerLoadListener implements Listener {
             playerModel.save();
             player.kick(ChatUtils.format("<red>Your login has been disallowed."));
         }
+
+        playerModel.initialize();
     }
 
     @EventHandler
