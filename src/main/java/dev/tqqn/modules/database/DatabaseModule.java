@@ -2,6 +2,7 @@ package dev.tqqn.modules.database;
 
 import dev.tqqn.BingoMain;
 import dev.tqqn.modules.AbstractModule;
+import dev.tqqn.modules.database.framework.config.BingoTaskConfig;
 import dev.tqqn.modules.database.framework.objects.DefaultConfig;
 import dev.tqqn.modules.database.framework.objects.MongoDriver;
 import dev.tqqn.modules.database.listeners.PlayerLoadListener;
@@ -12,6 +13,7 @@ public final class DatabaseModule extends AbstractModule {
 
     private MongoDriver mongoDriver;
     private final DefaultConfig defaultConfig;
+    private BingoTaskConfig bingoTaskConfig;
 
     public DatabaseModule(BingoMain plugin) {
         super(plugin, "Database");
@@ -29,6 +31,7 @@ public final class DatabaseModule extends AbstractModule {
             this.mongoDriver.connect(defaultConfig.getDBDataBase(), defaultConfig.getDBHost(), userName, defaultConfig.getDBPassword());
         }
 
+        this.bingoTaskConfig = new BingoTaskConfig(this);
     }
 
     @Override

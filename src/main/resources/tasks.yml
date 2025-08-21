@@ -1,0 +1,77 @@
+easy:
+  apple:
+    item: APPLE
+    png: apple.png
+  arrow:
+    item: ARROW
+    png: arrow.png
+  cooked_beef:
+    item: COOKED_BEEF
+    png: cooked_beef.png
+  cooked_chicken:
+    item: COOKED_CHICKEN
+    png: cooked_chicken.png
+  cooked_cod:
+    item: COOKED_COD
+    png: cooked_cod.png
+  cooked_mutton:
+    item: COOKED_MUTTON
+    png: cooked_mutton.png
+  cooked_porkchop:
+    item: COOKED_PORKCHOP
+    png: cooked_porkchop.png
+  cooked_rabbit:
+    item: COOKED_RABBIT
+    png: cooked_rabbit.png
+  cooked_salmon:
+    item: COOKED_SALMON
+    png: cooked_salmon.png
+  flint:
+    item: FLINT
+    png: flint.png
+  glass_bottle:
+    item: GLASS_BOTTLE
+    png: glass_bottle.png
+  glowstone_dust:
+    item: GLOWSTONE_DUST
+    png: glowstone_dust.png
+  golden_leggings:
+    item: GOLDEN_LEGGINGS
+    png: golden_leggings.png
+  golden_pickaxe:
+    item: GOLDEN_PICKAXE
+    png: golden_pickaxe.png
+  golden_shovel:
+    item: GOLDEN_SHOVEL
+    png: golden_shovel.png
+  golden_sword:
+    item: GOLDEN_SWORD
+    png: golden_sword.png
+  gray_dye:
+    item: GRAY_DYE
+    png: gray_dye.png
+  salmon:
+    item: SALMON
+    png: salmon.png
+  hopper:
+    item: HOPPER
+    png: hopper.png
+hard:
+  diamond:
+    item: DIAMOND
+    png: diamond.png
+  diamond_axe:
+    item: DIAMOND_AXE
+    png: diamond_axe.png
+  diamond_boots:
+    item: DIAMOND_BOOTS
+    png: diamond_boots.png
+  diamond_chestplate:
+    item: DIAMOND_CHESTPLATE
+    png: diamond_chestplate.png
+  diamond_helmet:
+    item: DIAMOND_HELMET
+    png: diamond_helmet.png
+  diamond_hoe:
+    item: DIAMOND_HOE
+    png: diamond_hoe.png

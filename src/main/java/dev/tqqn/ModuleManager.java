@@ -21,7 +21,7 @@ public final class ModuleManager {
         addModule(new DatabaseModule(bingoMain));
         addModule(new MenuModule(bingoMain));
         addModule(new RetrieverModule(bingoMain));
-        addModule(new BingoModule(bingoMain));
+        addModule(new BingoModule(bingoMain, getModule(DatabaseModule.class)));
         addModule(new PerkModule(bingoMain));
     }
 
