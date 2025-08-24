@@ -40,7 +40,7 @@ public final class PerkSelectorMenu extends Menu {
 
     private MenuButton getPerkButton(AbstractPerk abstractPerk) {
         final ItemBuilder itemBuilder = ItemBuilder.getBuilder(abstractPerk.getIcon());
-        final boolean hasPerkSelected = playerModel.getBingoData().getSelectedPerk().equals(abstractPerk);
+        final boolean hasPerkSelected = playerModel.getTempPlayerData().getSelectedPerk().equals(abstractPerk);
         if (hasPerkSelected) {
             itemBuilder.addLore("<green>You already selected this perk.");
         } else {
@@ -50,7 +50,7 @@ public final class PerkSelectorMenu extends Menu {
         final MenuButton menuButton = new MenuButton(itemBuilder.build());
         menuButton.setClicker(player -> {
             if (hasPerkSelected) return;
-            playerModel.getBingoData().updatePerk(abstractPerk, player.getUniqueId());
+            playerModel.getTempPlayerData().updatePerk(abstractPerk, player.getUniqueId());
             reload();
         });
 

@@ -1,4 +1,4 @@
-package dev.tqqn.modules.bingo.framework.objects;
+package dev.tqqn.modules.game.framework.objects;
 
 import lombok.Getter;
 

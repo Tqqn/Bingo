@@ -1,8 +1,8 @@
 package dev.tqqn;
 
 import dev.tqqn.modules.AbstractModule;
-import dev.tqqn.modules.bingo.BingoModule;
 import dev.tqqn.modules.database.DatabaseModule;
+import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.menu.MenuModule;
 import dev.tqqn.modules.perks.PerkModule;
 import dev.tqqn.modules.retriever.RetrieverModule;
@@ -21,7 +21,7 @@ public final class ModuleManager {
         addModule(new DatabaseModule(bingoMain));
         addModule(new MenuModule(bingoMain));
         addModule(new RetrieverModule(bingoMain));
-        addModule(new BingoModule(bingoMain, getModule(DatabaseModule.class)));
+        addModule(new GameModule(bingoMain, getModule(DatabaseModule.class)));
         addModule(new PerkModule(bingoMain));
     }
 

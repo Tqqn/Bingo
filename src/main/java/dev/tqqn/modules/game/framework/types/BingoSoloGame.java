@@ -1,8 +1,10 @@
 package dev.tqqn.modules.game.framework.types;
 
+import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.game.framework.GameInstance;
 import dev.tqqn.modules.game.framework.GameStates;
 import dev.tqqn.modules.game.framework.roles.Roles;
+import dev.tqqn.utils.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -12,23 +14,33 @@ public final class BingoSoloGame extends GameInstance {
 
     private final Map<UUID, Roles> currentPlayers = new HashMap<>();
 
-    public BingoSoloGame(int id) {
-        super(id);
+    public BingoSoloGame(int id, GameModule gameModule) {
+        super(id, gameModule);
     }
 
     @Override
     public void enableState(GameStates state) {
+        switch (state) {
+            case ACTIVE -> {
+                Bukkit.broadcast(ChatUtils.format("<red>Players will now be teleported to the arena."));
+                spawnPlayers();
+            }
 
+            case END -> {
+                Bukkit.broadcast(ChatUtils.format("Game end."));
+                stop();
+                Bukkit.getServer().shutdown();
+            }
+        }
     }
 
     @Override
     public void disableState(GameStates state) {
+        switch (state) {
+            case LOBBY -> {
 
-    }
-
-    @Override
-    public void addPlayer(UUID uuid) {
-        currentPlayers.put(uuid, Roles.ALIVE);
+            }
+        }
     }
 
     @Override
@@ -43,17 +55,23 @@ public final class BingoSoloGame extends GameInstance {
 
     @Override
     public void onStart() {
-        spawnPlayers();
-    }
-
-    @Override
-    public void onStop() {
 
     }
 
     @Override
-    public void onTick() {
+    public void onStop() {}
 
+    @Override
+    public void onTick() {}
+
+    @Override
+    public boolean isThereAWinner() {
+        return false;
+    }
+
+    @Override
+    public boolean canStart() {
+        return currentPlayers.size() >= GameModule.GAME_MIN_PLAYERS_TO_START;
     }
 
     private void spawnPlayers() {

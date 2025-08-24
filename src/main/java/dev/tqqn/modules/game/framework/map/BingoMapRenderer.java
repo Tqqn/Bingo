@@ -1,4 +1,4 @@
-package dev.tqqn.modules.bingo.framework.map;
+package dev.tqqn.modules.game.framework.map;
 
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapCanvas;

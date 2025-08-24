@@ -1,6 +1,6 @@
 package dev.tqqn.modules.database.framework.config;
 
-import dev.tqqn.modules.bingo.framework.objects.BingoTask;
+import dev.tqqn.modules.game.framework.objects.BingoTask;
 import dev.tqqn.modules.database.DatabaseModule;
 import dev.tqqn.modules.database.framework.objects.AbstractConfig;
 import org.bukkit.Material;

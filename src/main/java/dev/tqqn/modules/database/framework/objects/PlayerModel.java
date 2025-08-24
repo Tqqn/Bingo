@@ -1,10 +1,10 @@
 package dev.tqqn.modules.database.framework.objects;
 
 import dev.tqqn.BingoMain;
-import dev.tqqn.modules.bingo.framework.data.BingoData;
 import dev.tqqn.modules.database.DatabaseModule;
 import dev.tqqn.modules.database.framework.mongo.MongoItem;
 import dev.tqqn.modules.database.framework.mongo.MongoObject;
+import dev.tqqn.modules.game.framework.data.TempPlayerData;
 import dev.tqqn.utils.MojangAPI;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +27,7 @@ public final class PlayerModel extends MongoObject<UUID> {
     private String name;
     private transient WeakReference<Player> playerWeakReference;
 
-    private BingoData bingoData = new BingoData();
+    private TempPlayerData tempPlayerData;
 
     public PlayerModel(UUID key, String name) {
         super(key);
@@ -35,7 +35,7 @@ public final class PlayerModel extends MongoObject<UUID> {
     }
 
     public void initialize() {
-        if (bingoData == null) this.bingoData = new BingoData(); // Yes a null check, sometimes its weirdly null :/
+        if (tempPlayerData == null) this.tempPlayerData = new TempPlayerData(getKey()); // Yes a null check, sometimes its weirdly null :/
     }
 
     @Nullable
