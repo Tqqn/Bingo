@@ -40,4 +40,8 @@ public final class DefaultConfig {
     public int getNeededPlayersToStart() {
         return bingoMain.getConfig().getInt("game.needed_players");
     }
+
+    public int getMaxPlayers() {
+        return bingoMain.getConfig().getInt("game.max_players");
+    }
 }

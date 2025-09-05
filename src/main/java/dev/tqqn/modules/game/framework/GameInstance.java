@@ -3,8 +3,10 @@ package dev.tqqn.modules.game.framework;
 import dev.tqqn.BingoMain;
 import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.game.framework.roles.Roles;
+import dev.tqqn.modules.game.framework.states.AbstractState;
 import dev.tqqn.modules.game.framework.tasks.GameInstanceTask;
 import lombok.Getter;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
@@ -13,38 +15,37 @@ public abstract class GameInstance {
 
     private final int id;
     private final GameModule gameModule;
-    private final GameInstanceTask instanceTask;
+    private final GameInstanceTask activeGameInstanceTask;
 
-    private GameStates currentState = GameStates.LOBBY;
+    private AbstractState currentState = null;
 
     public GameInstance(int id, GameModule gameModule) {
         this.id = id;
         this.gameModule = gameModule;
-        this.instanceTask = new GameInstanceTask(this);
+        this.activeGameInstanceTask = new GameInstanceTask(this);
     }
 
     public void start() {
-        instanceTask.runTaskTimerAsynchronously(BingoMain.getInstance(), 0L, 20L);
+        activeGameInstanceTask.runTaskTimerAsynchronously(BingoMain.getInstance(), 0L, 20L);
         onStart();
     }
 
     public void stop() {
         try {
-            if (instanceTask.isCancelled()) return;
-            instanceTask.cancel();
+            if (activeGameInstanceTask.isCancelled()) return;
+            activeGameInstanceTask.cancel();
         } catch (IllegalArgumentException ignored) {}
 
         onStop();
     }
 
-    public void changeState(GameStates newState) {
-        disableState(currentState);
-        currentState = newState;
-        enableState(currentState);
+    protected void setState(AbstractState state) {
+        if (state == null) return;
+        if (currentState != null) currentState.disable();
+        this.currentState = state;
     }
 
-    public abstract void enableState(GameStates state);
-    public abstract void disableState(GameStates state);
+    public abstract void changeState(GameStates gameStates);
 
     public abstract void addPlayer(UUID uuid, Roles role);
 
@@ -58,4 +59,6 @@ public abstract class GameInstance {
     public abstract boolean isThereAWinner();
 
     public abstract boolean canStart();
+
+    public abstract int getPlayerCount();
 }

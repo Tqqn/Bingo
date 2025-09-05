@@ -17,12 +17,12 @@ public final class GameModule extends AbstractModule {
 
     private final DatabaseModule databaseModule;
 
-    //private Map<String, GameInstance> gameInstances = new HashMap<>();
     @Getter private GameInstance currentInstance = null;
 
     private final List<BingoTask> availableTasks = new ArrayList<>();
 
     public static final int GAME_MIN_PLAYERS_TO_START = BingoMain.getInstance().getModuleManager().getModule(DatabaseModule.class).getDefaultConfig().getNeededPlayersToStart();
+    public static final int GAME_MAX_PLAYERS = BingoMain.getInstance().getModuleManager().getModule(DatabaseModule.class).getDefaultConfig().getMaxPlayers();
 
     public GameModule(BingoMain plugin, DatabaseModule databaseModule) {
         super(plugin, "Game");

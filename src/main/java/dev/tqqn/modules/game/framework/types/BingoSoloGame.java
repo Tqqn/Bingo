@@ -4,7 +4,8 @@ import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.game.framework.GameInstance;
 import dev.tqqn.modules.game.framework.GameStates;
 import dev.tqqn.modules.game.framework.roles.Roles;
-import dev.tqqn.utils.ChatUtils;
+import dev.tqqn.modules.game.framework.states.AbstractState;
+import dev.tqqn.modules.game.framework.states.LobbyState;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -16,31 +17,17 @@ public final class BingoSoloGame extends GameInstance {
 
     public BingoSoloGame(int id, GameModule gameModule) {
         super(id, gameModule);
+        setState(new LobbyState(this));
     }
 
     @Override
-    public void enableState(GameStates state) {
-        switch (state) {
-            case ACTIVE -> {
-                Bukkit.broadcast(ChatUtils.format("<red>Players will now be teleported to the arena."));
-                spawnPlayers();
-            }
+    public void setState(AbstractState state) {
 
-            case END -> {
-                Bukkit.broadcast(ChatUtils.format("Game end."));
-                stop();
-                Bukkit.getServer().shutdown();
-            }
-        }
     }
 
     @Override
-    public void disableState(GameStates state) {
-        switch (state) {
-            case LOBBY -> {
+    public void changeState(GameStates gameStates) {
 
-            }
-        }
     }
 
     @Override
@@ -72,6 +59,11 @@ public final class BingoSoloGame extends GameInstance {
     @Override
     public boolean canStart() {
         return currentPlayers.size() >= GameModule.GAME_MIN_PLAYERS_TO_START;
+    }
+
+    @Override
+    public int getPlayerCount() {
+        return currentPlayers.size();
     }
 
     private void spawnPlayers() {

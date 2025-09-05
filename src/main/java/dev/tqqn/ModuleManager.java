@@ -6,6 +6,7 @@ import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.menu.MenuModule;
 import dev.tqqn.modules.perks.PerkModule;
 import dev.tqqn.modules.retriever.RetrieverModule;
+import dev.tqqn.modules.scoreboard.ScoreboardModule;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,6 +24,7 @@ public final class ModuleManager {
         addModule(new RetrieverModule(bingoMain));
         addModule(new GameModule(bingoMain, getModule(DatabaseModule.class)));
         addModule(new PerkModule(bingoMain));
+        addModule(new ScoreboardModule(bingoMain));
     }
 
     public static ModuleManager getInstance(BingoMain bingoMain) {
