@@ -38,5 +38,7 @@ public final class LobbyScoreboard extends SingleScoreboard {
         if (gameInstance.canStart()) {
             lines.add(ChatUtils.format("<red>Starting in <white>" + gameInstance.getCurrentState().getTimer() + "<red>s"));
         }
+
+        getFastBoard().updateLines(lines);
     }
 }

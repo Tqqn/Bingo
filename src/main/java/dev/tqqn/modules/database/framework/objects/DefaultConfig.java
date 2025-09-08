@@ -29,14 +29,6 @@ public final class DefaultConfig {
         return bingoMain.getConfig().getString("database.database");
     }
 
-    public String getDBUserName() {
-        return bingoMain.getConfig().getString("database.username");
-    }
-
-    public String getDBPassword() {
-        return bingoMain.getConfig().getString("database.password");
-    }
-
     public int getNeededPlayersToStart() {
         return bingoMain.getConfig().getInt("game.needed_players");
     }

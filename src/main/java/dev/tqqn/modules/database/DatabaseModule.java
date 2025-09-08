@@ -24,12 +24,13 @@ public final class DatabaseModule extends AbstractModule {
     protected void onLoad() {
         this.mongoDriver = new MongoDriver(this);
 
-        final String userName = defaultConfig.getDBUserName();
-        if (userName == null) {
-            this.mongoDriver.connect(defaultConfig.getDBDataBase(), defaultConfig.getDBHost(), "27017");
-        } else {
-            this.mongoDriver.connect(defaultConfig.getDBDataBase(), defaultConfig.getDBHost(), userName, defaultConfig.getDBPassword());
-        }
+        this.mongoDriver.connect(defaultConfig.getDBDataBase(), defaultConfig.getDBHost(), "27017");
+//        final String userName = defaultConfig.getDBUserName();
+//        if (userName == null) {
+//            this.mongoDriver.connect(defaultConfig.getDBDataBase(), defaultConfig.getDBHost(), "27017");
+//        } else {
+//            this.mongoDriver.connect(defaultConfig.getDBDataBase(), defaultConfig.getDBHost(), userName, defaultConfig.getDBPassword());
+//        }
 
         this.bingoTaskConfig = new BingoTaskConfig(this);
     }

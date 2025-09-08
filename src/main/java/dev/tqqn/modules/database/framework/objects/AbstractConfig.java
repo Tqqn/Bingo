@@ -22,7 +22,7 @@ public abstract class AbstractConfig {
     private File file;
 
     public AbstractConfig(String configName, DatabaseModule dataModule) {
-        this.configName = configName;
+        this.configName = configName + ".yml";
         this.databaseModule = dataModule;
         loadConfig();
     }

@@ -129,7 +129,7 @@ public abstract class AbstractModule {
     public static class ModuleLogger extends Logger {
 
         ModuleLogger(Plugin plugin, String prefix) {
-            super("Template (Please change name if run in prod) - Module - " + prefix, null);
+            super("Bingo - Module - " + prefix, null);
             setParent(plugin.getLogger());
             setLevel(Level.ALL);
         }

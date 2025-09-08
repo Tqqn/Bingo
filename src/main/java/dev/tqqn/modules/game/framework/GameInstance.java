@@ -43,6 +43,7 @@ public abstract class GameInstance {
         if (state == null) return;
         if (currentState != null) currentState.disable();
         this.currentState = state;
+        currentState.enable();
     }
 
     public abstract void changeState(GameStates gameStates);

@@ -11,8 +11,8 @@ public final class BingoMain extends JavaPlugin {
     private static final String PREFIX = "[Bingo]";
     private static BingoMain INSTANCE;
 
-    private PaperCommandManager commandManager;
     private ModuleManager moduleManager;
+    private PaperCommandManager commandManager;
 
     @Override
     public void onLoad() {
@@ -25,9 +25,7 @@ public final class BingoMain extends JavaPlugin {
     @Override
     public void onEnable() {
         commandManager = new PaperCommandManager(this);
-
         moduleManager.init();
-
     }
 
     @Override

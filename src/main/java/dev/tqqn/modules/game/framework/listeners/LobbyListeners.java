@@ -30,6 +30,7 @@ public final class LobbyListeners implements Listener {
 
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent event) {
-
+        if (!(gameModule.getCurrentInstance().getCurrentState() instanceof LobbyState)) return;
+        event.setCancelled(true);
     }
 }
