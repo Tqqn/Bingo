@@ -29,15 +29,23 @@ public final class LobbyScoreboard extends SingleScoreboard {
             return;
         }
 
-        Component title = ChatUtils.format("<red>BINGO");
+        Component title = ChatUtils.format("<red><bold>BINGO");
         getFastBoard().updateTitle(title);
 
         final List<Component> lines = new ArrayList<>();
-        lines.add(ChatUtils.format("<red>" + gameInstance.getPlayerCount() + "<yellow>/<red>" + GameModule.GAME_MAX_PLAYERS));
+        lines.add(ChatUtils.empty());
+        lines.add(ChatUtils.format("<red>Players: <gold>" + gameInstance.getPlayerCount() + "<red>/<gold>" + GameModule.GAME_MAX_PLAYERS));
+        lines.add(ChatUtils.format("<red>Status: <gold>Waiting..."));
 
         if (gameInstance.canStart()) {
             lines.add(ChatUtils.format("<red>Starting in <white>" + gameInstance.getCurrentState().getTimer() + "<red>s"));
         }
+
+        lines.add(ChatUtils.format("<red>Mode: <gold>Solo"));
+        lines.add(ChatUtils.format("<red>------------------------"));
+        lines.add(ChatUtils.format("<red>play.dusdavidgames.nl"));
+
+
 
         getFastBoard().updateLines(lines);
     }

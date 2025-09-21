@@ -72,4 +72,7 @@ public final class ChatUtils {
     }
 
 
+    public static Component empty() {
+        return Component.empty();
+    }
 }
