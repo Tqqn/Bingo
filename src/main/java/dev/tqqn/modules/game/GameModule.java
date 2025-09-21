@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import dev.tqqn.BingoMain;
 import dev.tqqn.modules.AbstractModule;
 import dev.tqqn.modules.database.DatabaseModule;
+import dev.tqqn.modules.game.commands.BingoCommands;
 import dev.tqqn.modules.game.framework.GameInstance;
 import dev.tqqn.modules.game.framework.listeners.LobbyListeners;
 import dev.tqqn.modules.game.framework.listeners.PlayerJoinListener;
@@ -40,6 +41,7 @@ public final class GameModule extends AbstractModule {
         this.currentInstance.start();
         register(new PlayerJoinListener(this));
         register(new LobbyListeners(this));
+        register(new BingoCommands(this));
     }
 
     public List<BingoTask> getAvailableTasks() {

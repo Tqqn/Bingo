@@ -20,6 +20,10 @@ public abstract class SingleScoreboard {
         fastBoard = new FastBoard(player);
     }
 
-    public abstract void update();
+    public void update() {
+
+    }
+
+    public abstract void onUpdate();
 
 }

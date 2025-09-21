@@ -4,6 +4,8 @@ import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.game.framework.GameInstance;
 import dev.tqqn.modules.game.framework.GameStates;
 import dev.tqqn.modules.game.framework.roles.Roles;
+import dev.tqqn.modules.game.framework.states.ActiveState;
+import dev.tqqn.modules.game.framework.states.EndState;
 import dev.tqqn.modules.game.framework.states.LobbyState;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -21,7 +23,19 @@ public final class BingoSoloGame extends GameInstance {
 
     @Override
     public void changeState(GameStates gameStates) {
+        final GameStates currentState = getCurrentState().getGameState();
+        if (currentState == gameStates) return;
+        switch (gameStates) {
+            case ACTIVE -> {
+                if (currentState == GameStates.END) return;
+                setState(new ActiveState(this));
+            }
 
+            case END -> {
+                if (currentState == GameStates.LOBBY) return;
+                setState(new EndState(this));
+            }
+        }
     }
 
     @Override
@@ -52,7 +66,7 @@ public final class BingoSoloGame extends GameInstance {
 
     @Override
     public boolean canStart() {
-        return currentPlayers.size() == 1;
+        return currentPlayers.size() == 2;
         //return currentPlayers.size() >= GameModule.GAME_MIN_PLAYERS_TO_START;
     }
 
