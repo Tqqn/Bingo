@@ -1,8 +1,10 @@
-package dev.tqqn.modules.game.framework.states;
+package dev.tqqn.modules.game.framework.states.lobby;
 
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
-import dev.tqqn.modules.game.framework.GameInstance;
+import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.GameStates;
+import dev.tqqn.modules.game.framework.states.abstraction.AbstractState;
+import dev.tqqn.modules.game.framework.states.lobby.listeners.LobbyListeners;
 import dev.tqqn.modules.scoreboard.boards.LobbyScoreboard;
 import dev.tqqn.utils.ChatUtils;
 import org.bukkit.Bukkit;
@@ -19,7 +21,7 @@ public final class LobbyState extends AbstractState {
     }
 
     @Override
-    public void run() {
+    public void onTick() {
         if (getGameInstance().canStart()) {
             if (!isStartCountdown) {
                 isStartCountdown = true;
@@ -30,7 +32,7 @@ public final class LobbyState extends AbstractState {
                 if (timer == 10) broadcast(String.format(message, timer));
                 if (timer < 6) broadcast(String.format(message, timer));
                 if (timer < 1) {
-                    getGameInstance().changeState(GameStates.ACTIVE);
+                    getGameInstance().getGameStateSeries().nextState();
                     return;
                 }
             }
@@ -45,12 +47,7 @@ public final class LobbyState extends AbstractState {
 
     @Override
     public void onEnable() {
-        this.runTaskTimer(getGameInstance().getGameModule().getPlugin(), 0L, 20L);
-    }
-
-    @Override
-    public void onDisable() {
-        this.cancel();
+        register(new LobbyListeners(getGameInstance().getGameModule()));
     }
 
     @Override

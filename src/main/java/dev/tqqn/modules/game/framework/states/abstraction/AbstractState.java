@@ -1,6 +1,6 @@
-package dev.tqqn.modules.game.framework.states;
+package dev.tqqn.modules.game.framework.states.abstraction;
 
-import dev.tqqn.modules.game.framework.GameInstance;
+import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.GameStates;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,19 +8,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 
-public abstract class AbstractState extends BukkitRunnable implements Listener {
+public abstract class AbstractState implements Listener {
 
     @Getter private final GameInstance gameInstance;
     @Getter private final GameStates gameState;
     @Getter private final String name;
 
     @Getter @Setter protected int timer;
+
+    @Getter protected boolean freeze = false;
 
     private final Set<Listener> listeners;
 
@@ -33,6 +34,13 @@ public abstract class AbstractState extends BukkitRunnable implements Listener {
 
     public void onEnable() {}
     public void onDisable() {}
+
+    public void tick() {
+        if (freeze) return;
+        onTick();
+    }
+
+    public abstract void onTick();
 
     public void enable() {
         gameInstance.getGameModule().getLogger().log(Level.INFO, "State: " + name + " is enabling...");

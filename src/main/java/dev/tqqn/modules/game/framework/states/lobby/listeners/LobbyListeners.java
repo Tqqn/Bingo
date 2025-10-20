@@ -1,7 +1,7 @@
-package dev.tqqn.modules.game.framework.listeners;
+package dev.tqqn.modules.game.framework.states.lobby.listeners;
 
 import dev.tqqn.modules.game.GameModule;
-import dev.tqqn.modules.game.framework.states.LobbyState;
+import dev.tqqn.modules.game.framework.states.lobby.LobbyState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -18,19 +18,16 @@ public final class LobbyListeners implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (!(gameModule.getCurrentInstance().getCurrentState() instanceof LobbyState)) return;
         event.setCancelled(true);
     }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (!(gameModule.getCurrentInstance().getCurrentState() instanceof LobbyState)) return;
         event.setCancelled(true);
     }
 
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent event) {
-        if (!(gameModule.getCurrentInstance().getCurrentState() instanceof LobbyState)) return;
         event.setCancelled(true);
     }
 }

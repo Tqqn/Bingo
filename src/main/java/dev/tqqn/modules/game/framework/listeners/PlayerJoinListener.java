@@ -4,6 +4,7 @@ import dev.tqqn.modules.database.framework.events.PlayerModelJoinEvent;
 import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.game.framework.GameStates;
 import dev.tqqn.modules.game.framework.roles.Roles;
+import dev.tqqn.modules.game.framework.states.abstraction.AbstractState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -18,15 +19,16 @@ public final class PlayerJoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerModelJoinEvent event) {
         if (event.isCancelled()) return;
-        final GameStates currentState = gameModule.getCurrentInstance().getCurrentState().getGameState();
+        final AbstractState currentState = gameModule.getCurrentInstance().getGameStateSeries().getCurrentState().get();
+        if (currentState == null) return;
 
-        gameModule.getCurrentInstance().getCurrentState().applyScoreboard(event.getPlayerModel().getPlayer());
+        currentState.applyScoreboard(event.getPlayerModel().getPlayer());
 
-        if (currentState != GameStates.LOBBY) {
-            gameModule.getCurrentInstance().addPlayer(event.getPlayerModel().getKey(), Roles.SPECTATOR);
+        if (currentState.getGameState() != GameStates.LOBBY) {
+            gameModule.getCurrentInstance().addPlayer(event.getPlayerModel().getPlayer(), Roles.SPECTATOR);
             return;
         }
 
-        gameModule.getCurrentInstance().addPlayer(event.getPlayerModel().getKey(), Roles.ALIVE);
+        gameModule.getCurrentInstance().addPlayer(event.getPlayerModel().getPlayer(), Roles.ALIVE);
     }
 }

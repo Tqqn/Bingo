@@ -2,8 +2,8 @@ package dev.tqqn.modules.scoreboard.boards;
 
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.modules.game.GameModule;
-import dev.tqqn.modules.game.framework.GameInstance;
-import dev.tqqn.modules.game.framework.states.ActiveState;
+import dev.tqqn.modules.game.framework.abstraction.GameInstance;
+import dev.tqqn.modules.game.framework.states.active.ActiveState;
 import dev.tqqn.modules.scoreboard.framework.SingleScoreboard;
 import dev.tqqn.utils.ChatUtils;
 import net.kyori.adventure.text.Component;
@@ -21,11 +21,11 @@ public final class ActiveScoreboard extends SingleScoreboard {
         super(player);
         this.gameInstance = gameInstance;
 
-        lines.add(ChatUtils.format("<red>Players: <gold>" + gameInstance.getPlayerCount() + "<red>/<gold>" + GameModule.GAME_MAX_PLAYERS));
+        lines.add(ChatUtils.format("<red>Players: <gold>" + gameInstance.getInGamePlayers().size() + "<red>/<gold>" + GameModule.GAME_MAX_PLAYERS));
         lines.add(ChatUtils.format("<red>Status: <gold>Waiting..."));
 
         if (gameInstance.canStart()) {
-            lines.add(ChatUtils.format("<red>Starting in <white>" + gameInstance.getCurrentState().getTimer() + "<red>s"));
+            lines.add(ChatUtils.format("<red>Starting in <white>" + gameInstance.getGameStateSeries().getCurrentState().get().getTimer() + "<red>s"));
         }
 
         lines.add(ChatUtils.format("<red>Mode: <gold>Solo"));

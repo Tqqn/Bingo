@@ -5,8 +5,7 @@ import dev.tqqn.BingoMain;
 import dev.tqqn.modules.AbstractModule;
 import dev.tqqn.modules.database.DatabaseModule;
 import dev.tqqn.modules.game.commands.BingoCommands;
-import dev.tqqn.modules.game.framework.GameInstance;
-import dev.tqqn.modules.game.framework.listeners.LobbyListeners;
+import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.listeners.PlayerJoinListener;
 import dev.tqqn.modules.game.framework.objects.BingoTask;
 import dev.tqqn.modules.game.framework.types.BingoSoloGame;
@@ -40,7 +39,6 @@ public final class GameModule extends AbstractModule {
         this.currentInstance = new BingoSoloGame(1, this);
         this.currentInstance.start();
         register(new PlayerJoinListener(this));
-        register(new LobbyListeners(this));
         register(new BingoCommands(this));
     }
 

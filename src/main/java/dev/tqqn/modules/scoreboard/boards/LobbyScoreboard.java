@@ -2,8 +2,8 @@ package dev.tqqn.modules.scoreboard.boards;
 
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.modules.game.GameModule;
-import dev.tqqn.modules.game.framework.GameInstance;
-import dev.tqqn.modules.game.framework.states.LobbyState;
+import dev.tqqn.modules.game.framework.abstraction.GameInstance;
+import dev.tqqn.modules.game.framework.states.lobby.LobbyState;
 import dev.tqqn.modules.scoreboard.framework.SingleScoreboard;
 import dev.tqqn.utils.ChatUtils;
 import net.kyori.adventure.text.Component;
