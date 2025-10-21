@@ -2,14 +2,20 @@ package dev.tqqn.modules.game.framework.states;
 
 import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.states.abstraction.AbstractStateSeries;
+import dev.tqqn.modules.game.framework.states.active.ActiveState;
+import dev.tqqn.modules.game.framework.states.end.EndState;
+import dev.tqqn.modules.game.framework.states.lobby.LobbyState;
 import dev.tqqn.utils.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class GameStateSeries extends AbstractStateSeries {
 
     public GameStateSeries(GameInstance instance) {
         super(instance);
+        registerStates(List.of(new LobbyState(instance), new ActiveState(instance), new EndState(instance)));
     }
 
     @Override

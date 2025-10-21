@@ -15,7 +15,6 @@ public final class BingoSoloGame extends GameInstance {
 
     public BingoSoloGame(int id, GameModule gameModule) {
         super(id, gameModule);
-        getGameStateSeries().registerStates(List.of(new LobbyState(this), new ActiveState(this), new EndState(this)));
     }
 
 

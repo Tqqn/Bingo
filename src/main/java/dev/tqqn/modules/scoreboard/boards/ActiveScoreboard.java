@@ -1,9 +1,7 @@
 package dev.tqqn.modules.scoreboard.boards;
 
-import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.game.framework.abstraction.GameInstance;
-import dev.tqqn.modules.game.framework.states.active.ActiveState;
 import dev.tqqn.modules.scoreboard.framework.SingleScoreboard;
 import dev.tqqn.utils.ChatUtils;
 import net.kyori.adventure.text.Component;
@@ -14,12 +12,10 @@ import java.util.List;
 
 public final class ActiveScoreboard extends SingleScoreboard {
 
-    private final GameInstance gameInstance;
     private final List<Component> lines = new ArrayList<>();
 
     public ActiveScoreboard(Player player, GameInstance gameInstance) {
         super(player);
-        this.gameInstance = gameInstance;
 
         lines.add(ChatUtils.format("<red>Players: <gold>" + gameInstance.getInGamePlayers().size() + "<red>/<gold>" + GameModule.GAME_MAX_PLAYERS));
         lines.add(ChatUtils.format("<red>Status: <gold>Waiting..."));
@@ -35,20 +31,11 @@ public final class ActiveScoreboard extends SingleScoreboard {
 
     @Override
     public void onUpdate() {
-        if (!(gameInstance.getCurrentState() instanceof ActiveState)) {
-            getFastBoard().delete();
-            final PlayerModel playerModel = getPlayerWeakReference().get();
-            if (playerModel == null) return;
-            playerModel.getTempPlayerData().setScoreboard(null);
-            return;
-        }
-
         Component title = ChatUtils.format("<red><bold>BINGO");
         getFastBoard().updateTitle(title);
 
         lines.add(ChatUtils.empty());
 
-        
         getFastBoard().updateLines(lines);
     }
 }

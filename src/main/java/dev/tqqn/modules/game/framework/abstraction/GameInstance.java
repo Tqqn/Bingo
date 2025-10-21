@@ -38,5 +38,9 @@ public abstract class GameInstance {
         inGamePlayers.put(player, role);
     }
 
+    public int getInGameAlivePlayerCount() {
+        return inGamePlayers.values().stream().filter(role -> role == Roles.ALIVE).toList().size();
+    }
+
     public abstract boolean canStart();
 }

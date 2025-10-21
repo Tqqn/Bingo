@@ -20,10 +20,15 @@ public abstract class SingleScoreboard {
         fastBoard = new FastBoard(player);
     }
 
-    public void update() {
-
-    }
+    public void update() {}
 
     public abstract void onUpdate();
 
+    public void delete() {
+        if (fastBoard.isDeleted()) return;
+        fastBoard.delete();
+        final PlayerModel playerModel = playerWeakReference.get();
+        if (playerModel == null) return;
+        playerModel.getTempPlayerData().setScoreboard(null);
+    }
 }
