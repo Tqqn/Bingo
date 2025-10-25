@@ -22,7 +22,7 @@ public final class PlayerJoinListener implements Listener {
         final AbstractState currentState = gameModule.getCurrentInstance().getGameStateSeries().getCurrentState().get();
         if (currentState == null) return;
 
-        currentState.applyScoreboard(event.getPlayerModel().getPlayer());
+        currentState.setScoreboard(event.getPlayerModel().getPlayer());
 
         if (currentState.getGameState() != GameStates.LOBBY) {
             gameModule.getCurrentInstance().addPlayer(event.getPlayerModel().getPlayer(), Roles.SPECTATOR);

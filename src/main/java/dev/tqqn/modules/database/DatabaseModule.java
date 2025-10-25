@@ -8,6 +8,8 @@ import dev.tqqn.modules.database.framework.objects.MongoDriver;
 import dev.tqqn.modules.database.listeners.PlayerLoadListener;
 import lombok.Getter;
 
+import java.util.logging.Level;
+
 @Getter
 public final class DatabaseModule extends AbstractModule {
 
@@ -24,13 +26,13 @@ public final class DatabaseModule extends AbstractModule {
     protected void onLoad() {
         this.mongoDriver = new MongoDriver(this);
 
-        this.mongoDriver.connect(defaultConfig.getDBDataBase(), defaultConfig.getDBHost(), "27017");
-//        final String userName = defaultConfig.getDBUserName();
-//        if (userName == null) {
-//            this.mongoDriver.connect(defaultConfig.getDBDataBase(), defaultConfig.getDBHost(), "27017");
-//        } else {
-//            this.mongoDriver.connect(defaultConfig.getDBDataBase(), defaultConfig.getDBHost(), userName, defaultConfig.getDBPassword());
-//        }
+        final String userName = defaultConfig.getDBUserName();
+        if (userName == null) {
+            getPlugin().getLogger().log(Level.SEVERE, "No credentials found for MongoDB. Disabling plugin...");
+            getPlugin().getServer().getPluginManager().disablePlugin(getPlugin());
+        } else {
+            this.mongoDriver.connect(defaultConfig.getDBDataBase(), defaultConfig.getDBHost(), userName, defaultConfig.getDBPassword());
+        }
 
         this.bingoTaskConfig = new BingoTaskConfig(this);
     }

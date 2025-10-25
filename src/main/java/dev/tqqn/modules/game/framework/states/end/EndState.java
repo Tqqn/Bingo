@@ -3,6 +3,7 @@ package dev.tqqn.modules.game.framework.states.end;
 import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.GameStates;
 import dev.tqqn.modules.game.framework.states.abstraction.AbstractState;
+import dev.tqqn.modules.scoreboard.boards.LobbyScoreboard;
 import org.bukkit.entity.Player;
 
 public final class EndState extends AbstractState {
@@ -17,8 +18,7 @@ public final class EndState extends AbstractState {
     }
 
     @Override
-    public void applyScoreboard(Player player) {
+    public void setScoreboard(Player player) {
 
     }
-
 }

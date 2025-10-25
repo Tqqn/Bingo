@@ -57,14 +57,14 @@ public final class PlayerLoadListener implements Listener {
             playerModel.setName(player.getName());
         }
 
+        playerModel.initialize();
+
         PlayerModelJoinEvent playerModelJoinEvent = new PlayerModelJoinEvent(playerModel);
         Bukkit.getPluginManager().callEvent(playerModelJoinEvent);
         if (playerModelJoinEvent.isCancelled()) {
             playerModel.save();
             player.kick(ChatUtils.format("<red>Your login has been disallowed."));
         }
-
-        playerModel.initialize();
     }
 
     @EventHandler

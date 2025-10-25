@@ -3,6 +3,7 @@ package dev.tqqn.modules.game.framework.states.active;
 import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.GameStates;
 import dev.tqqn.modules.game.framework.states.abstraction.AbstractState;
+import dev.tqqn.modules.scoreboard.boards.ActiveScoreboard;
 import org.bukkit.entity.Player;
 
 public final class ActiveState extends AbstractState {
@@ -17,12 +18,19 @@ public final class ActiveState extends AbstractState {
     }
 
     @Override
-    public void applyScoreboard(Player player) {
-
+    public void onTick() {
+        timer--;
     }
 
     @Override
-    public void onTick() {
-        timer--;
+    public void setScoreboard(Player player) {
+        applyScoreboard(new ActiveScoreboard(player, getGameInstance()), player);
+    }
+
+    @Override
+    public void onDisable() {
+        for (Player player : getGameInstance().getInGamePlayers().keySet()) {
+            removeScoreboard(ActiveScoreboard.class, player);
+        }
     }
 }

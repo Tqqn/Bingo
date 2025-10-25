@@ -39,7 +39,7 @@ public final class BingoTaskConfig extends AbstractConfig {
             Material material;
             try {
                 material = Material.valueOf(section.getString(pathItem));
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException | NullPointerException e) {
                 getDatabaseModule().getLogger().log(Level.SEVERE, "No valid material found at: " +  pathItem + ": " + possibleMaterial);
                 continue;
             }

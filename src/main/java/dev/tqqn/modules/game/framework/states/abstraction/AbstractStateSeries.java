@@ -24,7 +24,7 @@ public abstract class AbstractStateSeries extends BukkitRunnable {
 
     public void enable() {
         if (states.isEmpty()) {
-            instance.getGameModule().getLogger().log(Level.SEVERE, "GameState-Series not enabled. No valid states. In ");
+            instance.getGameModule().getLogger().log(Level.SEVERE, "GameState-Series not enabled. No valid states.");
             return;
         }
         this.currentState = new WeakReference<>(states.get(0));
@@ -70,10 +70,9 @@ public abstract class AbstractStateSeries extends BukkitRunnable {
         if (newState == null) return;
 
         currentState.disable();
-        newState.enable();
-
-        currentStatePosition = currentStatePosition - 1;
         this.currentState = new WeakReference<>(newState);
+        currentStatePosition = currentStatePosition - 1;
+        newState.enable();
     }
 
     public AbstractState getState(int position) {
@@ -94,15 +93,14 @@ public abstract class AbstractStateSeries extends BukkitRunnable {
         final AbstractState oldState = currentState.get();
         if (oldState == null) return;
 
-        final AbstractState nextState = states.get(currentStatePosition-1);
+        final AbstractState nextState = states.get(currentStatePosition+1);
 
         if (nextState == null) return;
 
         oldState.disable();
-        nextState.enable();
-
-        currentStatePosition = currentStatePosition + 1;
         this.currentState = new WeakReference<>(nextState);
+        currentStatePosition = currentStatePosition + 1;
+        nextState.enable();
     }
 
     public abstract void onFreeze();

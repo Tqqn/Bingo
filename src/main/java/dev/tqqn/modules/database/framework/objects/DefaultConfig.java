@@ -29,6 +29,16 @@ public final class DefaultConfig {
         return bingoMain.getConfig().getString("database.database");
     }
 
+    public String getDBUserName() {
+        final String value = bingoMain.getConfig().getString("database.username");
+        return (value == null || value.isBlank() || value.isEmpty() ? null : value);
+    }
+
+    public String getDBPassword() {
+        final String value = bingoMain.getConfig().getString("database.password");
+        return (value == null || value.isBlank() || value.isEmpty() ? null : value);
+    }
+
     public int getNeededPlayersToStart() {
         return bingoMain.getConfig().getInt("game.needed_players");
     }

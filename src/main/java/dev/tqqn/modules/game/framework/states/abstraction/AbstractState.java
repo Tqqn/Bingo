@@ -1,7 +1,10 @@
 package dev.tqqn.modules.game.framework.states.abstraction;
 
+import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.GameStates;
+import dev.tqqn.modules.game.framework.data.TempPlayerData;
+import dev.tqqn.modules.scoreboard.framework.SingleScoreboard;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
@@ -46,6 +49,7 @@ public abstract class AbstractState implements Listener {
         gameInstance.getGameModule().getLogger().log(Level.INFO, "State: " + name + " is enabling...");
         onEnable();
         registerListeners();
+        addScoreboardAllPlayers();
         gameInstance.getGameModule().getLogger().log(Level.INFO, "State: " + name + " finished enabling!");
     }
 
@@ -71,6 +75,7 @@ public abstract class AbstractState implements Listener {
             HandlerList.unregisterAll(listener);
             gameInstance.getGameModule().getLogger().log(Level.INFO, "State: " + name + " has unregistered listener: " + listener);
         });
+        listeners.clear();
     }
 
     public void register(Object object) {
@@ -79,5 +84,29 @@ public abstract class AbstractState implements Listener {
         }
     }
 
-    public abstract void applyScoreboard(Player player);
+    private void addScoreboardAllPlayers() {
+        for (Player player : getGameInstance().getInGamePlayers().keySet()) {
+            setScoreboard(player);
+        }
+    }
+
+    protected  <O extends SingleScoreboard> void applyScoreboard(O scoreboard, Player player) {
+        final PlayerModel playerModel = PlayerModel.from(player);
+        if (playerModel == null) return;
+        playerModel.getTempPlayerData().setScoreboard(scoreboard);
+    }
+
+    protected void removeScoreboard(Class<? extends SingleScoreboard> scoreboardClass, Player player) {
+        final PlayerModel playerModel = PlayerModel.from(player);
+        if (playerModel == null) return;
+
+        final TempPlayerData tempPlayerData = playerModel.getTempPlayerData();
+
+        if (tempPlayerData.getScoreboard() == null) return;
+        if (!tempPlayerData.getScoreboard().getClass().equals(scoreboardClass)) return;
+        tempPlayerData.getScoreboard().delete();
+        tempPlayerData.setScoreboard(null);
+    }
+
+    public abstract void setScoreboard(Player player);
 }

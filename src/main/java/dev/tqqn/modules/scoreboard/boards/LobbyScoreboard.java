@@ -3,7 +3,6 @@ package dev.tqqn.modules.scoreboard.boards;
 import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.states.abstraction.AbstractState;
-import dev.tqqn.modules.game.framework.states.lobby.LobbyState;
 import dev.tqqn.modules.scoreboard.framework.SingleScoreboard;
 import dev.tqqn.utils.ChatUtils;
 import net.kyori.adventure.text.Component;
@@ -25,11 +24,6 @@ public final class LobbyScoreboard extends SingleScoreboard {
 
     @Override
     public void onUpdate() {
-        if (currentState == null || !(currentState instanceof LobbyState)) {
-            delete();
-            return;
-        }
-
         Component title = ChatUtils.format("<red><bold>BINGO");
         getFastBoard().updateTitle(title);
 
@@ -39,12 +33,12 @@ public final class LobbyScoreboard extends SingleScoreboard {
         lines.add(ChatUtils.format("<red>Status: <gold>Waiting..."));
 
         if (gameInstance.canStart()) {
-            lines.add(ChatUtils.format("<red>Starting in <white>" + gameInstance.getGameStateSeries().getCurrentState().get().getTimer() + "<red>s"));
+            lines.add(ChatUtils.format("<red>Starting in <white>" + ChatUtils.convertSecondsToHMmSs(currentState.getTimer())));
         }
 
         lines.add(ChatUtils.format("<red>Mode: <gold>Solo"));
         lines.add(ChatUtils.format("<red>------------------------"));
-        lines.add(ChatUtils.format("<red>play.dusdavidgames.nl"));
+        lines.add(ChatUtils.format("<red>play.communitycraft.nl"));
 
         getFastBoard().updateLines(lines);
     }

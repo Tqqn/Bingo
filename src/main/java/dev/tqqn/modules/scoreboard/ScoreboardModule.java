@@ -15,7 +15,7 @@ public final class ScoreboardModule extends AbstractModule {
     @Override
     protected void onEnable() {
         this.updateTask = new ScoreboardUpdateTask();
-        this.updateTask.runTaskTimer(getPlugin(), 0, 20L);
+        this.updateTask.runTaskTimerAsynchronously(getPlugin(), 0, 5L);
     }
 
     @Override
