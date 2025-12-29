@@ -1,5 +1,6 @@
 package dev.tqqn.modules.game.framework.data;
 
+import dev.tqqn.modules.game.framework.objects.PlayerBingoProgress;
 import dev.tqqn.modules.game.framework.roles.Roles;
 import dev.tqqn.modules.perks.framework.AbstractPerk;
 import dev.tqqn.modules.scoreboard.framework.SingleScoreboard;
@@ -8,11 +9,11 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-@Getter
 public final class TempPlayerData {
 
-    private final UUID uuid;
-    private transient AbstractPerk selectedPerk;
+    @Getter private final UUID uuid;
+    private transient PlayerBingoProgress playerBingoProgress;
+    @Getter private transient AbstractPerk selectedPerk;
     @Getter @Setter private transient SingleScoreboard scoreboard;
 
     @Setter private Roles role;
@@ -27,7 +28,7 @@ public final class TempPlayerData {
         selectedPerk.enablePlayer(player);
     }
 
-    public void hasBingo() {
-
+    public boolean hasBingo() {
+        return playerBingoProgress.hasBingo();
     }
 }
