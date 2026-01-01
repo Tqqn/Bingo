@@ -1,6 +1,8 @@
 package dev.tqqn.modules.game.framework.states;
 
+import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.modules.game.framework.abstraction.GameInstance;
+import dev.tqqn.modules.game.framework.objects.BingoProgress;
 import dev.tqqn.modules.game.framework.states.abstraction.AbstractStateSeries;
 import dev.tqqn.modules.game.framework.states.active.ActiveState;
 import dev.tqqn.modules.game.framework.states.end.EndState;
@@ -13,6 +15,8 @@ import java.util.List;
 
 public class GameStateSeries extends AbstractStateSeries {
 
+    private BingoProgress bingoProgress;
+
     public GameStateSeries(GameInstance instance) {
         super(instance);
         registerStates(List.of(new LobbyState(instance), new ActiveState(instance), new EndState(instance)));
@@ -20,7 +24,7 @@ public class GameStateSeries extends AbstractStateSeries {
 
     @Override
     public void onEnable() {
-
+        this.bingoProgress = new BingoProgress(getInstance().getGameModule().getAvailableTasks());
     }
 
     @Override
@@ -35,5 +39,9 @@ public class GameStateSeries extends AbstractStateSeries {
                 player.sendMessage(ChatUtils.format("<aqua>The game has been " + (getCurrentState().get().isFreeze() ? "<red>frozen" : "<green>unfrozen") + "<aqua>."));
             }
         }
+    }
+
+    public boolean hasBingo(PlayerModel playerModel) {
+        return bingoProgress.hasBingo(playerModel);
     }
 }

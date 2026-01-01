@@ -8,7 +8,7 @@ import dev.tqqn.modules.game.commands.BingoCommands;
 import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.listeners.PlayerJoinListener;
 import dev.tqqn.modules.game.framework.objects.BingoTask;
-import dev.tqqn.modules.game.framework.types.BingoSoloGame;
+import dev.tqqn.modules.game.framework.types.BingoGame;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public final class GameModule extends AbstractModule {
         GAME_MAX_PLAYERS = BingoMain.getInstance().getModuleManager().getModule(DatabaseModule.class).getDefaultConfig().getMaxPlayers();
 
         availableTasks.addAll(databaseModule.getBingoTaskConfig().getAllTasks());
-        this.currentInstance = new BingoSoloGame(1, this);
+        this.currentInstance = new BingoGame(1, this);
         this.currentInstance.start();
         register(new PlayerJoinListener(this));
         register(new BingoCommands(this));

@@ -4,9 +4,9 @@ import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.roles.Roles;
 
-public final class BingoSoloGame extends GameInstance {
+public final class BingoGame extends GameInstance {
 
-    public BingoSoloGame(int id, GameModule gameModule) {
+    public BingoGame(int id, GameModule gameModule) {
         super(id, gameModule);
     }
 
