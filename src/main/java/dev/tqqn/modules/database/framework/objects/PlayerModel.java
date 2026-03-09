@@ -5,6 +5,7 @@ import dev.tqqn.modules.database.DatabaseModule;
 import dev.tqqn.modules.database.framework.mongo.MongoItem;
 import dev.tqqn.modules.database.framework.mongo.MongoObject;
 import dev.tqqn.modules.game.framework.data.TempPlayerData;
+import dev.tqqn.modules.game.framework.objects.BingoTask;
 import dev.tqqn.utils.MojangAPI;
 import lombok.Getter;
 import lombok.Setter;

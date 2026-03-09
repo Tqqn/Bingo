@@ -39,4 +39,8 @@ public final class TempPlayerData {
     public void removeCompletedTask(BingoTask task) {
         completedTasks.remove(task);
     }
+
+    public boolean hasCompleted(BingoTask task) {
+        return completedTasks.contains(task);
+    }
 }

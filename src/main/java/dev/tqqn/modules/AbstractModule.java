@@ -51,6 +51,7 @@ public abstract class AbstractModule {
         registerListeners();
         registerCommands();
         logger.log(Level.INFO, "Finished enabling!");
+
     }
 
     /**

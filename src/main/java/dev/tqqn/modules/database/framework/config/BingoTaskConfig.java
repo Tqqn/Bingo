@@ -33,8 +33,8 @@ public final class BingoTaskConfig extends AbstractConfig {
             return List.of();
         }
 
-        for (String task : section.getKeys(true)) {
-            final String pathItem = type + "." + task + ".item";
+        for (String task : section.getKeys(false)) {
+            final String pathItem = task + ".item";
             final String possibleMaterial = section.getString(pathItem);
             Material material;
             try {
@@ -45,7 +45,7 @@ public final class BingoTaskConfig extends AbstractConfig {
             }
 
             ItemStack itemStack = new ItemStack(material);
-            String png = section.getString(type + "." + task + ".png");
+            String png = section.getString(task + ".png");
             tasks.add(new BingoTask(task, itemStack, png));
         }
 

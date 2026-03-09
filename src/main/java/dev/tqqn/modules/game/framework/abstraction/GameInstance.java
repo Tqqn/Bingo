@@ -6,6 +6,7 @@ import dev.tqqn.modules.game.framework.states.GameStateSeries;
 import dev.tqqn.modules.game.framework.states.abstraction.AbstractStateSeries;
 import lombok.Getter;
 import org.bukkit.entity.Player;
+import org.bukkit.event.world.GenericGameEvent;
 
 import java.util.HashMap;
 import java.util.Map;

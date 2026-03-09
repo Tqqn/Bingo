@@ -1,8 +1,12 @@
 package dev.tqqn.modules.game.framework.states;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.modules.game.framework.abstraction.GameInstance;
+import dev.tqqn.modules.game.framework.objects.BingoPlacement;
 import dev.tqqn.modules.game.framework.objects.BingoProgress;
+import dev.tqqn.modules.game.framework.objects.BingoTask;
 import dev.tqqn.modules.game.framework.states.abstraction.AbstractStateSeries;
 import dev.tqqn.modules.game.framework.states.active.ActiveState;
 import dev.tqqn.modules.game.framework.states.end.EndState;
@@ -12,6 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Map;
 
 public class GameStateSeries extends AbstractStateSeries {
 
@@ -43,5 +48,13 @@ public class GameStateSeries extends AbstractStateSeries {
 
     public boolean hasBingo(PlayerModel playerModel) {
         return bingoProgress.hasBingo(playerModel);
+    }
+
+    public List<BingoTask> getBingoTasks() {
+        return ImmutableList.copyOf(bingoProgress.getTasks().keySet());
+    }
+
+    public Map<BingoTask, BingoPlacement> getBingoPlacements() {
+        return ImmutableMap.copyOf(bingoProgress.getTasks());
     }
 }
