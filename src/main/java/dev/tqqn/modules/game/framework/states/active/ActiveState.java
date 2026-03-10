@@ -38,6 +38,9 @@ public final class ActiveState extends AbstractState {
         this.mapRenderer = new BingoMapRenderer(this, new IconCache(getGameInstance().getGameModule().getPlugin()));
         mapView.getRenderers().clear();
         mapView.addRenderer(mapRenderer);
+        mapView.setLocked(true);
+        mapView.setTrackingPosition(false);
+        mapView.setUnlimitedTracking(false);
         final ItemStack mapItem = getBingoMapItem(mapView);
 
         for (Player player : Bukkit.getOnlinePlayers()) {

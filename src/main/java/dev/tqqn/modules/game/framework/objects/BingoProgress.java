@@ -61,7 +61,7 @@ public final class BingoProgress {
     }
 
     private BingoPlacement providePlacement() {
-        boolean[][] usedPlacement = new boolean[6][6];
+        boolean[][] usedPlacement = new boolean[5][5];
 
         for (BingoPlacement placement : tasks.values()) {
             if (placement == null) continue;
@@ -69,15 +69,17 @@ public final class BingoProgress {
             int column = placement.getColumn();
             int row = placement.getRow();
 
-            if (column >= 0 && column <= 5 && row >= 0 && row <= 5) {
+            if (column >= 0 && column < 5 && row >= 0 && row < 5) {
                 usedPlacement[row][column] = true;
             }
         }
 
-        for (int column = 0; column <= 5; column++) {
-            for (int row = 0; row <= 5; row++) {
+        for (int column = 0; column < 5; column++) {
+            for (int row = 0; row < 5; row++) {
                 System.out.println(column + " " + row);
-                if (!usedPlacement[row][column]) return new BingoPlacement(column, row);
+                if (!usedPlacement[row][column]) {
+                    return new BingoPlacement(column, row);
+                }
             }
         }
 
