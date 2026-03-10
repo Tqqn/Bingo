@@ -66,7 +66,7 @@ public final class BingoMapRenderer extends MapRenderer {
                 if (image == null) {
                     System.out.println("MISSING ICON: " + task.getPng() + " at row=" + row + " col=" + col);
                 } else {
-                    mapCanvas.drawImage(cellX + pad, cellY + pad, image);
+                    mapCanvas.drawImage(cellX + pad + 1, cellY + pad, image);
                 }
             }
         }
