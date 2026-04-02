@@ -72,7 +72,7 @@ public abstract class AbstractStateSeries extends BukkitRunnable {
         currentState.disable();
         this.currentState = new WeakReference<>(newState);
         currentStatePosition = currentStatePosition - 1;
-        newState.enable();
+        this.currentState.get().enable();
     }
 
     public AbstractState getState(int position) {
@@ -100,7 +100,7 @@ public abstract class AbstractStateSeries extends BukkitRunnable {
         oldState.disable();
         this.currentState = new WeakReference<>(nextState);
         currentStatePosition = currentStatePosition + 1;
-        nextState.enable();
+        this.currentState.get().enable();
     }
 
     public abstract void onFreeze();

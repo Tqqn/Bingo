@@ -2,6 +2,7 @@ package dev.tqqn.modules.game.framework.data;
 
 import dev.tqqn.modules.game.framework.objects.BingoTask;
 import dev.tqqn.modules.game.framework.roles.Roles;
+import dev.tqqn.modules.game.framework.team.GameTeam;
 import dev.tqqn.modules.perks.framework.AbstractPerk;
 import dev.tqqn.modules.scoreboard.framework.SingleScoreboard;
 import lombok.Getter;
@@ -14,8 +15,9 @@ import java.util.UUID;
 public final class TempPlayerData {
 
     @Getter private final UUID uuid;
-    @Getter private transient AbstractPerk selectedPerk;
-    @Getter @Setter private transient SingleScoreboard scoreboard;
+    @Getter private AbstractPerk selectedPerk;
+    @Getter @Setter private SingleScoreboard scoreboard;
+    @Getter @Setter private GameTeam team = null;
 
     private final List<BingoTask> completedTasks;
 

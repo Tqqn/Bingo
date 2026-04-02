@@ -13,7 +13,7 @@ public final class BingoGame extends GameInstance {
 
     @Override
     public boolean canStart() {
-        return getInGamePlayers().values().stream().filter(role -> role == Roles.ALIVE).toList().size() == 2;
+        return getInGamePlayers().values().stream().filter(role -> role == Roles.ALIVE).toList().size() == 1;
         //return currentPlayers.size() >= GameModule.GAME_MIN_PLAYERS_TO_START;
     }
 

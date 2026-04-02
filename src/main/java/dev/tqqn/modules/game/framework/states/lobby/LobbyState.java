@@ -15,7 +15,7 @@ public final class LobbyState extends AbstractState {
     private static final String message = "<red>Game is starting in <white><bold>%s<reset><red>s.";
 
     public LobbyState(GameInstance instance) {
-        super(instance, GameStates.LOBBY, "Lobby");
+        super(instance, GameStates.LOBBY, "Lobby", true);
         setTimer(10000);
     }
 
@@ -23,6 +23,7 @@ public final class LobbyState extends AbstractState {
     public void onTick() {
         if (getGameInstance().canStart()) {
             if (!isStartCountdown) {
+                setTimer(240);
                 isStartCountdown = true;
             }
 
@@ -30,18 +31,17 @@ public final class LobbyState extends AbstractState {
                 if (timer == 30) broadcast(String.format(message, timer));
                 if (timer == 10) broadcast(String.format(message, timer));
                 if (timer < 6) broadcast(String.format(message, timer));
-                if (timer < 1) {
-                    getGameInstance().getGameStateSeries().nextState();
-                    return;
-                }
             }
 
         } else if (isStartCountdown) {
             isStartCountdown = false;
             setTimer(10000);
         }
+    }
 
-        timer--;
+    @Override
+    public void onTimerEnd() {
+        getGameInstance().getGameStateSeries().nextState();
     }
 
     @Override

@@ -24,9 +24,8 @@ public final class ActiveState extends AbstractState {
     private BingoMapRenderer mapRenderer;
 
     public ActiveState(GameInstance instance) {
-        super(instance, GameStates.ACTIVE, "Active");
+        super(instance, GameStates.ACTIVE, "Active", true);
         register(new ActiveListeners(this));
-
     }
 
     @Override
@@ -40,7 +39,6 @@ public final class ActiveState extends AbstractState {
         mapView.addRenderer(mapRenderer);
         mapView.setLocked(true);
         mapView.setTrackingPosition(false);
-        mapView.setUnlimitedTracking(false);
         final ItemStack mapItem = getBingoMapItem(mapView);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -50,7 +48,11 @@ public final class ActiveState extends AbstractState {
 
     @Override
     public void onTick() {
-        timer--;
+    }
+
+    @Override
+    public void onTimerEnd() {
+        disable();
     }
 
     @Override
@@ -72,7 +74,8 @@ public final class ActiveState extends AbstractState {
 
     public void completeTask(PlayerModel playerModel, BingoTask task) {
         playerModel.getTempPlayerData().completeTask(task);
-        Notify.INFO.chat(playerModel.getPlayer(), "You collected task: " + task.getGoal().getType());
+        task.complete(playerModel.getTempPlayerData().getTeam());
+        Notify.INFO.chat(playerModel.getPlayer(), "You collected: " + task.getName());
     }
 
     private ItemStack getBingoMapItem(MapView mapView) {

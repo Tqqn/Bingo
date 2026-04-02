@@ -5,6 +5,7 @@ import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.GameStates;
 import dev.tqqn.modules.game.framework.data.TempPlayerData;
 import dev.tqqn.modules.scoreboard.framework.SingleScoreboard;
+import dev.tqqn.utils.ChatUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
@@ -22,16 +23,19 @@ public abstract class AbstractState implements Listener {
     @Getter private final GameStates gameState;
     @Getter private final String name;
 
+    private final boolean shouldCountBackwards;
+
     @Getter @Setter protected int timer;
 
     @Getter protected boolean freeze = false;
 
     private final Set<Listener> listeners;
 
-    public AbstractState(GameInstance instance, GameStates gameState, String name) {
+    public AbstractState(GameInstance instance, GameStates gameState, String name, boolean shouldCountBackwards) {
         this.gameInstance = instance;
         this.gameState = gameState;
         this.name = name;
+        this.shouldCountBackwards = shouldCountBackwards;
         this.listeners = new HashSet<>();
     }
 
@@ -40,10 +44,29 @@ public abstract class AbstractState implements Listener {
 
     public void tick() {
         if (freeze) return;
+
+        if (!hasTimerEnded()) {
+            int nextTimer = getTimer();
+
+            if (shouldCountBackwards) {
+                nextTimer--;
+            } else {
+                nextTimer++;
+            }
+
+            if (nextTimer <= 0) {
+                onTimerEnd();
+            }
+
+            timer = nextTimer;
+        }
+
         onTick();
     }
 
     public abstract void onTick();
+
+    public abstract void onTimerEnd();
 
     public void enable() {
         gameInstance.getGameModule().getLogger().log(Level.INFO, "State: " + name + " is enabling...");
@@ -78,6 +101,10 @@ public abstract class AbstractState implements Listener {
         listeners.clear();
     }
 
+    private boolean hasTimerEnded() {
+        return getTimer() <= 0;
+    }
+
     public void register(Object object) {
         if (object instanceof Listener listener) {
             listeners.add(listener);
@@ -109,4 +136,8 @@ public abstract class AbstractState implements Listener {
     }
 
     public abstract void setScoreboard(Player player);
+
+    public String getFormattedTimer() {
+        return ChatUtils.convertSecondsToHMmSs(getTimer());
+    }
 }

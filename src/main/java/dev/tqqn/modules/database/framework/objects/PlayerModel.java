@@ -28,7 +28,7 @@ public final class PlayerModel extends MongoObject<UUID> {
     private String name;
     private transient WeakReference<Player> playerWeakReference;
 
-    private TempPlayerData tempPlayerData;
+    private transient TempPlayerData tempPlayerData;
 
     public PlayerModel(UUID key, String name) {
         super(key);

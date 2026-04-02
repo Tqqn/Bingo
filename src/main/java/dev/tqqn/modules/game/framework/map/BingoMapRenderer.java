@@ -1,9 +1,9 @@
 package dev.tqqn.modules.game.framework.map;
 
-import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.modules.game.framework.objects.BingoPlacement;
 import dev.tqqn.modules.game.framework.objects.BingoTask;
 import dev.tqqn.modules.game.framework.states.active.ActiveState;
+import dev.tqqn.modules.game.framework.team.GameTeam;
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapRenderer;
@@ -27,27 +27,19 @@ public final class BingoMapRenderer extends MapRenderer {
 
         grid = new BingoTask[5][5];
 
-
-        int i = 0;
-
         for (Map.Entry<BingoTask, BingoPlacement> entry : state.getGameInstance().getGameStateSeries().getBingoPlacements().entrySet()) {
             BingoPlacement placement = entry.getValue();
             grid[placement.getRow()][placement.getColumn()] = entry.getKey();
-            i++;
-            System.out.println(i + " " + entry.getKey().getName());
         }
     }
 
     @Override
     public void render(@NotNull MapView mapView, @NotNull MapCanvas mapCanvas, @NotNull Player player) {
-        final PlayerModel playerModel = PlayerModel.from(player);
-
         final int cellSize = 24;
         final int offset = 4;
         final int iconSize = 16;
         final int pad = (cellSize - iconSize) / 2;
 
-        // optional: clear background
         mapCanvas.getBasePixelColor(0, 0);
 
         for (int row = 0; row < 5; row++) {
@@ -68,6 +60,10 @@ public final class BingoMapRenderer extends MapRenderer {
                 } else {
                     mapCanvas.drawImage(cellX + pad + 1, cellY + pad, image);
                 }
+
+                for (GameTeam gameTeam : task.getCompleted()) {
+                    drawCross(mapCanvas, cellX + 1, cellY + 1, gameTeam.getMapPlace());
+                }
             }
         }
 
@@ -79,9 +75,46 @@ public final class BingoMapRenderer extends MapRenderer {
             int pos = 4 + (i * 24);
 
             for (int p = 4; p < 125; p++) {
-                canvas.setPixelColor(pos, p, Color.BLACK);   // vertical
-                canvas.setPixelColor(p, pos, Color.BLACK); // horizontal
+                canvas.setPixelColor(pos, p, Color.BLACK);
+                canvas.setPixelColor(p, pos, Color.BLACK);
             }
         }
+    }
+
+    private void drawCross(MapCanvas canvas, int x, int y, int place) {
+        int size = 11;
+
+        switch (place) {
+            case 1 -> {
+                for (int i = 0; i <= size; i++) {
+                    canvas.setPixelColor(x, y + i, Color.GREEN);
+                    canvas.setPixelColor(x + i, y, Color.GREEN);
+                }
+            }
+            case 2 -> {
+                y = y + 11;
+                for (int i = 0; i <= size; i++) {
+                    canvas.setPixelColor(x, y + i, Color.RED);
+                    canvas.setPixelColor(x + i, y + size, Color.RED);
+                }
+            }
+            case 3 -> {
+                x = x + 22;
+                y = y + 22;
+                for (int i = 0; i <= size; i++) {
+                    canvas.setPixelColor(x - i, y, Color.BLUE);
+                    canvas.setPixelColor(x, y - i, Color.BLUE);
+                }
+            }
+            case 4 -> {
+                x = x + 22;
+                for (int i = 0; i <= size; i++) {
+                    canvas.setPixelColor(x - i, y, Color.ORANGE);
+                    canvas.setPixelColor(x, y + i, Color.ORANGE);
+                }
+            }
+        }
+
+
     }
 }
