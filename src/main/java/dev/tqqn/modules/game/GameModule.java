@@ -4,12 +4,15 @@ import com.google.common.collect.ImmutableList;
 import dev.tqqn.BingoMain;
 import dev.tqqn.modules.AbstractModule;
 import dev.tqqn.modules.database.DatabaseModule;
+import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.modules.game.commands.BingoCommands;
 import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.listeners.PlayerJoinListener;
 import dev.tqqn.modules.game.framework.objects.BingoTask;
+import dev.tqqn.modules.game.framework.team.TeamProvider;
 import dev.tqqn.modules.game.framework.types.BingoGame;
 import lombok.Getter;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +25,15 @@ public final class GameModule extends AbstractModule {
 
     private final List<BingoTask> availableTasks = new ArrayList<>();
 
+    private final TeamProvider teamProvider;
+
     public static int GAME_MIN_PLAYERS_TO_START;
     public static int GAME_MAX_PLAYERS;
 
     public GameModule(BingoMain plugin, DatabaseModule databaseModule) {
         super(plugin, "Game");
         this.databaseModule = databaseModule;
+        this.teamProvider = new TeamProvider(4);
     }
 
     @Override
@@ -44,5 +50,16 @@ public final class GameModule extends AbstractModule {
 
     public List<BingoTask> getAvailableTasks() {
         return ImmutableList.copyOf(availableTasks);
+    }
+
+    public void putPlayersInTeams() {
+        for (Player player : currentInstance.getInGamePlayers().keySet()) {
+            final PlayerModel playerModel = PlayerModel.from(player);
+            if (playerModel == null) {
+                continue;
+            }
+
+            teamProvider.assignTeam(playerModel);
+        }
     }
 }
