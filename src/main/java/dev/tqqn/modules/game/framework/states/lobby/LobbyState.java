@@ -2,6 +2,7 @@ package dev.tqqn.modules.game.framework.states.lobby;
 
 import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.GameStates;
+import dev.tqqn.modules.game.framework.states.GameStateSeries;
 import dev.tqqn.modules.game.framework.states.abstraction.AbstractState;
 import dev.tqqn.modules.game.framework.states.lobby.listeners.LobbyListeners;
 import dev.tqqn.modules.scoreboard.boards.LobbyScoreboard;
@@ -15,7 +16,7 @@ public final class LobbyState extends AbstractState {
     private boolean isStartCountdown = false;
     private static final String message = "<red>Game is starting in <white><bold>%s<reset><red>s.";
 
-    public LobbyState(GameInstance instance) {
+    public LobbyState(GameStateSeries instance) {
         super(instance, GameStates.LOBBY, "Lobby", true);
         setTimer(10000);
     }
@@ -42,7 +43,7 @@ public final class LobbyState extends AbstractState {
 
     @Override
     public void onTimerEnd() {
-        getGameInstance().getGameStateSeries().nextState();
+        getGameInstance().nextState();
     }
 
     @Override

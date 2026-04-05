@@ -19,7 +19,7 @@ import java.util.logging.Level;
 
 public abstract class AbstractState implements Listener {
 
-    @Getter private final GameInstance gameInstance;
+    @Getter private final AbstractStateSeries gameInstance;
     @Getter private final GameStates gameState;
     @Getter private final String name;
 
@@ -31,7 +31,7 @@ public abstract class AbstractState implements Listener {
 
     private final Set<Listener> listeners;
 
-    public AbstractState(GameInstance instance, GameStates gameState, String name, boolean shouldCountBackwards) {
+    public AbstractState(AbstractStateSeries instance, GameStates gameState, String name, boolean shouldCountBackwards) {
         this.gameInstance = instance;
         this.gameState = gameState;
         this.name = name;

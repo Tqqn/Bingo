@@ -24,7 +24,7 @@ public class EndScoreboard extends SingleScoreboard {
         Component title = ChatUtils.format("<red><bold>BINGO");
 
         lines.add(ChatUtils.format("<red>Game has ended...."));
-        lines.add(ChatUtils.format("<red>Game ending in <white><bold>" + gameInstance.getGameStateSeries().getCurrentState().get().getFormattedTimer() + " <reset><red>seconds!"));
+        lines.add(ChatUtils.format("<red>Game ending in <white><bold>" + gameInstance.getCurrentState().get().getFormattedTimer() + " <reset><red>seconds!"));
 
         lines.add(ChatUtils.format("<red>------------------------"));
         lines.add(ChatUtils.format("<red>play.communitycraft.nl"));

@@ -1,5 +1,6 @@
 package dev.tqqn.modules.game.framework.states.abstraction;
 
+import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import lombok.Getter;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -10,25 +11,24 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 
-public abstract class AbstractStateSeries extends BukkitRunnable {
+public abstract class AbstractStateSeries extends GameInstance {
 
-    @Getter private final GameInstance instance;
     private final List<AbstractState> states = new ArrayList<>();
 
     private int currentStatePosition = 0;
-    @Getter private WeakReference<AbstractState> currentState;
+    private WeakReference<AbstractState> currentState;
 
-    public AbstractStateSeries(GameInstance instance) {
-        this.instance = instance;
+    public AbstractStateSeries(int id, GameModule gameModule) {
+        super(id, gameModule);
     }
 
     public void enable() {
         if (states.isEmpty()) {
-            instance.getGameModule().getLogger().log(Level.SEVERE, "GameState-Series not enabled. No valid states.");
+            getGameModule().getLogger().log(Level.SEVERE, "GameState-Series not enabled. No valid states.");
             return;
         }
         this.currentState = new WeakReference<>(states.get(0));
-        this.runTaskTimer(instance.getGameModule().getPlugin(), 0L, 20L);
+        this.runTaskTimer(getGameModule().getPlugin(), 0L, 20L);
         onEnable();
     }
 
@@ -46,6 +46,11 @@ public abstract class AbstractStateSeries extends BukkitRunnable {
         }
 
         possibleCurrentState.tick();
+    }
+
+    @Override
+    public WeakReference<AbstractState> getCurrentState() {
+        return currentState;
     }
 
     public void registerStates(List<AbstractState> states) {

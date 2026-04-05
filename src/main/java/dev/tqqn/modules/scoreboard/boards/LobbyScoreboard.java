@@ -19,7 +19,7 @@ public final class LobbyScoreboard extends SingleScoreboard {
     public LobbyScoreboard(Player player, GameInstance gameInstance) {
         super(player);
         this.gameInstance = gameInstance;
-        currentState = gameInstance.getGameStateSeries().getCurrentState().get();
+        currentState = gameInstance.getCurrentState().get();
     }
 
     @Override

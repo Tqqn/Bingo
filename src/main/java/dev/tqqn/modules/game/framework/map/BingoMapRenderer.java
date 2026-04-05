@@ -27,7 +27,7 @@ public final class BingoMapRenderer extends MapRenderer {
 
         grid = new BingoTask[5][5];
 
-        for (Map.Entry<BingoTask, BingoPlacement> entry : state.getGameInstance().getGameStateSeries().getBingoPlacements().entrySet()) {
+        for (Map.Entry<BingoTask, BingoPlacement> entry : state.getGameInstance().getBingoPlacements().entrySet()) {
             BingoPlacement placement = entry.getValue();
             grid[placement.getRow()][placement.getColumn()] = entry.getKey();
         }

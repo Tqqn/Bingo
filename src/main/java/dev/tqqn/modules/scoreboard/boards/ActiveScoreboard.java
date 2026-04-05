@@ -25,7 +25,7 @@ public final class ActiveScoreboard extends SingleScoreboard {
 
         Component title = ChatUtils.format("<red><bold>BINGO");
 
-        lines.add(ChatUtils.format("<red>Round ending in <white><bold>" + gameInstance.getGameStateSeries().getCurrentState().get().getFormattedTimer()));
+        lines.add(ChatUtils.format("<red>Round ending in <white><bold>" + gameInstance.getCurrentState().get().getFormattedTimer()));
 
 
         lines.add(ChatUtils.format("<red>------------------------"));

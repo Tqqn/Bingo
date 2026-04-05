@@ -6,9 +6,10 @@ import dev.tqqn.modules.game.framework.GameStates;
 import dev.tqqn.modules.game.framework.map.BingoMapRenderer;
 import dev.tqqn.modules.game.framework.map.IconCache;
 import dev.tqqn.modules.game.framework.objects.BingoTask;
+import dev.tqqn.modules.game.framework.states.GameStateSeries;
 import dev.tqqn.modules.game.framework.states.abstraction.AbstractState;
+import dev.tqqn.modules.game.framework.states.abstraction.AbstractStateSeries;
 import dev.tqqn.modules.game.framework.states.active.listeners.ActiveListeners;
-import dev.tqqn.modules.game.framework.types.BingoGame;
 import dev.tqqn.modules.scoreboard.boards.ActiveScoreboard;
 import dev.tqqn.utils.ChatUtils;
 import dev.tqqn.utils.Notify;
@@ -23,7 +24,7 @@ public final class ActiveState extends AbstractState {
 
     private BingoMapRenderer mapRenderer;
 
-    public ActiveState(GameInstance instance) {
+    public ActiveState(AbstractStateSeries instance) {
         super(instance, GameStates.ACTIVE, "Active", true);
         register(new ActiveListeners(this));
     }
@@ -68,8 +69,8 @@ public final class ActiveState extends AbstractState {
     }
 
     @Override
-    public BingoGame getGameInstance() {
-        return (BingoGame) super.getGameInstance();
+    public GameStateSeries getGameInstance() {
+        return (GameStateSeries) super.getGameInstance();
     }
 
     public void completeTask(PlayerModel playerModel, BingoTask task) {

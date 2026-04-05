@@ -40,21 +40,21 @@ public final class BingoCommands extends BaseCommand {
         @CommandPermission("bingo.command.admin.nextstate")
         @Description("Force start a game.")
         public void nextState(Player player) {
-            final AbstractState currentState = gameModule.getCurrentInstance().getGameStateSeries().getCurrentState().get();
+            final AbstractState currentState = gameModule.getCurrentInstance().getCurrentState().get();
 
             if (currentState == null) {
                 Notify.ERROR.chat(player, "Something went wrong. The current State is not existing. Contact an administrator.");
                 return;
             }
 
-            final AbstractState nextState = gameModule.getCurrentInstance().getGameStateSeries().getNextState();
+            final AbstractState nextState = gameModule.getCurrentInstance().getNextState();
 
             if (nextState == null) {
                 Notify.ERROR.chat(player, "There is no next state available. Cancelling this command...");
                 return;
             }
 
-            gameModule.getCurrentInstance().getGameStateSeries().nextState();
+            gameModule.getCurrentInstance().nextState();
             Notify.SUCCESS.chat(player, "You forced the game to the next state.");
         }
 
@@ -62,21 +62,21 @@ public final class BingoCommands extends BaseCommand {
         @CommandPermission("bingo.command.admin.previousstate")
         @Description("Force start a game.")
         public void previousState(Player player) {
-            final AbstractState currentState = gameModule.getCurrentInstance().getGameStateSeries().getCurrentState().get();
+            final AbstractState currentState = gameModule.getCurrentInstance().getCurrentState().get();
 
             if (currentState == null) {
                 Notify.ERROR.chat(player, "Something went wrong. The current State is not existing. Contact an administrator.");
                 return;
             }
 
-            final AbstractState previousState = gameModule.getCurrentInstance().getGameStateSeries().getPreviousState();
+            final AbstractState previousState = gameModule.getCurrentInstance().getPreviousState();
 
             if (previousState == null) {
                 Notify.ERROR.chat(player, "There is no previous state available. Cancelling this command...");
                 return;
             }
 
-            gameModule.getCurrentInstance().getGameStateSeries().previousState();
+            gameModule.getCurrentInstance().previousState();
             Notify.SUCCESS.chat(player, "You forced the game to the previous state.");
         }
 
@@ -84,7 +84,7 @@ public final class BingoCommands extends BaseCommand {
         @CommandPermission("bingo.command.admin.freeze")
         @Description("Freeze the current state.")
         public void freeze(Player player, boolean value) {
-            gameModule.getCurrentInstance().getGameStateSeries().freeze(value);
+            gameModule.getCurrentInstance().freeze(value);
         }
     }
 }

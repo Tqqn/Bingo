@@ -19,7 +19,7 @@ public final class PlayerJoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerModelJoinEvent event) {
         if (event.isCancelled()) return;
-        final AbstractState currentState = gameModule.getCurrentInstance().getGameStateSeries().getCurrentState().get();
+        final AbstractState currentState = gameModule.getCurrentInstance().getCurrentState().get();
         if (currentState == null) return;
 
         currentState.setScoreboard(event.getPlayerModel().getPlayer());

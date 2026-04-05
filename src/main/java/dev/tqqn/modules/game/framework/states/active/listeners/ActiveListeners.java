@@ -33,7 +33,7 @@ public final class ActiveListeners implements Listener {
 
     private void processPossibleBingo(Player player, ItemStack item) {
         final PlayerModel playerModel = PlayerModel.from(player.getUniqueId());
-        for (BingoTask task : state.getGameInstance().getGameStateSeries().getBingoTasks()) {
+        for (BingoTask task : state.getGameInstance().getBingoTasks()) {
             if (!(task.getGoal().getType() == item.getType())) continue;
             if (playerModel.getTempPlayerData().hasCompleted(task)) return;
             state.completeTask(playerModel, task);

@@ -2,11 +2,14 @@ package dev.tqqn.modules.game.framework.states;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import dev.tqqn.modules.database.framework.events.PlayerModelJoinEvent;
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
+import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.objects.BingoPlacement;
 import dev.tqqn.modules.game.framework.objects.BingoProgress;
 import dev.tqqn.modules.game.framework.objects.BingoTask;
+import dev.tqqn.modules.game.framework.roles.Roles;
 import dev.tqqn.modules.game.framework.states.abstraction.AbstractStateSeries;
 import dev.tqqn.modules.game.framework.states.active.ActiveState;
 import dev.tqqn.modules.game.framework.states.end.EndState;
@@ -22,14 +25,14 @@ public class GameStateSeries extends AbstractStateSeries {
 
     private BingoProgress bingoProgress;
 
-    public GameStateSeries(GameInstance instance) {
-        super(instance);
-        registerStates(List.of(new LobbyState(instance), new ActiveState(instance), new EndState(instance)));
+    public GameStateSeries(GameModule module, int instanceId) {
+        super(instanceId, module);
+        registerStates(List.of(new LobbyState(this), new ActiveState(this), new EndState(this)));
     }
 
     @Override
     public void onEnable() {
-        this.bingoProgress = new BingoProgress(getInstance().getGameModule().getAvailableTasks());
+        this.bingoProgress = new BingoProgress(getGameModule().getAvailableTasks());
     }
 
     @Override
@@ -56,5 +59,26 @@ public class GameStateSeries extends AbstractStateSeries {
 
     public Map<BingoTask, BingoPlacement> getBingoPlacements() {
         return ImmutableMap.copyOf(bingoProgress.getTasks());
+    }
+
+    @Override
+    public void start() {
+        enable();
+    }
+
+    @Override
+    public void stop() {
+        disable();
+    }
+
+    @Override
+    public boolean canStart() {
+        return getInGamePlayers().values().stream().filter(role -> role == Roles.ALIVE).toList().size() == 1;
+        //return currentPlayers.size() >= GameModule.GAME_MIN_PLAYERS_TO_START;
+    }
+
+    @Override
+    public void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event) {
+
     }
 }

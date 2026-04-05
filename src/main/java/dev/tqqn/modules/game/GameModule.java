@@ -6,22 +6,22 @@ import dev.tqqn.modules.AbstractModule;
 import dev.tqqn.modules.database.DatabaseModule;
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.modules.game.commands.BingoCommands;
-import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.listeners.PlayerJoinListener;
 import dev.tqqn.modules.game.framework.objects.BingoTask;
+import dev.tqqn.modules.game.framework.states.GameStateSeries;
 import dev.tqqn.modules.game.framework.team.TeamProvider;
-import dev.tqqn.modules.game.framework.types.BingoGame;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public final class GameModule extends AbstractModule {
 
     private final DatabaseModule databaseModule;
 
-    @Getter private GameInstance currentInstance = null;
+    @Getter private GameStateSeries currentInstance = null;
 
     private final List<BingoTask> availableTasks = new ArrayList<>();
 
@@ -42,7 +42,7 @@ public final class GameModule extends AbstractModule {
         GAME_MAX_PLAYERS = BingoMain.getInstance().getModuleManager().getModule(DatabaseModule.class).getDefaultConfig().getMaxPlayers();
 
         availableTasks.addAll(databaseModule.getBingoTaskConfig().getAllTasks());
-        this.currentInstance = new BingoGame(1, this);
+        this.currentInstance = new GameStateSeries(this, provideNewInstanceId());
         this.currentInstance.start();
         register(new PlayerJoinListener(this));
         register(new BingoCommands(this));
@@ -61,5 +61,9 @@ public final class GameModule extends AbstractModule {
 
             teamProvider.assignTeam(playerModel);
         }
+    }
+
+    private int provideNewInstanceId() {
+        return ThreadLocalRandom.current().nextInt(1, 1000);
     }
 }
