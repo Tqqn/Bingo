@@ -1,5 +1,6 @@
 package dev.tqqn.modules.game.framework.states.abstraction;
 
+import dev.tqqn.modules.database.framework.events.PlayerModelJoinEvent;
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.GameStates;
@@ -63,6 +64,8 @@ public abstract class AbstractState implements Listener {
 
         onTick();
     }
+
+    public abstract void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event);
 
     public abstract void onTick();
 

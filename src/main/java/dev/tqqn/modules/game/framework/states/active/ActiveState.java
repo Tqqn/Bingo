@@ -1,5 +1,6 @@
 package dev.tqqn.modules.game.framework.states.active;
 
+import dev.tqqn.modules.database.framework.events.PlayerModelJoinEvent;
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.GameStates;
@@ -43,6 +44,7 @@ public final class ActiveState extends AbstractState {
         final ItemStack mapItem = getBingoMapItem(mapView);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
+            player.getInventory().clear();
             player.getInventory().addItem(mapItem);
         }
     }
@@ -66,6 +68,11 @@ public final class ActiveState extends AbstractState {
         for (Player player : getGameInstance().getInGamePlayers().keySet()) {
             removeScoreboard(ActiveScoreboard.class, player);
         }
+    }
+
+    @Override
+    public void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event) {
+        event.setCancelled(true);
     }
 
     @Override

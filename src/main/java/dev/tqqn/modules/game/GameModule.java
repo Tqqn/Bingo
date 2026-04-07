@@ -11,6 +11,9 @@ import dev.tqqn.modules.game.framework.objects.BingoTask;
 import dev.tqqn.modules.game.framework.states.GameStateSeries;
 import dev.tqqn.modules.game.framework.team.TeamProvider;
 import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -27,6 +30,8 @@ public final class GameModule extends AbstractModule {
 
     private final TeamProvider teamProvider;
 
+    private World gameWorld;
+
     public static int GAME_MIN_PLAYERS_TO_START;
     public static int GAME_MAX_PLAYERS;
 
@@ -38,6 +43,11 @@ public final class GameModule extends AbstractModule {
 
     @Override
     protected void onEnable() {
+        Bukkit.getScheduler().runTask(getPlugin(), () -> {
+            gameWorld = createNewWorld();
+            createWorldBorder(gameWorld, 10000);
+        });
+
         GAME_MIN_PLAYERS_TO_START = BingoMain.getInstance().getModuleManager().getModule(DatabaseModule.class).getDefaultConfig().getNeededPlayersToStart();
         GAME_MAX_PLAYERS = BingoMain.getInstance().getModuleManager().getModule(DatabaseModule.class).getDefaultConfig().getMaxPlayers();
 
@@ -65,5 +75,20 @@ public final class GameModule extends AbstractModule {
 
     private int provideNewInstanceId() {
         return ThreadLocalRandom.current().nextInt(1, 1000);
+    }
+
+    public void createWorldBorder(World world, int size) {
+        world.getWorldBorder().setCenter(0, 0);
+        world.getWorldBorder().setSize(size);
+        world.getWorldBorder().setDamageAmount(2);
+    }
+
+    public World createNewWorld() {
+        final World world = Bukkit.createWorld(new WorldCreator("bingo_world"));
+        if (world == null) {
+            throw new RuntimeException("Failed to create world 'bingo_world'");
+        }
+
+        return world;
     }
 }

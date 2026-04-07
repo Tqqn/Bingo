@@ -5,6 +5,8 @@ import dev.tqqn.modules.database.framework.events.PlayerModelJoinEvent;
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.utils.ChatUtils;
 import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -49,6 +51,7 @@ public final class PlayerLoadListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        event.joinMessage(Component.empty());
         final Player player = event.getPlayer();
         PlayerModel playerModel = joiningPlayers.remove(player.getUniqueId());
         PlayerModel.cache(playerModel);

@@ -30,6 +30,7 @@ public abstract class AbstractStateSeries extends GameInstance {
         this.currentState = new WeakReference<>(states.get(0));
         this.runTaskTimer(getGameModule().getPlugin(), 0L, 20L);
         onEnable();
+        this.currentState.get().enable();
     }
 
     public void disable() {

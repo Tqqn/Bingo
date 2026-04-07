@@ -79,6 +79,6 @@ public class GameStateSeries extends AbstractStateSeries {
 
     @Override
     public void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event) {
-
+        getCurrentState().get().onPlayerJoin(playerModel, event);
     }
 }

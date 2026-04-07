@@ -1,5 +1,8 @@
 package dev.tqqn.modules.game.framework.states.lobby;
 
+import dev.tqqn.modules.database.framework.events.PlayerModelJoinEvent;
+import dev.tqqn.modules.database.framework.objects.PlayerModel;
+import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.GameStates;
 import dev.tqqn.modules.game.framework.states.GameStateSeries;
@@ -58,6 +61,11 @@ public final class LobbyState extends AbstractState {
             removeScoreboard(LobbyScoreboard.class, player);
             NMSUtils.refreshTag(player);
         }
+    }
+
+    @Override
+    public void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event) {
+        broadcast("<yellow>[<aqua>" + (getGameInstance().getInGamePlayers().size()+1) + "<yellow>/<aqua>" + GameModule.GAME_MAX_PLAYERS + "<yellow>] <green>+ " + playerModel.getName());
     }
 
     @Override
