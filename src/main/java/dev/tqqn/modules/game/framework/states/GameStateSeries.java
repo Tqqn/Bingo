@@ -73,8 +73,7 @@ public class GameStateSeries extends AbstractStateSeries {
 
     @Override
     public boolean canStart() {
-        return getInGamePlayers().values().stream().filter(role -> role == Roles.ALIVE).toList().size() == 1;
-        //return currentPlayers.size() >= GameModule.GAME_MIN_PLAYERS_TO_START;
+        return getInGamePlayers().values().stream().filter(role -> role == Roles.ALIVE).toList().size() >= GameModule.GAME_MIN_PLAYERS_TO_START;
     }
 
     @Override

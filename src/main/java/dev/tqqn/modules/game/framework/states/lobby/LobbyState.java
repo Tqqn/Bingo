@@ -3,7 +3,6 @@ package dev.tqqn.modules.game.framework.states.lobby;
 import dev.tqqn.modules.database.framework.events.PlayerModelJoinEvent;
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.modules.game.GameModule;
-import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.GameStates;
 import dev.tqqn.modules.game.framework.states.GameStateSeries;
 import dev.tqqn.modules.game.framework.states.abstraction.AbstractState;
@@ -12,6 +11,7 @@ import dev.tqqn.modules.scoreboard.boards.LobbyScoreboard;
 import dev.tqqn.utils.ChatUtils;
 import dev.tqqn.utils.NMSUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 public final class LobbyState extends AbstractState {
@@ -33,9 +33,7 @@ public final class LobbyState extends AbstractState {
             }
 
             if (timer < 31) {
-                if (timer == 30) broadcast(String.format(message, timer));
-                if (timer == 10) broadcast(String.format(message, timer));
-                if (timer < 6) broadcast(String.format(message, timer));
+                if (timer == 30 || timer == 10 || timer < 6) broadcastWithSound(String.format(message, timer), Sound.BLOCK_NOTE_BLOCK_PLING);
             }
 
         } else if (isStartCountdown) {
@@ -73,7 +71,7 @@ public final class LobbyState extends AbstractState {
         applyScoreboard(new LobbyScoreboard(player, getGameInstance()), player);
     }
 
-    private void broadcast(String message) {
-        Bukkit.broadcast(ChatUtils.format(message));
+    public void quickStart() {
+        setTimer(11);
     }
 }

@@ -16,6 +16,7 @@ import dev.tqqn.utils.ChatUtils;
 import dev.tqqn.utils.Notify;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;
@@ -47,6 +48,8 @@ public final class ActiveState extends AbstractState {
             player.getInventory().clear();
             player.getInventory().addItem(mapItem);
         }
+
+        broadcastWithSound("<red>The game has started! <bold>Good luck!", Sound.ENTITY_ENDER_DRAGON_GROWL);
     }
 
     @Override
@@ -55,7 +58,7 @@ public final class ActiveState extends AbstractState {
 
     @Override
     public void onTimerEnd() {
-        disable();
+        getGameInstance().nextState();
     }
 
     @Override

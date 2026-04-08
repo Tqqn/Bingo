@@ -9,6 +9,8 @@ import dev.tqqn.modules.scoreboard.framework.SingleScoreboard;
 import dev.tqqn.utils.ChatUtils;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -32,6 +34,8 @@ public abstract class AbstractState implements Listener {
 
     private final Set<Listener> listeners;
 
+    @Getter private boolean hasEnded = false;
+
     public AbstractState(AbstractStateSeries instance, GameStates gameState, String name, boolean shouldCountBackwards) {
         this.gameInstance = instance;
         this.gameState = gameState;
@@ -46,6 +50,7 @@ public abstract class AbstractState implements Listener {
     public void tick() {
         if (freeze) return;
 
+
         if (!hasTimerEnded()) {
             int nextTimer = getTimer();
 
@@ -57,12 +62,12 @@ public abstract class AbstractState implements Listener {
 
             if (nextTimer <= 0) {
                 onTimerEnd();
+                return;
             }
 
             timer = nextTimer;
+            onTick();
         }
-
-        onTick();
     }
 
     public abstract void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event);
@@ -73,16 +78,18 @@ public abstract class AbstractState implements Listener {
 
     public void enable() {
         gameInstance.getGameModule().getLogger().log(Level.INFO, "State: " + name + " is enabling...");
-        onEnable();
         registerListeners();
         addScoreboardAllPlayers();
+        onEnable();
         gameInstance.getGameModule().getLogger().log(Level.INFO, "State: " + name + " finished enabling!");
     }
 
     public void disable() {
         gameInstance.getGameModule().getLogger().log(Level.INFO, "State: " + name + " is disabling...");
+        this.hasEnded = true;
         onDisable();
         unRegisterListeners();
+
         gameInstance.getGameModule().getLogger().log(Level.INFO, "State: " + name + " finished disabling!");
     }
 
@@ -142,5 +149,14 @@ public abstract class AbstractState implements Listener {
 
     public String getFormattedTimer() {
         return ChatUtils.convertSecondsToHMmSs(getTimer());
+    }
+
+    public void broadcastWithSound(String message, Sound sound) {
+        broadcast(message);
+        Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player.getLocation(), sound, 1, 1));
+    }
+
+    public void broadcast(String message) {
+        Bukkit.broadcast(ChatUtils.format(message));
     }
 }

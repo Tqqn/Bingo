@@ -27,7 +27,7 @@ public abstract class AbstractStateSeries extends GameInstance {
             getGameModule().getLogger().log(Level.SEVERE, "GameState-Series not enabled. No valid states.");
             return;
         }
-        this.currentState = new WeakReference<>(states.get(0));
+        this.currentState = new WeakReference<>(states.getFirst());
         this.runTaskTimer(getGameModule().getPlugin(), 0L, 20L);
         onEnable();
         this.currentState.get().enable();
@@ -45,6 +45,8 @@ public abstract class AbstractStateSeries extends GameInstance {
             disable();
             return;
         }
+
+        if (possibleCurrentState.isHasEnded()) return;
 
         possibleCurrentState.tick();
     }

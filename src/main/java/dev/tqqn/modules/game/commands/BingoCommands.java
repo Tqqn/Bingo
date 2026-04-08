@@ -5,6 +5,7 @@ import co.aikar.commands.annotation.*;
 import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.game.framework.GameStates;
 import dev.tqqn.modules.game.framework.states.abstraction.AbstractState;
+import dev.tqqn.modules.game.framework.states.lobby.LobbyState;
 import dev.tqqn.utils.ChatUtils;
 import dev.tqqn.utils.Notify;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public final class BingoCommands extends BaseCommand {
             player.sendMessage(ChatUtils.format(" "));
             Notify.INFO.chat(player, "---- <primary>Admin Commands <default>----");
             Notify.LIST.chat(player, "<hover:show_text:'<#9eb6ff>| Force start a bingo game.'>/bingo admin forcestart");
-            Notify.LIST.chat(player, "<hover:show_text:'<#9eb6ff>| Freeze an active game. <yellow><bold>NOT YET IMPLEMENTED.'>/bingo admin freeze");
+            Notify.LIST.chat(player, "<hover:show_text:'<#9eb6ff>| Freeze an active game.'>/bingo admin freeze");
             player.sendMessage(ChatUtils.format("<#ffdd94>Hover a command to see what it does."));
         }
     }
@@ -38,7 +39,7 @@ public final class BingoCommands extends BaseCommand {
 
         @Subcommand("nextstate")
         @CommandPermission("bingo.command.admin.nextstate")
-        @Description("Force start a game.")
+        @Description("Cycle to the next game state.")
         public void nextState(Player player) {
             final AbstractState currentState = gameModule.getCurrentInstance().getCurrentState().get();
 
@@ -55,7 +56,7 @@ public final class BingoCommands extends BaseCommand {
             }
 
             gameModule.getCurrentInstance().nextState();
-            Notify.SUCCESS.chat(player, "You forced the game to the next state.");
+            Notify.SUCCESS.chat(player, "You cycled the game to the " + nextState.getGameState().name() + " state.");
         }
 
         @Subcommand("previousstate")
@@ -77,7 +78,7 @@ public final class BingoCommands extends BaseCommand {
             }
 
             gameModule.getCurrentInstance().previousState();
-            Notify.SUCCESS.chat(player, "You forced the game to the previous state.");
+            Notify.SUCCESS.chat(player, "You cycled the game backwards to the " + previousState.getGameState().name() + " state.");
         }
 
         @Subcommand("freeze")
@@ -85,6 +86,18 @@ public final class BingoCommands extends BaseCommand {
         @Description("Freeze the current state.")
         public void freeze(Player player, boolean value) {
             gameModule.getCurrentInstance().freeze(value);
+        }
+
+        @Subcommand("quick-start")
+        @CommandPermission("bingo.command.admin.quick-start")
+        @Description("Quick start the current game")
+        public void quickStart(Player player) {
+            if (!(gameModule.getCurrentInstance().getCurrentState().get() instanceof LobbyState lobbyState)) {
+                Notify.ERROR.chat(player, "The current state does not support quick start.");
+                return;
+            }
+            lobbyState.quickStart();
+            Notify.SUCCESS.chat(player, "You quick started the game.");
         }
     }
 }
