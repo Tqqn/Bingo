@@ -28,6 +28,8 @@ public final class BingoCommands extends BaseCommand {
             Notify.INFO.chat(player, "---- <primary>Admin Commands <default>----");
             Notify.LIST.chat(player, "<hover:show_text:'<#9eb6ff>| Force start a bingo game.'>/bingo admin forcestart");
             Notify.LIST.chat(player, "<hover:show_text:'<#9eb6ff>| Freeze an active game.'>/bingo admin freeze");
+            Notify.LIST.chat(player, "<hover:show_text:'<#9eb6ff>| Cycle to the next stage.'>/bingo admin nextstate");
+            Notify.LIST.chat(player, "<hover:show_text:'<#9eb6ff>| Cycle to the previous stage.'>/bingo admin previousstate");
             player.sendMessage(ChatUtils.format("<#ffdd94>Hover a command to see what it does."));
         }
     }

@@ -4,6 +4,7 @@ import dev.tqqn.modules.database.framework.events.PlayerModelJoinEvent;
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.game.framework.GameStates;
+import dev.tqqn.modules.game.framework.roles.Roles;
 import dev.tqqn.modules.game.framework.states.GameStateSeries;
 import dev.tqqn.modules.game.framework.states.abstraction.AbstractState;
 import dev.tqqn.modules.game.framework.states.lobby.listeners.LobbyListeners;
@@ -63,6 +64,17 @@ public final class LobbyState extends AbstractState {
 
     @Override
     public void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event) {
+        if (event.isCancelled()) return;
+        final AbstractState currentState = getGameInstance().getCurrentState().get();
+        if (currentState == null) return;
+
+        currentState.setScoreboard(event.getPlayerModel().getPlayer());
+
+        if (currentState.getGameState() != GameStates.LOBBY) {
+            getGameInstance().addPlayer(event.getPlayerModel().getPlayer(), Roles.SPECTATOR);
+        }
+
+        getGameInstance().addPlayer(event.getPlayerModel().getPlayer(), Roles.ALIVE);
         broadcast("<yellow>[<aqua>" + (getGameInstance().getInGamePlayers().size()+1) + "<yellow>/<aqua>" + GameModule.GAME_MAX_PLAYERS + "<yellow>] <green>+ " + playerModel.getName());
     }
 
