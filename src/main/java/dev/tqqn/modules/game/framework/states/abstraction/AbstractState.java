@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 
-public abstract class AbstractState implements Listener {
+public abstract class AbstractState {
 
     @Getter private final AbstractStateSeries gameInstance;
     @Getter private final GameStates gameState;
