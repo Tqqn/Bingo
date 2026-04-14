@@ -87,11 +87,11 @@ public abstract class AbstractStateSeries extends GameInstance {
         return states.get(position);
     }
 
-    public void freeze(boolean value) {
+    public void freeze() {
         final AbstractState state = currentState.get();
         if (state == null) return;
 
-        state.freeze = value;
+        state.freeze = !state.freeze;
         onFreeze();
     }
 

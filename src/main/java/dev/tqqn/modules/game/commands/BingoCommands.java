@@ -86,8 +86,8 @@ public final class BingoCommands extends BaseCommand {
         @Subcommand("freeze")
         @CommandPermission("bingo.command.admin.freeze")
         @Description("Freeze the current state.")
-        public void freeze(Player player, boolean value) {
-            gameModule.getCurrentInstance().freeze(value);
+        public void freeze(Player player) {
+            gameModule.getCurrentInstance().freeze();
         }
 
         @Subcommand("quick-start")
