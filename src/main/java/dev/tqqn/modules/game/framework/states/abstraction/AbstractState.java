@@ -78,9 +78,9 @@ public abstract class AbstractState {
 
     public void enable() {
         gameInstance.getGameModule().getLogger().log(Level.INFO, "State: " + name + " is enabling...");
-        registerListeners();
         addScoreboardAllPlayers();
         onEnable();
+        registerListeners();
         gameInstance.getGameModule().getLogger().log(Level.INFO, "State: " + name + " finished enabling!");
     }
 

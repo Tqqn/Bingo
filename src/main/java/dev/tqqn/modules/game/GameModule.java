@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 
 public final class GameModule extends AbstractModule {
@@ -44,7 +45,7 @@ public final class GameModule extends AbstractModule {
     @Override
     protected void onEnable() {
         Bukkit.getScheduler().runTask(getPlugin(), () -> {
-            gameWorld = createNewWorld();
+            gameWorld = createNewWorld().join();
             createWorldBorder(gameWorld, 10000);
         });
 
@@ -83,12 +84,12 @@ public final class GameModule extends AbstractModule {
         world.getWorldBorder().setDamageAmount(2);
     }
 
-    public World createNewWorld() {
+    public CompletableFuture<World> createNewWorld() {
         final World world = Bukkit.createWorld(new WorldCreator("bingo_world"));
         if (world == null) {
             throw new RuntimeException("Failed to create world 'bingo_world'");
         }
 
-        return world;
+        return CompletableFuture.supplyAsync(() -> world);
     }
 }

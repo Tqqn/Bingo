@@ -25,8 +25,6 @@ public final class BingoProgress {
         for (BingoTask task : shuffledCopy) {
             tasks.put(task, providePlacement());
         }
-
-        System.out.println("Tasks size: " + tasks.size());
     }
 
     public boolean hasBingo(PlayerModel playerModel) {
@@ -75,9 +73,7 @@ public final class BingoProgress {
         }
 
         for (int column = 0; column < 5; column++) {
-            for (int row = 0; row < 5; row++) {
-                System.out.println(column + " " + row);
-                if (!usedPlacement[row][column]) {
+            for (int row = 0; row < 5; row++) {if (!usedPlacement[row][column]) {
                     return new BingoPlacement(column, row);
                 }
             }
