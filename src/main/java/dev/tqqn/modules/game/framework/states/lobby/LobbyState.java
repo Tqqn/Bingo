@@ -1,5 +1,6 @@
 package dev.tqqn.modules.game.framework.states.lobby;
 
+import dev.tqqn.modules.database.framework.events.PlayerModelJoinEvent;
 import dev.tqqn.modules.database.framework.events.PlayerModelPreJoinEvent;
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.modules.game.GameModule;
@@ -62,21 +63,23 @@ public final class LobbyState extends AbstractState {
     }
 
     @Override
-    public void onPlayerPreJoin(PlayerModel playerModel, PlayerModelPreJoinEvent event) {
-        if (event.isCancelled()) return;
+    public void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event) {
         final AbstractState currentState = getGameInstance().getCurrentState().get();
         if (currentState == null) return;
-
-        if (!getGameInstance().getGameModule().isReadyToJoin()) {
-            event.setCancelled(true);
-            event.setKickMessage(ChatUtils.format("<red>The game is not ready to join yet. Please try again later."));
-            return;
-        }
-
         currentState.setScoreboard(event.getPlayerModel().getPlayer());
 
         getGameInstance().addPlayer(event.getPlayerModel().getPlayer(), Roles.ALIVE);
         broadcast("<yellow>[<aqua>" + (getGameInstance().getInGamePlayers().size()) + "<yellow>/<aqua>" + GameModule.GAME_MAX_PLAYERS + "<yellow>] <green>+ " + playerModel.getName());
+    }
+
+    @Override
+    public void onPlayerPreJoin(PlayerModel playerModel, PlayerModelPreJoinEvent event) {
+        if (event.isCancelled()) return;
+
+        if (!getGameInstance().getGameModule().isReadyToJoin()) {
+            event.setCancelled(true);
+            event.setKickMessage(ChatUtils.format("<red>The game is not ready to join yet. Please try again later."));
+        }
     }
 
     @Override
