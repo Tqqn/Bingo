@@ -2,6 +2,7 @@ package dev.tqqn.modules.database.listeners;
 
 import dev.tqqn.modules.database.DatabaseModule;
 import dev.tqqn.modules.database.framework.events.PlayerModelJoinEvent;
+import dev.tqqn.modules.database.framework.events.PlayerModelPreJoinEvent;
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.utils.ChatUtils;
 import lombok.RequiredArgsConstructor;
@@ -43,9 +44,24 @@ public final class PlayerLoadListener implements Listener {
     public void onPlayerLogin(PlayerLoginEvent event) {
         final Player player = event.getPlayer();
         PlayerModel playerModel = joiningPlayers.get(player.getUniqueId());
+
+        final PlayerModelPreJoinEvent playerModelPreJoinEvent = new PlayerModelPreJoinEvent(playerModel);
+        Bukkit.getPluginManager().callEvent(playerModelPreJoinEvent);
+        if (playerModelPreJoinEvent.isCancelled()) {
+            playerModel.save();
+            joiningPlayers.remove(player.getUniqueId());
+            if (playerModelPreJoinEvent.getKickMessage() == null) {
+                player.kick(ChatUtils.format("<red>Your login has been disallowed."));
+                return;
+            }
+            player.kick(playerModelPreJoinEvent.getKickMessage());
+            return;
+        }
+
         if (playerModel == null) {
             event.kickMessage(ChatUtils.format("<red>Your data could not be loaded. Please try again later. If this issue persist please contact a staff-member."));
             event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
+            joiningPlayers.remove(player.getUniqueId());
         }
     }
 
@@ -54,25 +70,16 @@ public final class PlayerLoadListener implements Listener {
         event.joinMessage(Component.empty());
         final Player player = event.getPlayer();
         PlayerModel playerModel = joiningPlayers.remove(player.getUniqueId());
-
-        PlayerModelJoinEvent playerModelJoinEvent = new PlayerModelJoinEvent(playerModel);
-        Bukkit.getPluginManager().callEvent(playerModelJoinEvent);
-        if (playerModelJoinEvent.isCancelled()) {
-            playerModel.save();
-            if (playerModelJoinEvent.getKickMessage() == null) {
-                player.kick(ChatUtils.format("<red>Your login has been disallowed."));
-                return;
-            }
-            player.kick(playerModelJoinEvent.getKickMessage());
-        }
+        playerModel.initialize();
 
         PlayerModel.cache(playerModel);
+
+        final PlayerModelJoinEvent playerModelJoinEvent = new PlayerModelJoinEvent(playerModel);
+        Bukkit.getPluginManager().callEvent(playerModelJoinEvent);
 
         if (!playerModel.getName().equalsIgnoreCase(player.getName())) {
             playerModel.setName(player.getName());
         }
-
-        playerModel.initialize();
     }
 
     @EventHandler
