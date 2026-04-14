@@ -1,6 +1,7 @@
 package dev.tqqn.modules.game.framework.listeners;
 
 import dev.tqqn.modules.database.framework.events.PlayerModelJoinEvent;
+import dev.tqqn.modules.database.framework.events.PlayerModelPreJoinEvent;
 import dev.tqqn.modules.game.GameModule;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,5 +17,10 @@ public final class PlayerJoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerModelJoinEvent event) {
         gameModule.getCurrentInstance().onPlayerJoin(event.getPlayerModel(), event);
+    }
+
+    @EventHandler
+    public void onPreJoin(PlayerModelPreJoinEvent event) {
+        gameModule.getCurrentInstance().onPlayerPreJoin(event.getPlayerModel(), event);
     }
 }

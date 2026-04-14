@@ -1,8 +1,8 @@
 package dev.tqqn.modules.game.framework.states.abstraction;
 
 import dev.tqqn.modules.database.framework.events.PlayerModelJoinEvent;
+import dev.tqqn.modules.database.framework.events.PlayerModelPreJoinEvent;
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
-import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.GameStates;
 import dev.tqqn.modules.game.framework.data.TempPlayerData;
 import dev.tqqn.modules.scoreboard.framework.SingleScoreboard;
@@ -70,7 +70,13 @@ public abstract class AbstractState {
         }
     }
 
-    public abstract void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event);
+    public void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event) {
+        // empty to override if needed.
+    }
+
+    public void onPlayerPreJoin(PlayerModel playerModel, PlayerModelPreJoinEvent event) {
+        // empty to override if needed.
+    }
 
     public abstract void onTick();
 
@@ -127,10 +133,14 @@ public abstract class AbstractState {
         }
     }
 
+    protected <O extends SingleScoreboard> void applyScoreboard(O scoreboard, PlayerModel playerModel) {
+        playerModel.getTempPlayerData().setScoreboard(scoreboard);
+    }
+
     protected  <O extends SingleScoreboard> void applyScoreboard(O scoreboard, Player player) {
         final PlayerModel playerModel = PlayerModel.from(player);
         if (playerModel == null) return;
-        playerModel.getTempPlayerData().setScoreboard(scoreboard);
+        applyScoreboard(scoreboard, playerModel);
     }
 
     protected void removeScoreboard(Class<? extends SingleScoreboard> scoreboardClass, Player player) {

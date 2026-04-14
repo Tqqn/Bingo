@@ -1,15 +1,13 @@
 package dev.tqqn.modules.game.framework.abstraction;
 
 import dev.tqqn.modules.database.framework.events.PlayerModelJoinEvent;
+import dev.tqqn.modules.database.framework.events.PlayerModelPreJoinEvent;
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.game.framework.roles.Roles;
-import dev.tqqn.modules.game.framework.states.GameStateSeries;
 import dev.tqqn.modules.game.framework.states.abstraction.AbstractState;
-import dev.tqqn.modules.game.framework.states.abstraction.AbstractStateSeries;
 import lombok.Getter;
 import org.bukkit.entity.Player;
-import org.bukkit.event.world.GenericGameEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.ref.WeakReference;
@@ -44,5 +42,11 @@ public abstract class GameInstance extends BukkitRunnable {
 
     public abstract boolean canStart();
 
-    public abstract void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event);
+    public void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event) {
+        getCurrentState().get().onPlayerJoin(playerModel, event);
+    }
+
+    public void onPlayerPreJoin(PlayerModel playerModel, PlayerModelPreJoinEvent event) {
+        getCurrentState().get().onPlayerPreJoin(playerModel, event);
+    }
 }

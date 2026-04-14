@@ -1,6 +1,6 @@
 package dev.tqqn.modules.game.framework.states.lobby;
 
-import dev.tqqn.modules.database.framework.events.PlayerModelJoinEvent;
+import dev.tqqn.modules.database.framework.events.PlayerModelPreJoinEvent;
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.game.framework.GameStates;
@@ -11,7 +11,6 @@ import dev.tqqn.modules.game.framework.states.lobby.listeners.LobbyListeners;
 import dev.tqqn.modules.scoreboard.boards.LobbyScoreboard;
 import dev.tqqn.utils.ChatUtils;
 import dev.tqqn.utils.NMSUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
@@ -63,7 +62,7 @@ public final class LobbyState extends AbstractState {
     }
 
     @Override
-    public void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event) {
+    public void onPlayerPreJoin(PlayerModel playerModel, PlayerModelPreJoinEvent event) {
         if (event.isCancelled()) return;
         final AbstractState currentState = getGameInstance().getCurrentState().get();
         if (currentState == null) return;
@@ -75,10 +74,6 @@ public final class LobbyState extends AbstractState {
         }
 
         currentState.setScoreboard(event.getPlayerModel().getPlayer());
-
-        if (currentState.getGameState() != GameStates.LOBBY) {
-            getGameInstance().addPlayer(event.getPlayerModel().getPlayer(), Roles.SPECTATOR);
-        }
 
         getGameInstance().addPlayer(event.getPlayerModel().getPlayer(), Roles.ALIVE);
         broadcast("<yellow>[<aqua>" + (getGameInstance().getInGamePlayers().size()) + "<yellow>/<aqua>" + GameModule.GAME_MAX_PLAYERS + "<yellow>] <green>+ " + playerModel.getName());
