@@ -1,4 +1,4 @@
-# Bingo Game Project
+# Bingo Game Project - !!!!WIP!!!!
 
 Welcome to the Bingo Game Project! This plugin allows players to engage in a fun and interactive bingo game within Minecraft. Players can use a handheld map to track their bingo progress and complete tasks.
 
