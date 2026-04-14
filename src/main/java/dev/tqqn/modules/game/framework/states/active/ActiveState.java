@@ -74,11 +74,6 @@ public final class ActiveState extends AbstractState {
     }
 
     @Override
-    public void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event) {
-        event.setCancelled(true);
-    }
-
-    @Override
     public GameStateSeries getGameInstance() {
         return (GameStateSeries) super.getGameInstance();
     }

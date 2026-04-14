@@ -18,11 +18,6 @@ public final class EndState extends AbstractState {
     }
 
     @Override
-    public void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event) {
-        event.setCancelled(true);
-    }
-
-    @Override
     public void onTick() {
 
     }
