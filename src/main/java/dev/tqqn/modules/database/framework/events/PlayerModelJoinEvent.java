@@ -2,10 +2,13 @@ package dev.tqqn.modules.database.framework.events;
 
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import lombok.Getter;
+import lombok.Setter;
+import net.kyori.adventure.text.Component;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public final class PlayerModelJoinEvent extends Event implements Cancellable {
 
@@ -14,6 +17,11 @@ public final class PlayerModelJoinEvent extends Event implements Cancellable {
     private final PlayerModel playerModel;
 
     private boolean cancelled = false;
+
+    @Setter
+    @Getter
+    @Nullable
+    private Component kickMessage = null;
 
     public PlayerModelJoinEvent(PlayerModel playerModel) {
         this.playerModel = playerModel;

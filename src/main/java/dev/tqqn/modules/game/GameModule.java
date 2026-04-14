@@ -33,6 +33,8 @@ public final class GameModule extends AbstractModule {
 
     private World gameWorld;
 
+    @Getter private boolean readyToJoin = false;
+
     public static int GAME_MIN_PLAYERS_TO_START;
     public static int GAME_MAX_PLAYERS;
 
@@ -45,8 +47,13 @@ public final class GameModule extends AbstractModule {
     @Override
     protected void onEnable() {
         Bukkit.getScheduler().runTask(getPlugin(), () -> {
-            gameWorld = createNewWorld().join();
-            createWorldBorder(gameWorld, 10000);
+            final CompletableFuture<World> future = createNewWorld();
+            gameWorld = future.join();
+            future.whenComplete((world, throwable) -> {
+                createWorldBorder(gameWorld, 10000);
+                readyToJoin = true;
+            });
+            System.out.println("World is ready: " + readyToJoin);
         });
 
         GAME_MIN_PLAYERS_TO_START = BingoMain.getInstance().getModuleManager().getModule(DatabaseModule.class).getDefaultConfig().getNeededPlayersToStart();

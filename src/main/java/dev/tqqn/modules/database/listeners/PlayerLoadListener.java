@@ -54,6 +54,18 @@ public final class PlayerLoadListener implements Listener {
         event.joinMessage(Component.empty());
         final Player player = event.getPlayer();
         PlayerModel playerModel = joiningPlayers.remove(player.getUniqueId());
+
+        PlayerModelJoinEvent playerModelJoinEvent = new PlayerModelJoinEvent(playerModel);
+        Bukkit.getPluginManager().callEvent(playerModelJoinEvent);
+        if (playerModelJoinEvent.isCancelled()) {
+            playerModel.save();
+            if (playerModelJoinEvent.getKickMessage() == null) {
+                player.kick(ChatUtils.format("<red>Your login has been disallowed."));
+                return;
+            }
+            player.kick(playerModelJoinEvent.getKickMessage());
+        }
+
         PlayerModel.cache(playerModel);
 
         if (!playerModel.getName().equalsIgnoreCase(player.getName())) {
@@ -61,13 +73,6 @@ public final class PlayerLoadListener implements Listener {
         }
 
         playerModel.initialize();
-
-        PlayerModelJoinEvent playerModelJoinEvent = new PlayerModelJoinEvent(playerModel);
-        Bukkit.getPluginManager().callEvent(playerModelJoinEvent);
-        if (playerModelJoinEvent.isCancelled()) {
-            playerModel.save();
-            player.kick(ChatUtils.format("<red>Your login has been disallowed."));
-        }
     }
 
     @EventHandler

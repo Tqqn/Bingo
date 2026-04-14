@@ -68,6 +68,12 @@ public final class LobbyState extends AbstractState {
         final AbstractState currentState = getGameInstance().getCurrentState().get();
         if (currentState == null) return;
 
+        if (!getGameInstance().getGameModule().isReadyToJoin()) {
+            event.setCancelled(true);
+            event.setKickMessage(ChatUtils.format("<red>The game is not ready to join yet. Please try again later."));
+            return;
+        }
+
         currentState.setScoreboard(event.getPlayerModel().getPlayer());
 
         if (currentState.getGameState() != GameStates.LOBBY) {
@@ -75,7 +81,7 @@ public final class LobbyState extends AbstractState {
         }
 
         getGameInstance().addPlayer(event.getPlayerModel().getPlayer(), Roles.ALIVE);
-        broadcast("<yellow>[<aqua>" + (getGameInstance().getInGamePlayers().size()+1) + "<yellow>/<aqua>" + GameModule.GAME_MAX_PLAYERS + "<yellow>] <green>+ " + playerModel.getName());
+        broadcast("<yellow>[<aqua>" + (getGameInstance().getInGamePlayers().size()) + "<yellow>/<aqua>" + GameModule.GAME_MAX_PLAYERS + "<yellow>] <green>+ " + playerModel.getName());
     }
 
     @Override
