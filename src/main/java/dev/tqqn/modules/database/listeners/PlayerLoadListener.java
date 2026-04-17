@@ -11,6 +11,7 @@ import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -28,7 +29,7 @@ public final class PlayerLoadListener implements Listener {
 
     private final DatabaseModule databaseModule;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPreLogin(AsyncPlayerPreLoginEvent event) {
         if (isPlayerLoaded(event.getUniqueId())) return;
         PlayerModel playerModel = databaseModule.getMongoDriver().read(PlayerModel.class, event.getUniqueId().toString());
@@ -40,7 +41,7 @@ public final class PlayerLoadListener implements Listener {
         joiningPlayers.put(playerModel.getKey(), playerModel);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerLogin(PlayerLoginEvent event) {
         final Player player = event.getPlayer();
         PlayerModel playerModel = joiningPlayers.get(player.getUniqueId());
@@ -65,7 +66,7 @@ public final class PlayerLoadListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.joinMessage(Component.empty());
         final Player player = event.getPlayer();
