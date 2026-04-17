@@ -6,6 +6,7 @@ import dev.tqqn.modules.database.framework.config.BingoTaskConfig;
 import dev.tqqn.modules.database.framework.objects.DefaultConfig;
 import dev.tqqn.modules.database.framework.objects.MongoDriver;
 import dev.tqqn.modules.database.listeners.PlayerLoadListener;
+import dev.tqqn.modules.database.listeners.PlayerQuitListener;
 import lombok.Getter;
 
 import java.util.logging.Level;
@@ -40,5 +41,6 @@ public final class DatabaseModule extends AbstractModule {
     @Override
     protected void onEnable() {
         register(new PlayerLoadListener(this));
+        register(new PlayerQuitListener());
     }
 }

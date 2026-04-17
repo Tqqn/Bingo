@@ -82,13 +82,6 @@ public final class PlayerLoadListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
-        final PlayerModel playerModel = PlayerModel.from(event.getPlayer());
-        if (playerModel == null) return;
-        playerModel.cleanUp();
-    }
-
     private boolean isPlayerLoaded(UUID uuid) {
         return PlayerModel.from(uuid) != null;
     }
