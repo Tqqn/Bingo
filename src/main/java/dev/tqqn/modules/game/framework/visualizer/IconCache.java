@@ -1,4 +1,4 @@
-package dev.tqqn.modules.game.framework.map;
+package dev.tqqn.modules.game.framework.visualizer;
 
 import dev.tqqn.BingoMain;
 import lombok.RequiredArgsConstructor;

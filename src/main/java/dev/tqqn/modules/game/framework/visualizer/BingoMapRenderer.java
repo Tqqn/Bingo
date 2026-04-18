@@ -1,4 +1,4 @@
-package dev.tqqn.modules.game.framework.map;
+package dev.tqqn.modules.game.framework.visualizer;
 
 import dev.tqqn.modules.game.framework.objects.BingoPlacement;
 import dev.tqqn.modules.game.framework.objects.BingoTask;
