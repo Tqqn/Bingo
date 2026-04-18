@@ -12,7 +12,9 @@ import dev.tqqn.modules.game.framework.states.lobby.listeners.LobbyListeners;
 import dev.tqqn.modules.scoreboard.boards.LobbyScoreboard;
 import dev.tqqn.utils.ChatUtils;
 import dev.tqqn.utils.NMSUtils;
+import org.bukkit.GameMode;
 import org.bukkit.Sound;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 
 public final class LobbyState extends AbstractState {
@@ -29,8 +31,9 @@ public final class LobbyState extends AbstractState {
     public void onTick() {
         if (getGameInstance().canStart()) {
             if (!isStartCountdown) {
-                setTimer(240);
+                setTimer(60);
                 isStartCountdown = true;
+                broadcastWithSound("<green>Enough players have joined, game starting in <red><bold>" + getTimer() + "s<reset><green>.", Sound.ENTITY_PARROT_IMITATE_BLAZE);
             }
 
             if (timer < 31) {
@@ -39,7 +42,8 @@ public final class LobbyState extends AbstractState {
 
         } else if (isStartCountdown) {
             isStartCountdown = false;
-            setTimer(10000);
+            setTimer(180);
+            broadcastWithSound("<red>Not enough players in this game. Setting timer to " + (getTimer() / 60) + "minutes", Sound.BLOCK_BAMBOO_WOOD_BUTTON_CLICK_OFF);
         }
     }
 
@@ -70,13 +74,19 @@ public final class LobbyState extends AbstractState {
 
         getGameInstance().addPlayer(event.getPlayerModel().getPlayer(), Roles.ALIVE);
         broadcast("<yellow>[<aqua>" + (getGameInstance().getInGamePlayers().size()) + "<yellow>/<aqua>" + GameModule.GAME_MAX_PLAYERS + "<yellow>] <green>+ " + playerModel.getName());
+        final Player player = playerModel.getPlayer();
+        if (player == null) return;
+        player.getInventory().clear();
+        player.getActivePotionEffects().clear();
+        player.setHealth(player.getAttribute(Attribute.MAX_HEALTH).getBaseValue());
+        player.setGameMode(GameMode.CREATIVE);
     }
 
     @Override
     public void onPlayerPreJoin(PlayerModel playerModel, PlayerModelPreJoinEvent event) {
         if (event.isCancelled()) return;
 
-        if (!getGameInstance().getGameModule().isReadyToJoin()) {
+        if (!getGameInstance().getGameModule().getArena().isReadyToJoin()) {
             event.setCancelled(true);
             event.setKickMessage(ChatUtils.format("<red>The game is not ready to join yet. Please try again later."));
         }

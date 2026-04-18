@@ -7,18 +7,19 @@ import dev.tqqn.modules.database.DatabaseModule;
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.modules.game.commands.BingoCommands;
 import dev.tqqn.modules.game.framework.listeners.PlayerJoinListener;
+import dev.tqqn.modules.game.framework.listeners.PlayerQuitListener;
+import dev.tqqn.modules.game.framework.map.Arena;
+import dev.tqqn.modules.game.framework.map.schematic.SchematicProvider;
 import dev.tqqn.modules.game.framework.objects.BingoTask;
 import dev.tqqn.modules.game.framework.states.GameStateSeries;
 import dev.tqqn.modules.game.framework.team.TeamProvider;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 
 public final class GameModule extends AbstractModule {
@@ -31,9 +32,9 @@ public final class GameModule extends AbstractModule {
 
     private final TeamProvider teamProvider;
 
-    private World gameWorld;
+    @Getter private Arena arena;
 
-    @Getter private boolean readyToJoin = false;
+    @Getter private final SchematicProvider schematicProvider = new SchematicProvider(this);
 
     public static int GAME_MIN_PLAYERS_TO_START;
     public static int GAME_MAX_PLAYERS;
@@ -47,13 +48,8 @@ public final class GameModule extends AbstractModule {
     @Override
     protected void onEnable() {
         Bukkit.getScheduler().runTask(getPlugin(), () -> {
-            final CompletableFuture<World> future = createNewWorld();
-            gameWorld = future.join();
-            future.whenComplete((world, throwable) -> {
-                createWorldBorder(gameWorld, 10000);
-                readyToJoin = true;
-            });
-            System.out.println("World is ready: " + readyToJoin);
+            arena = new Arena(this, "bingo");
+            arena.setUp();
         });
 
         GAME_MIN_PLAYERS_TO_START = BingoMain.getInstance().getModuleManager().getModule(DatabaseModule.class).getDefaultConfig().getNeededPlayersToStart();
@@ -63,6 +59,7 @@ public final class GameModule extends AbstractModule {
         this.currentInstance = new GameStateSeries(this, provideNewInstanceId());
         this.currentInstance.start();
         register(new PlayerJoinListener(this));
+        register(new PlayerQuitListener(this));
         register(new BingoCommands(this));
     }
 
@@ -83,20 +80,5 @@ public final class GameModule extends AbstractModule {
 
     private int provideNewInstanceId() {
         return ThreadLocalRandom.current().nextInt(1, 1000);
-    }
-
-    public void createWorldBorder(World world, int size) {
-        world.getWorldBorder().setCenter(0, 0);
-        world.getWorldBorder().setSize(size);
-        world.getWorldBorder().setDamageAmount(2);
-    }
-
-    public CompletableFuture<World> createNewWorld() {
-        final World world = Bukkit.createWorld(new WorldCreator("bingo_world"));
-        if (world == null) {
-            throw new RuntimeException("Failed to create world 'bingo_world'");
-        }
-
-        return CompletableFuture.supplyAsync(() -> world);
     }
 }

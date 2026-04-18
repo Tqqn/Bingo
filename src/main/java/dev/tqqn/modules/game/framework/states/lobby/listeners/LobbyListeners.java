@@ -1,7 +1,11 @@
 package dev.tqqn.modules.game.framework.states.lobby.listeners;
 
+import dev.tqqn.modules.database.framework.events.PlayerModelJoinEvent;
 import dev.tqqn.modules.game.GameModule;
+import dev.tqqn.modules.game.framework.map.Arena;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -28,5 +32,13 @@ public final class LobbyListeners implements Listener {
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         event.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onJoin(PlayerModelJoinEvent event) {
+        final Arena arena = gameModule.getArena();
+        final Player player = event.getPlayerModel().getPlayer();
+        if (player == null) return;
+        player.teleport(arena.getSpawnLocation());
     }
 }

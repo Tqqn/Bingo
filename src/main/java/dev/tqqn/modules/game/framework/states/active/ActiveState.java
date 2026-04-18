@@ -1,11 +1,9 @@
 package dev.tqqn.modules.game.framework.states.active;
 
-import dev.tqqn.modules.database.framework.events.PlayerModelJoinEvent;
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
-import dev.tqqn.modules.game.framework.abstraction.GameInstance;
 import dev.tqqn.modules.game.framework.GameStates;
-import dev.tqqn.modules.game.framework.map.BingoMapRenderer;
-import dev.tqqn.modules.game.framework.map.IconCache;
+import dev.tqqn.modules.game.framework.visualizer.BingoMapRenderer;
+import dev.tqqn.modules.game.framework.visualizer.IconCache;
 import dev.tqqn.modules.game.framework.objects.BingoTask;
 import dev.tqqn.modules.game.framework.states.GameStateSeries;
 import dev.tqqn.modules.game.framework.states.abstraction.AbstractState;
