@@ -102,6 +102,7 @@ public final class ItemBuilder {
             return this;
         }
         currentLore.add(ChatUtils.format(lore));
+        itemMeta.lore(currentLore);
         return this;
     }
 

@@ -70,7 +70,7 @@ public abstract class Menu implements InventoryHolder {
      * Handles the closing of the menu by running the close 2 ticks later.
      */
     public void handleClose() {
-        Bukkit.getScheduler().runTaskLater(BingoMain.getInstance(), () -> viewer.closeInventory(), 2L);
+        Bukkit.getScheduler().runTaskLater(BingoMain.getInstance(), () -> viewer.closeInventory(), 1L);
         onClose(viewer);
     }
 

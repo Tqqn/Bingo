@@ -2,6 +2,7 @@ package dev.tqqn.modules.perks.framework.menu;
 
 import dev.tqqn.BingoMain;
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
+import dev.tqqn.modules.game.framework.data.TempPlayerData;
 import dev.tqqn.modules.menu.framework.objects.Menu;
 import dev.tqqn.modules.menu.framework.objects.MenuButton;
 import dev.tqqn.modules.perks.PerkModule;
@@ -18,7 +19,7 @@ public final class PerkSelectorMenu extends Menu {
     private final PlayerModel playerModel;
 
     public PerkSelectorMenu(Player viewer) {
-        super("<red>Perk Selector", 3*9, viewer);
+        super("<red>Perk Selector", 1, viewer);
         this.playerModel = PlayerModel.from(viewer);
     }
 
@@ -40,7 +41,15 @@ public final class PerkSelectorMenu extends Menu {
 
     private MenuButton getPerkButton(AbstractPerk abstractPerk) {
         final ItemBuilder itemBuilder = ItemBuilder.getBuilder(abstractPerk.getIcon());
-        final boolean hasPerkSelected = playerModel.getTempPlayerData().getSelectedPerk().equals(abstractPerk);
+        final TempPlayerData tempPlayerData = playerModel.getTempPlayerData();
+        boolean hasPerkSelected;
+
+        if (tempPlayerData.getSelectedPerk() != null) {
+            hasPerkSelected = playerModel.getTempPlayerData().getSelectedPerk().equals(abstractPerk);
+        } else {
+            hasPerkSelected = false;
+        }
+
         if (hasPerkSelected) {
             itemBuilder.addLore("<green>You already selected this perk.");
         } else {
@@ -50,8 +59,8 @@ public final class PerkSelectorMenu extends Menu {
         final MenuButton menuButton = new MenuButton(itemBuilder.build());
         menuButton.setClicker(player -> {
             if (hasPerkSelected) return;
-            playerModel.getTempPlayerData().updatePerk(abstractPerk, player.getUniqueId());
-            reload();
+            playerModel.getTempPlayerData().updatePerk(abstractPerk);
+            close();
         });
 
         return menuButton;
