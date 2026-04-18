@@ -1,7 +1,11 @@
 package dev.tqqn.modules.game.framework.data;
 
+import dev.tqqn.BingoMain;
+import dev.tqqn.modules.game.GameModule;
+import dev.tqqn.modules.game.framework.GameStates;
 import dev.tqqn.modules.game.framework.objects.BingoTask;
 import dev.tqqn.modules.game.framework.roles.Roles;
+import dev.tqqn.modules.game.framework.states.GameStateSeries;
 import dev.tqqn.modules.game.framework.team.GameTeam;
 import dev.tqqn.modules.perks.framework.AbstractPerk;
 import dev.tqqn.modules.scoreboard.framework.SingleScoreboard;
@@ -15,7 +19,7 @@ import java.util.UUID;
 public final class TempPlayerData {
 
     @Getter private final UUID uuid;
-    @Getter private AbstractPerk selectedPerk;
+    @Getter @Setter private AbstractPerk selectedPerk;
     @Getter @Setter private SingleScoreboard scoreboard;
     @Getter @Setter private GameTeam team = null;
 
@@ -28,11 +32,12 @@ public final class TempPlayerData {
         this.completedTasks = new ArrayList<>();
     }
 
-    public void updatePerk(AbstractPerk abstractPerk, UUID player) {
-        if (selectedPerk != null) selectedPerk.disablePlayer(player);
+    public void updatePerk(AbstractPerk abstractPerk) {
+        final AbstractPerk oldPerk = selectedPerk;
+        if (oldPerk != null) oldPerk.disablePlayer(uuid);
         selectedPerk = abstractPerk;
-        selectedPerk.enablePlayer(player);
     }
+
 
     public void completeTask(BingoTask task) {
         completedTasks.add(task);
