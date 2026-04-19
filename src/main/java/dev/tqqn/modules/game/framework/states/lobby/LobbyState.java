@@ -79,7 +79,7 @@ public final class LobbyState extends AbstractState {
         player.getInventory().clear();
         player.getActivePotionEffects().clear();
         player.setHealth(player.getAttribute(Attribute.MAX_HEALTH).getBaseValue());
-        player.setGameMode(GameMode.CREATIVE);
+        player.setGameMode(GameMode.SURVIVAL);
     }
 
     @Override

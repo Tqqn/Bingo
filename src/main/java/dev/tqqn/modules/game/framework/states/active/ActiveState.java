@@ -12,6 +12,7 @@ import dev.tqqn.modules.game.framework.states.active.listeners.ActiveListeners;
 import dev.tqqn.modules.scoreboard.boards.ActiveScoreboard;
 import dev.tqqn.utils.ChatUtils;
 import dev.tqqn.utils.Notify;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -19,10 +20,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.List;
 
 public final class ActiveState extends AbstractState {
 
     private BingoMapRenderer mapRenderer;
+
+    @Getter private ItemStack mapItem;
 
     public ActiveState(AbstractStateSeries instance) {
         super(instance, GameStates.ACTIVE, "Active", true);
@@ -33,18 +40,19 @@ public final class ActiveState extends AbstractState {
     public void onEnable() {
         setTimer(1200); // 15 min
 
-        final MapView mapView = Bukkit.createMap(Bukkit.getWorlds().get(0));
+        final MapView mapView = Bukkit.createMap(Bukkit.getWorlds().getFirst());
 
         this.mapRenderer = new BingoMapRenderer(this, new IconCache(getGameInstance().getGameModule().getPlugin()));
         mapView.getRenderers().clear();
         mapView.addRenderer(mapRenderer);
         mapView.setLocked(true);
         mapView.setTrackingPosition(false);
-        final ItemStack mapItem = getBingoMapItem(mapView);
+        mapItem = getBingoMapItem(mapView);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.getInventory().clear();
-            player.getInventory().addItem(mapItem);
+            player.getInventory().setItemInOffHand(mapItem.clone());
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 200, 100, true, false, false));
         }
 
         broadcastWithSound("<red>The game has started! <bold>Good luck!", Sound.ENTITY_ENDER_DRAGON_GROWL);
@@ -88,6 +96,7 @@ public final class ActiveState extends AbstractState {
         final MapMeta mapMeta = (MapMeta) mapItem.getItemMeta();
         mapMeta.displayName(ChatUtils.format("<red>Bingo Map"));
         mapMeta.setMapView(mapView);
+        mapMeta.lore(List.of(ChatUtils.format("<gray>Collect all tasks to win!")));
         mapItem.setItemMeta(mapMeta);
         return mapItem;
     }
