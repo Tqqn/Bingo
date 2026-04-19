@@ -48,6 +48,7 @@ public final class ActiveState extends AbstractState {
         }
 
         broadcastWithSound("<red>The game has started! <bold>Good luck!", Sound.ENTITY_ENDER_DRAGON_GROWL);
+        getGameInstance().getGameModule().getArena().removeSpawnBorder();
     }
 
     @Override

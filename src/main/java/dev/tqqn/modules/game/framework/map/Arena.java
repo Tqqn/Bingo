@@ -11,6 +11,7 @@ import org.bukkit.block.Block;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -27,6 +28,8 @@ public final class Arena {
 
     @Getter
     private Location spawnLocation;
+
+    private final List<Location> spawnBorderLocations = new ArrayList<>();
 
     public void setUp() {
         setUp(1000);
@@ -46,7 +49,11 @@ public final class Arena {
                        spawnLocation = null;
                        return;
                    }
-                   spawnLocation = locations.getFirst();
+                   spawnLocation = locations.getFirst().toCenterLocation();
+               });
+
+               provideSpawnBorderLocations(pastedLocations).whenComplete((locations, throwable2) -> {
+                   spawnBorderLocations.addAll(locations);
                });
             });
         });
@@ -65,6 +72,11 @@ public final class Arena {
         world.getWorldBorder().setCenter(0, 0);
         world.getWorldBorder().setSize(size);
         world.getWorldBorder().setDamageAmount(2);
+    }
+
+    public void removeSpawnBorder() {
+        spawnBorderLocations.forEach(location -> location.getBlock().setType(Material.AIR));
+        spawnBorderLocations.clear();
     }
 
     private CompletableFuture<List<SchemBlockLocation>> pasteSpawnStructure(Location location) {
@@ -87,5 +99,9 @@ public final class Arena {
 
     private CompletableFuture<List<Location>> provideSpawnLocation(List<SchemBlockLocation> schematicLocations) {
         return gameModule.getSchematicProvider().provideLocationByBlock(arenaWorld, schematicLocations, Material.DIAMOND_BLOCK, true);
+    }
+
+    private CompletableFuture<List<Location>> provideSpawnBorderLocations(List<SchemBlockLocation> schematicBlockLocations) {
+        return gameModule.getSchematicProvider().provideLocationByBlock(arenaWorld, schematicBlockLocations, Material.BARRIER, false);
     }
 }

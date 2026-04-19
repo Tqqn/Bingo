@@ -17,10 +17,7 @@ import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.World;
 import dev.tqqn.modules.game.GameModule;
 import lombok.RequiredArgsConstructor;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 
 import java.io.File;
@@ -184,6 +181,7 @@ public class SchematicProvider {
             cachedLocations.add(location);
         }
 
+
         final List<Location> wantedLocations = new ArrayList<>();
 
         Bukkit.getScheduler().runTaskLater(gameModule.getPlugin(), () -> {
@@ -193,7 +191,6 @@ public class SchematicProvider {
                     if (shouldRemoveType) location.getBlock().setType(Material.AIR);
                 }
             }
-
             future.complete(wantedLocations);
 
             for (Chunk chunk : loadedChunks) {
