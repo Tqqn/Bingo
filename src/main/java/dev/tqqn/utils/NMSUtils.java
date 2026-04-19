@@ -8,8 +8,8 @@ import net.minecraft.network.protocol.game.ClientboundSetPlayerTeamPacket;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraft.world.scores.Scoreboard;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_21_R4.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_21_R4.util.CraftChatMessage;
+import org.bukkit.craftbukkit.v1_21_R6.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_21_R6.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 
 /**
@@ -34,7 +34,8 @@ public class NMSUtils {
     }
 
     private static void setTeamNameTag(Player receiver, Player subject, String teamName, String color, String prefix, String suffix) {
-        Scoreboard scoreboard = ((CraftPlayer) receiver).getHandle().getScoreboard(); // Use the existing scoreboard
+
+        Scoreboard scoreboard = ((CraftPlayer) receiver).getScoreboard().getHandle(); // Use existing scoreboard
         PlayerTeam playerTeam = scoreboard.getPlayerTeam(teamName);
         boolean created = false;
 
