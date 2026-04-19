@@ -29,8 +29,7 @@ public final class DatabaseModule extends AbstractModule {
 
         final String userName = defaultConfig.getDBUserName();
         if (userName == null) {
-            getPlugin().getLogger().log(Level.SEVERE, "No credentials found for MongoDB. Disabling plugin...");
-            getPlugin().getServer().getPluginManager().disablePlugin(getPlugin());
+            this.mongoDriver.connect(defaultConfig.getDBDataBase(), defaultConfig.getDBHost());
         } else {
             this.mongoDriver.connect(defaultConfig.getDBDataBase(), defaultConfig.getDBHost(), userName, defaultConfig.getDBPassword());
         }

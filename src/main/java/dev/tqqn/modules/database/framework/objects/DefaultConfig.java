@@ -31,12 +31,12 @@ public final class DefaultConfig {
 
     public String getDBUserName() {
         final String value = bingoMain.getConfig().getString("database.username");
-        return (value == null || value.isBlank() || value.isEmpty() ? null : value);
+        return value == null || value.isBlank() || value.equalsIgnoreCase("change_me") ? null : value;
     }
 
     public String getDBPassword() {
         final String value = bingoMain.getConfig().getString("database.password");
-        return (value == null || value.isBlank() || value.isEmpty() ? null : value);
+        return value == null || value.isBlank() ? null : value;
     }
 
     public int getNeededPlayersToStart() {

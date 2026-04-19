@@ -46,8 +46,8 @@ public class MongoDriver implements IDataBaseDriver {
     }
 
     @Override
-    public void connect(String database, String host, String port) {
-        MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://" + host + ":" + port));
+    public void connect(String database, String host) {
+        MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://" + host + ":" + 27017));
         this.mongoDatabase = mongoClient.getDatabase(database);
     }
 
