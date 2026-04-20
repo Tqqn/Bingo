@@ -22,14 +22,19 @@ public class NMSUtils {
         final PlayerModel joiningPlayer = PlayerModel.from(receiver);
         final GameTeam joiningTeam = joiningPlayer.getTempPlayerData().getTeam();
 
+        System.out.println("Refreshing tag for " + receiver.getName() + " with team " + joiningTeam.getData().teamType().getName() + " and prefix " + joiningTeam.getData().teamType().name());
+
         for (Player player : Bukkit.getOnlinePlayers()) {
             final PlayerModel playerModel = PlayerModel.from(player);
             final GameTeam gameTeam = playerModel.getTempPlayerData().getTeam();
             if (gameTeam == null) continue;
 
-            setTeamNameTag(receiver, player, gameTeam.getData().getTeamType().getName(), gameTeam.getData().getTeamType().name(), "", "");
+            setTeamNameTag(receiver, player, gameTeam.getData().teamType().getName(), gameTeam.getData().teamType().name(), "", "");
+            System.out.println("1 Player " + player.getName() + " is now on team " + gameTeam.getData().teamType().getName() + "with prefix " + gameTeam.getData().teamType().name());
             if (player.equals(receiver)) continue;
-            setTeamNameTag(player, receiver, joiningTeam.getData().getTeamType().getName(), joiningTeam.getData().getTeamType().name(), "", "");
+            System.out.println("Refreshing tag for " + playerModel.getName() + " with team " + gameTeam.getData().teamType().getName() + " and prefix " + gameTeam.getData().teamType().name());
+            setTeamNameTag(player, receiver, joiningTeam.getData().teamType().getName(), joiningTeam.getData().teamType().name(), "", "");
+            System.out.println("2 Player " + receiver.getName() + " is now on team " + joiningTeam.getData().teamType().getName() + "with prefix " + joiningTeam.getData().teamType().name());
         }
     }
 
@@ -46,7 +51,7 @@ public class NMSUtils {
 
         playerTeam.setColor(ChatFormatting.getByName(color)); // Set name color
 
-        if (prefix != null) playerTeam.setPlayerPrefix(CraftChatMessage.fromStringOrNull(prefix + " "));
+        if (prefix != null) playerTeam.setPlayerPrefix(CraftChatMessage.fromStringOrNull(prefix));
         playerTeam.setPlayerSuffix(CraftChatMessage.fromStringOrNull(suffix));
 
         if (created) scoreboard.addPlayerTeam(teamName); // Ensure the team is added to the main scoreboard

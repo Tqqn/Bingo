@@ -2,7 +2,6 @@ package dev.tqqn.modules.game.framework.team;
 
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.Color;
 
 import java.util.ArrayList;
@@ -25,11 +24,12 @@ public final class TeamProvider {
         Collections.shuffle(teamTypes);
         for (int i = 1; i < howManyTeams + 1; i++) {
             if (teamTypes.isEmpty()) continue;
-            availableTeams.add(new TeamData(teamTypes.getFirst(), i));
+            availableTeams.add(new TeamData(teamTypes.removeFirst(), i));
         }
     }
 
     public GameTeam getFreeTeam() {
+        if (availableTeams.isEmpty()) return null;
         final TeamData gottenTeam = availableTeams.removeFirst();
         if (gottenTeam == null) return null;
         final GameTeam team = new GameTeam(gottenTeam);
@@ -49,13 +49,10 @@ public final class TeamProvider {
         final GameTeam gameTeam = getFreeTeam();
         if (gameTeam == null) return;
         playerModel.getTempPlayerData().setTeam(gameTeam);
+        System.out.println("Assigned " + playerModel.getName() + " to team " + gameTeam.getData().teamType().getName());
     }
 
-    @Getter
-    @RequiredArgsConstructor
-    public class TeamData {
-        private final TeamType teamType;
-        private final int mapPlace;
+    public record TeamData(TeamType teamType, int mapPlace) {
     }
 
     @Getter

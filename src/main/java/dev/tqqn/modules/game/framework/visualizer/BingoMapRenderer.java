@@ -62,7 +62,7 @@ public final class BingoMapRenderer extends MapRenderer {
                 }
 
                 for (GameTeam gameTeam : task.getCompleted()) {
-                    drawCross(mapCanvas, cellX + 1, cellY + 1, gameTeam.getMapPlace());
+                    drawCross(mapCanvas, cellX + 1, cellY + 1, gameTeam.getMapPlace(), gameTeam.getData().teamType().getMapColor());
                 }
             }
         }
@@ -81,36 +81,36 @@ public final class BingoMapRenderer extends MapRenderer {
         }
     }
 
-    private void drawCross(MapCanvas canvas, int x, int y, int place) {
+    private void drawCross(MapCanvas canvas, int x, int y, int place, Color color) {
         int size = 11;
 
         switch (place) {
             case 1 -> {
                 for (int i = 0; i <= size; i++) {
-                    canvas.setPixelColor(x, y + i, Color.GREEN);
-                    canvas.setPixelColor(x + i, y, Color.GREEN);
+                    canvas.setPixelColor(x, y + i, color);
+                    canvas.setPixelColor(x + i, y, color);
                 }
             }
             case 2 -> {
                 y = y + 11;
                 for (int i = 0; i <= size; i++) {
-                    canvas.setPixelColor(x, y + i, Color.RED);
-                    canvas.setPixelColor(x + i, y + size, Color.RED);
+                    canvas.setPixelColor(x, y + i, color);
+                    canvas.setPixelColor(x + i, y + size, color);
                 }
             }
             case 3 -> {
                 x = x + 22;
                 y = y + 22;
                 for (int i = 0; i <= size; i++) {
-                    canvas.setPixelColor(x - i, y, Color.BLUE);
-                    canvas.setPixelColor(x, y - i, Color.BLUE);
+                    canvas.setPixelColor(x - i, y, color);
+                    canvas.setPixelColor(x, y - i, color);
                 }
             }
             case 4 -> {
                 x = x + 22;
                 for (int i = 0; i <= size; i++) {
-                    canvas.setPixelColor(x - i, y, Color.ORANGE);
-                    canvas.setPixelColor(x, y + i, Color.ORANGE);
+                    canvas.setPixelColor(x - i, y, color);
+                    canvas.setPixelColor(x, y + i, color);
                 }
             }
         }

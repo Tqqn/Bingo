@@ -40,7 +40,7 @@ public final class Arena {
         future.whenComplete((world, throwable) -> {
             arenaWorld = world;
             createWorldBorder(arenaWorld, size);
-            final CompletableFuture<List<SchemBlockLocation>> pastedLocationFuture = pasteSpawnStructure(arenaWorld.getSpawnLocation());
+            final CompletableFuture<List<SchemBlockLocation>> pastedLocationFuture = pasteSpawnStructure(new Location(arenaWorld, 0, 100, 0));
             if (pastedLocationFuture == null) return;
             pastedLocationFuture.whenComplete((pastedLocations, throwable1) -> {
                setReadyToJoin(true);
@@ -50,6 +50,8 @@ public final class Arena {
                        return;
                    }
                    spawnLocation = locations.getFirst().toCenterLocation();
+                   arenaWorld.setSpawnLocation(spawnLocation);
+                   spawnLocation.getChunk().addPluginChunkTicket(gameModule.getPlugin());
                });
 
                provideSpawnBorderLocations(pastedLocations).whenComplete((locations, throwable2) -> {
@@ -84,7 +86,7 @@ public final class Arena {
         final World world = location.getWorld();
         final Block highestBlock = world.getHighestBlockAt(location);
         if (highestBlock.getLocation().getBlockY() > 60) {
-            spawnLocation.add(0,30, 0);
+            spawnLocation.add(0,15, 0);
         }
 
         Clipboard clipboard;

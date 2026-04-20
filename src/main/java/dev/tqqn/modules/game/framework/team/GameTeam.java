@@ -20,6 +20,6 @@ public final class GameTeam {
 
     public GameTeam(TeamProvider.TeamData data) {
         this.data = data;
-        this.mapPlace = data.getMapPlace();
+        this.mapPlace = data.mapPlace();
     }
 }

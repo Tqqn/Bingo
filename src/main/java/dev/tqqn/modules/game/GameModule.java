@@ -14,7 +14,6 @@ import dev.tqqn.modules.game.framework.objects.BingoTask;
 import dev.tqqn.modules.game.framework.states.GameStateSeries;
 import dev.tqqn.modules.game.framework.team.TeamProvider;
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
