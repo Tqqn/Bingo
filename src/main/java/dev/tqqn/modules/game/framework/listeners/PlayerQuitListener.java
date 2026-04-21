@@ -14,8 +14,10 @@ public final class PlayerQuitListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerModelQuitEvent event) {
-        if (gameModule.getCurrentInstance().getCurrentState().get().getGameState() == GameStates.LOBBY) return;
+        if (gameModule.getCurrentInstance().getCurrentState().get().getGameState() == GameStates.LOBBY) {
+            gameModule.getCurrentInstance().getInGamePlayers().remove(event.getPlayerModel().getPlayer().isPresent() ? event.getPlayerModel().getPlayer().get() : null);
+            return;
+        }
         event.setRemoveFromCache(false);
-
     }
 }

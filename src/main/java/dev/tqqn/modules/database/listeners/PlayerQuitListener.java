@@ -19,5 +19,4 @@ public final class PlayerQuitListener implements Listener {
 
         if (playerModelQuitEvent.isRemoveFromCache()) playerModel.cleanUp();
     }
-
 }

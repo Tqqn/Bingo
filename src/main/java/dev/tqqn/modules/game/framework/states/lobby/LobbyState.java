@@ -12,6 +12,7 @@ import dev.tqqn.modules.game.framework.states.lobby.listeners.LobbyListeners;
 import dev.tqqn.modules.scoreboard.boards.LobbyScoreboard;
 import dev.tqqn.utils.ChatUtils;
 import dev.tqqn.utils.NMSUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
@@ -60,7 +61,7 @@ public final class LobbyState extends AbstractState {
     @Override
     public void onDisable() {
         getGameInstance().getGameModule().putPlayersInTeams();
-        for (Player player : getGameInstance().getInGamePlayers().keySet()) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
             removeScoreboard(LobbyScoreboard.class, player);
             NMSUtils.refreshTag(player);
         }

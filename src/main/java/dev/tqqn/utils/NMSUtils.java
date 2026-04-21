@@ -22,19 +22,15 @@ public class NMSUtils {
         final PlayerModel joiningPlayer = PlayerModel.from(receiver);
         final GameTeam joiningTeam = joiningPlayer.getTempPlayerData().getTeam();
 
-        System.out.println("Refreshing tag for " + receiver.getName() + " with team " + joiningTeam.getData().teamType().getName() + " and prefix " + joiningTeam.getData().teamType().name());
-
         for (Player player : Bukkit.getOnlinePlayers()) {
             final PlayerModel playerModel = PlayerModel.from(player);
             final GameTeam gameTeam = playerModel.getTempPlayerData().getTeam();
             if (gameTeam == null) continue;
 
             setTeamNameTag(receiver, player, gameTeam.getData().teamType().getName(), gameTeam.getData().teamType().name(), "", "");
-            System.out.println("1 Player " + player.getName() + " is now on team " + gameTeam.getData().teamType().getName() + "with prefix " + gameTeam.getData().teamType().name());
             if (player.equals(receiver)) continue;
-            System.out.println("Refreshing tag for " + playerModel.getName() + " with team " + gameTeam.getData().teamType().getName() + " and prefix " + gameTeam.getData().teamType().name());
+            if (joiningTeam == null) continue;
             setTeamNameTag(player, receiver, joiningTeam.getData().teamType().getName(), joiningTeam.getData().teamType().name(), "", "");
-            System.out.println("2 Player " + receiver.getName() + " is now on team " + joiningTeam.getData().teamType().getName() + "with prefix " + joiningTeam.getData().teamType().name());
         }
     }
 
