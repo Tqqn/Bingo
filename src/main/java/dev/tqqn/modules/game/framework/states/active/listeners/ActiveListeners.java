@@ -6,6 +6,7 @@ import dev.tqqn.modules.game.framework.objects.BingoTask;
 import dev.tqqn.modules.game.framework.states.active.ActiveState;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -58,14 +59,14 @@ public final class ActiveListeners implements Listener {
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent event) {
         final ItemStack item = event.getItemDrop().getItemStack();
-        if (item.isSimilar(state.getMapItem())) event.setCancelled(true);
+        if (isItemPartOfKit(item)) event.setCancelled(true);
     }
 
     @EventHandler
     public void onItemMoveEvent(InventoryClickEvent event) {
         final ItemStack item = event.getCurrentItem();
         if (item == null) return;
-        if (item.isSimilar(state.getMapItem())) {
+        if (isItemPartOfKit(item)) {
             final InventoryView inventoryView = event.getView();
             if (!inventoryView.getTopInventory().equals(inventoryView.getBottomInventory())) {
                 if (inventoryView.getTopInventory().getType() != InventoryType.CRAFTING) event.setCancelled(true);
@@ -73,12 +74,23 @@ public final class ActiveListeners implements Listener {
         }
     }
 
+    private boolean isItemPartOfKit(ItemStack itemStack) {
+        if (itemStack == null) return false;
+        return itemStack.getPersistentDataContainer().has(ActiveState.KIT_ITEM_KEY);
+    }
+
     private void processPossibleBingo(Player player, ItemStack item) {
         final PlayerModel playerModel = PlayerModel.from(player.getUniqueId());
         for (BingoTask task : state.getGameInstance().getBingoTasks()) {
             if (!(task.getGoal().getType() == item.getType())) continue;
-            if (playerModel.getTempPlayerData().hasCompleted(task)) return;
+            if (task.hasCompleted(playerModel.getTempPlayerData().getTeam())) return;
             state.completeTask(playerModel, task);
+        }
+
+        final boolean hasBingo = state.getGameInstance().hasBingo(playerModel);
+        if (hasBingo) {
+            state.broadcastWithSound("<red>" + player.getName() + " has completed a bingo! Congratulations!", Sound.ITEM_GOAT_HORN_SOUND_2);
+            state.getGameInstance().nextState();
         }
     }
 }

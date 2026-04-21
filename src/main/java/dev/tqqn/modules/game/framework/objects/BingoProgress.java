@@ -28,12 +28,12 @@ public final class BingoProgress {
     }
 
     public boolean hasBingo(PlayerModel playerModel) {
-        int[] rowCount = new int[6];
-        int[] colCount = new int[6];
+        int[] rowCount = new int[5];
+        int[] colCount = new int[5];
         int mainDiag = 0;
         int antiDiag = 0;
 
-        boolean[][] seen = new boolean[6][6]; // seen Placements
+        boolean[][] seen = new boolean[5][5]; // seen Placements
 
         for (var entry : tasks.entrySet()) {
             BingoPlacement p = entry.getValue();
@@ -41,9 +41,9 @@ public final class BingoProgress {
 
             int col = p.getColumn();
             int row = p.getRow();
-            if (col < 1 || col > 5 || row < 1 || row > 5) continue;
+            if (col < 0 || col > 5 || row < 0 || row > 5) continue;
 
-            if (!playerModel.getTempPlayerData().hasCompleted(entry.getKey())) continue;
+            if (!entry.getKey().hasCompleted(playerModel.getTempPlayerData().getTeam())) continue;
 
             if (seen[row][col]) continue;
             seen[row][col] = true;
@@ -52,7 +52,7 @@ public final class BingoProgress {
             if (++colCount[col] == 5) return true;
 
             if (row == col && ++mainDiag == 5) return true;
-            if (row + col == 6 && ++antiDiag == 5) return true;
+            if (row + col == 5 && ++antiDiag == 5) return true;
         }
 
         return false;

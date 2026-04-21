@@ -30,4 +30,7 @@ public final class BingoTask {
         return Collections.unmodifiableList(completed);
     }
 
+    public boolean hasCompleted(GameTeam team) {
+        return completed.contains(team);
+    }
 }

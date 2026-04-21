@@ -15,9 +15,13 @@ import dev.tqqn.utils.Notify;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.potion.PotionEffect;
@@ -27,9 +31,12 @@ import java.util.List;
 
 public final class ActiveState extends AbstractState {
 
+    public static final NamespacedKey KIT_ITEM_KEY = new NamespacedKey("bingo", "kit_item");
+
     private BingoMapRenderer mapRenderer;
 
     @Getter private ItemStack mapItem;
+    @Getter private ItemStack pickaxe;
 
     public ActiveState(AbstractStateSeries instance) {
         super(instance, GameStates.ACTIVE, "Active", true);
@@ -49,9 +56,12 @@ public final class ActiveState extends AbstractState {
         mapView.setTrackingPosition(false);
         mapItem = getBingoMapItem(mapView);
 
+        pickaxe = getDefaultPickaxe();
+
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.getInventory().clear();
             player.getInventory().setItemInOffHand(mapItem.clone());
+            player.getInventory().addItem(pickaxe.clone());
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 200, 100, true, false, false));
         }
 
@@ -86,9 +96,8 @@ public final class ActiveState extends AbstractState {
     }
 
     public void completeTask(PlayerModel playerModel, BingoTask task) {
-        playerModel.getTempPlayerData().completeTask(task);
         task.complete(playerModel.getTempPlayerData().getTeam());
-        Notify.INFO.chat(playerModel.getPlayer(), "You collected: " + task.getName());
+        playerModel.getPlayer().ifPresent(player -> Notify.INFO.chat(player, "You collected: " + task.getName()));
     }
 
     private ItemStack getBingoMapItem(MapView mapView) {
@@ -97,7 +106,20 @@ public final class ActiveState extends AbstractState {
         mapMeta.displayName(ChatUtils.format("<red>Bingo Map"));
         mapMeta.setMapView(mapView);
         mapMeta.lore(List.of(ChatUtils.format("<gray>Collect all tasks to win!")));
+        mapMeta.getPersistentDataContainer().set(KIT_ITEM_KEY, org.bukkit.persistence.PersistentDataType.STRING, "true");
         mapItem.setItemMeta(mapMeta);
         return mapItem;
+    }
+
+    private ItemStack getDefaultPickaxe() {
+        final ItemStack pickaxe = new ItemStack(Material.NETHERITE_PICKAXE);
+        final ItemMeta itemMeta = pickaxe.getItemMeta();
+        itemMeta.getPersistentDataContainer().set(KIT_ITEM_KEY, org.bukkit.persistence.PersistentDataType.STRING, "true");
+        itemMeta.displayName(ChatUtils.format("<red>Pickaxe"));
+        itemMeta.setUnbreakable(true);
+        itemMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+        itemMeta.addEnchant(Enchantment.EFFICIENCY, 5, true);
+        pickaxe.setItemMeta(itemMeta);
+        return pickaxe;
     }
 }
