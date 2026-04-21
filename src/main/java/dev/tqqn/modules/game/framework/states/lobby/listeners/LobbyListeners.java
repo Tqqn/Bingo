@@ -37,8 +37,6 @@ public final class LobbyListeners implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerModelJoinEvent event) {
         final Arena arena = gameModule.getArena();
-        final Player player = event.getPlayerModel().getPlayer();
-        if (player == null) return;
-        player.teleport(arena.getSpawnLocation());
+        event.getPlayerModel().getPlayer().ifPresent(player -> player.teleport(arena.getSpawnLocation()));
     }
 }

@@ -70,16 +70,18 @@ public final class LobbyState extends AbstractState {
     public void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event) {
         final AbstractState currentState = getGameInstance().getCurrentState().get();
         if (currentState == null) return;
-        currentState.setScoreboard(event.getPlayerModel().getPlayer());
+        event.getPlayerModel().getPlayer().ifPresent(player -> {
+            currentState.setScoreboard(player);
 
-        getGameInstance().addPlayer(event.getPlayerModel().getPlayer(), Roles.ALIVE);
+            getGameInstance().addPlayer(player, Roles.ALIVE);
+            player.getInventory().clear();
+            player.getActivePotionEffects().clear();
+            player.setHealth(player.getAttribute(Attribute.MAX_HEALTH).getBaseValue());
+            player.setGameMode(GameMode.SURVIVAL);
+        });
+
         broadcast("<yellow>[<aqua>" + (getGameInstance().getInGamePlayers().size()) + "<yellow>/<aqua>" + GameModule.GAME_MAX_PLAYERS + "<yellow>] <green>+ " + playerModel.getName());
-        final Player player = playerModel.getPlayer();
-        if (player == null) return;
-        player.getInventory().clear();
-        player.getActivePotionEffects().clear();
-        player.setHealth(player.getAttribute(Attribute.MAX_HEALTH).getBaseValue());
-        player.setGameMode(GameMode.SURVIVAL);
+
     }
 
     @Override

@@ -85,9 +85,8 @@ public final class Arena {
         final Location spawnLocation = location.clone();
         final World world = location.getWorld();
         final Block highestBlock = world.getHighestBlockAt(location);
-        if (highestBlock.getLocation().getBlockY() > 60) {
-            spawnLocation.add(0,15, 0);
-        }
+        spawnLocation.setY(highestBlock.getLocation().getBlockY());
+        spawnLocation.add(0,30, 0);
 
         Clipboard clipboard;
 

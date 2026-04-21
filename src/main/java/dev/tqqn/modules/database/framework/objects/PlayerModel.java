@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.ref.WeakReference;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -39,16 +40,15 @@ public final class PlayerModel extends MongoObject<UUID> {
         if (tempPlayerData == null) this.tempPlayerData = new TempPlayerData(getKey()); // Yes a null check, sometimes its weirdly null :/
     }
 
-    @Nullable
-    public Player getPlayer() {
+    public Optional<Player> getPlayer() {
         if (playerWeakReference == null || playerWeakReference.get() == null) {
             final Player player = Bukkit.getPlayer(getKey());
-            if (player == null) return null;
+            if (player == null) return Optional.empty();
 
             playerWeakReference = new WeakReference<>(Bukkit.getPlayer(getKey()));
-            return playerWeakReference.get();
+            return Optional.ofNullable(playerWeakReference.get());
         }
-        return playerWeakReference.get();
+        return Optional.ofNullable(playerWeakReference.get());
     }
 
     public static PlayerModel from(Player player) {
