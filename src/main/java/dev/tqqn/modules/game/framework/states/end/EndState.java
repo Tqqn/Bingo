@@ -13,8 +13,7 @@ import org.bukkit.entity.Player;
 public final class EndState extends AbstractState {
 
     public EndState(AbstractStateSeries instance) {
-        super(instance, GameStates.END, "End", true);
-        setTimer(10);
+        super(instance, GameStates.END, "End", 10, true);
     }
 
     @Override

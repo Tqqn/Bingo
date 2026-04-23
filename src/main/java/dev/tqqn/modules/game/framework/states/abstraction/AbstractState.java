@@ -30,16 +30,20 @@ public abstract class AbstractState {
 
     @Getter @Setter protected int timer;
 
+    @Getter private final int initialTimer;
+
     @Getter protected boolean freeze = false;
 
     private final Set<Listener> listeners;
 
     @Getter private boolean hasEnded = false;
 
-    public AbstractState(AbstractStateSeries instance, GameStates gameState, String name, boolean shouldCountBackwards) {
+    public AbstractState(AbstractStateSeries instance, GameStates gameState, String name, int timer, boolean shouldCountBackwards) {
         this.gameInstance = instance;
         this.gameState = gameState;
         this.name = name;
+        this.timer = timer;
+        this.initialTimer = timer;
         this.shouldCountBackwards = shouldCountBackwards;
         this.listeners = new HashSet<>();
     }
@@ -68,6 +72,10 @@ public abstract class AbstractState {
             timer = nextTimer;
             onTick();
         }
+    }
+
+    public void resetTimer() {
+        timer = getInitialTimer();
     }
 
     public void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event) {

@@ -24,8 +24,7 @@ public final class LobbyState extends AbstractState {
     private static final String message = "<red>Game is starting in <white><bold>%s<reset><red>s.";
 
     public LobbyState(GameStateSeries instance) {
-        super(instance, GameStates.LOBBY, "Lobby", true);
-        setTimer(10000);
+        super(instance, GameStates.LOBBY, "Lobby", 10000, true);
     }
 
     @Override
@@ -50,6 +49,10 @@ public final class LobbyState extends AbstractState {
 
     @Override
     public void onTimerEnd() {
+        if (!getGameInstance().canStart()) {
+            resetTimer();
+            return;
+        }
         getGameInstance().nextState();
     }
 

@@ -39,14 +39,12 @@ public final class ActiveState extends AbstractState {
     @Getter private ItemStack pickaxe;
 
     public ActiveState(AbstractStateSeries instance) {
-        super(instance, GameStates.ACTIVE, "Active", true);
+        super(instance, GameStates.ACTIVE, "Active", 1200,true);
         register(new ActiveListeners(this));
     }
 
     @Override
     public void onEnable() {
-        setTimer(1200); // 15 min
-
         final MapView mapView = Bukkit.createMap(Bukkit.getWorlds().getFirst());
 
         this.mapRenderer = new BingoMapRenderer(this, new IconCache(getGameInstance().getGameModule().getPlugin()));
