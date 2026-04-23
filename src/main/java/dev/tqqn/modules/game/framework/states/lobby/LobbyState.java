@@ -44,7 +44,7 @@ public final class LobbyState extends AbstractState {
         } else if (isStartCountdown) {
             isStartCountdown = false;
             setTimer(180);
-            broadcastWithSound("<red>Not enough players in this game. Setting timer to " + (getTimer() / 60) + "minutes", Sound.BLOCK_BAMBOO_WOOD_BUTTON_CLICK_OFF);
+            broadcastWithSound("<red>Not enough players in this game. Setting timer to " + (getTimer() / 60) + " minutes", Sound.BLOCK_BAMBOO_WOOD_BUTTON_CLICK_OFF);
         }
     }
 
