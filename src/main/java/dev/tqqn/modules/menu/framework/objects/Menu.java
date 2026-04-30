@@ -4,6 +4,8 @@ import dev.tqqn.BingoMain;
 import dev.tqqn.utils.ChatUtils;
 import dev.tqqn.utils.ItemBuilder;
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -33,10 +35,14 @@ public abstract class Menu implements InventoryHolder {
      * @throws IllegalArgumentException if the number of rows is invalid or the title length exceeds 32 characters.
      */
     public Menu(String title, int rows, Player viewer) {
-        if (rows > 6 || rows < 1 || title.length() > 32) {
+        this(ChatUtils.format(title), rows, viewer);
+    }
+
+    public Menu(Component title, int rows, Player viewer) {
+        if (rows > 6 || rows < 1 || PlainTextComponentSerializer.plainText().serialize(title).length() > 32) {
             throw new IllegalArgumentException("Invalid arguments passed to menu constructor.");
         }
-        this.inventory = Bukkit.createInventory(this, rows * 9, ChatUtils.format(title));
+        this.inventory = Bukkit.createInventory(this, rows * 9, title);
         this.buttons = new HashMap<>();
         this.viewer = viewer;
     }
@@ -108,6 +114,7 @@ public abstract class Menu implements InventoryHolder {
      * @param slot   The slot in the menu.
      */
     protected void registerButton(MenuButton button, int slot) {
+        if (button == null) return;
         buttons.put(slot, button);
         inventory.setItem(slot, button.getItemStack());
     }
@@ -118,14 +125,14 @@ public abstract class Menu implements InventoryHolder {
      * @param slot The slot for the close button.
      */
     public void registerCloseButton(int slot) {
-        MenuButton closeButton = new MenuButton(ItemBuilder.getBuilder(Material.BARRIER).setDisplayName("<red>Close").hideAttributes().build());
-        closeButton.setClicker(player -> close());
+        MenuButton closeButton = new MenuButton(ItemBuilder.getBuilder(Material.BARRIER).setDisplayName("<red>Close").hideAttributes().build())
+                .setClicker(player -> close());
         registerButton(closeButton, slot);
     }
 
     public void registerPreviousMenuButton(int slot, Menu previous) {
-        MenuButton previousButton = new MenuButton(ItemBuilder.getBuilder(Material.COMPASS).setDisplayName("<red>Back").hideAttributes().build());
-        previousButton.setClicker(player -> previous.open());
+        MenuButton previousButton = new MenuButton(ItemBuilder.getBuilder(Material.COMPASS).setDisplayName("<red>Back").hideAttributes().build())
+                .setClicker(player -> previous.open());
         registerButton(previousButton, slot);
     }
 

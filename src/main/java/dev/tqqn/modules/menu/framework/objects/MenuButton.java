@@ -12,11 +12,15 @@ public final class MenuButton {
 
     private final ItemStack itemStack;
 
-    @Setter
     private Consumer<Player> clicker;
 
     public MenuButton(ItemStack itemStack) {
         this.itemStack = itemStack;
+    }
+
+    public MenuButton setClicker(Consumer<Player> consumer) {
+        this.clicker = consumer;
+        return this;
     }
 
 }

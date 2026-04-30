@@ -4,12 +4,24 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.game.framework.GameStates;
+import dev.tqqn.modules.game.framework.menu.RecipeMenu;
 import dev.tqqn.modules.game.framework.states.abstraction.AbstractState;
 import dev.tqqn.modules.game.framework.states.lobby.LobbyState;
 import dev.tqqn.utils.ChatUtils;
 import dev.tqqn.utils.Notify;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.RecipeChoice;
+import org.bukkit.inventory.ShapedRecipe;
+import oshi.jna.platform.windows.NtDll;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 @CommandAlias("bingo")
 @CommandPermission("bingo.command.bingo")
@@ -100,6 +112,50 @@ public final class BingoCommands extends BaseCommand {
             }
             lobbyState.quickStart();
             Notify.SUCCESS.chat(player, "You quick started the game.");
+        }
+
+        @Subcommand("debug")
+        @CommandPermission("bingo.command.admin.debug")
+        @Description("Debug Command - Temporary...")
+        public void debug(Player player) {
+            final ItemStack itemStack = player.getInventory().getItemInMainHand();
+            if (itemStack.getType() == Material.AIR) {
+                Notify.ERROR.chat(player, "This Item Type is not valid for this command.");
+                return;
+            }
+
+            final List<Recipe> recipes = Bukkit.getServer().getRecipesFor(itemStack);
+            for (Recipe recipe : recipes) {
+                if (recipe instanceof ShapedRecipe shapedRecipe) {
+                    Notify.LIST.chat(player, "<gold>--------");
+                    for (String value : shapedRecipe.getShape()) {
+                        player.sendMessage(ChatUtils.format("<blue>!" + value + "!"));
+                    }
+                    Notify.INFO.chat(player, "<yellow>---");
+                    for (Map.Entry<Character, RecipeChoice> set : shapedRecipe.getChoiceMap().entrySet()) {
+                        player.sendMessage(ChatUtils.format("<blue>" + set.getKey() + " " + set.getValue()));
+                    }
+                }
+            }
+        }
+
+        @Subcommand("recipe")
+        @CommandPermission("bingo.command.admin.recipe")
+        @Description("Show Item Recipe")
+        public void recipe(Player player) {
+            final ItemStack itemStack = player.getInventory().getItemInMainHand();
+            if (itemStack.getType() == Material.AIR) {
+                Notify.ERROR.chat(player, "This Item Type is not valid for this command.");
+                return;
+            }
+
+            final List<Recipe> recipes = Bukkit.getServer().getRecipesFor(itemStack);
+            if (recipes.isEmpty()) {
+                Notify.ERROR.chat(player, "Item has not valid recipe.");
+                return;
+            }
+
+            new RecipeMenu(player, itemStack).open();
         }
     }
 }
