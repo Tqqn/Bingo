@@ -12,13 +12,14 @@ public final class MenuButton {
 
     private final ItemStack itemStack;
 
-    private Consumer<Player> clicker;
+    private Consumer<Player> clicker = null;
 
     public MenuButton(ItemStack itemStack) {
         this.itemStack = itemStack;
     }
 
     public MenuButton setClicker(Consumer<Player> consumer) {
+        if (consumer == null) return this;
         this.clicker = consumer;
         return this;
     }

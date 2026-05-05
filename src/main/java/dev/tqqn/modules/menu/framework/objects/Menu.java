@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public abstract class Menu implements InventoryHolder {
 
@@ -95,8 +96,14 @@ public abstract class Menu implements InventoryHolder {
             });
         }
 
-        if (buttons.get(event.getRawSlot()) != null) {
-            buttons.get(event.getRawSlot()).getClicker().accept(player);
+        final MenuButton menuButton = buttons.get(event.getRawSlot());
+
+        if (menuButton != null) {
+            final Consumer<Player> consumer = menuButton.getClicker();
+
+            if (consumer != null) {
+                menuButton.getClicker().accept(player);
+            }
             event.setCancelled(true);
         }
     }
@@ -105,6 +112,10 @@ public abstract class Menu implements InventoryHolder {
         if (event.getRawSlots().stream().anyMatch((i) -> i < this.getInventory().getSize())) {
             event.setCancelled(true);
         }
+    }
+
+    public boolean isSlotEmpty(int slot) {
+        return !buttons.containsKey(slot);
     }
 
     /**
@@ -120,20 +131,12 @@ public abstract class Menu implements InventoryHolder {
     }
 
     /**
-     * Registers a close button in the menu.
+     * Returns a Close Button
      *
-     * @param slot The slot for the close button.
      */
-    public void registerCloseButton(int slot) {
-        MenuButton closeButton = new MenuButton(ItemBuilder.getBuilder(Material.BARRIER).setDisplayName("<red>Close").hideAttributes().build())
+    public MenuButton getCloseButton() {
+        return new MenuButton(ItemBuilder.getBuilder(Material.BARRIER).setDisplayName("<red>Close").hideAttributes().build())
                 .setClicker(player -> close());
-        registerButton(closeButton, slot);
-    }
-
-    public void registerPreviousMenuButton(int slot, Menu previous) {
-        MenuButton previousButton = new MenuButton(ItemBuilder.getBuilder(Material.COMPASS).setDisplayName("<red>Back").hideAttributes().build())
-                .setClicker(player -> previous.open());
-        registerButton(previousButton, slot);
     }
 
     /**

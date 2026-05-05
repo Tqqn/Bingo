@@ -3,8 +3,7 @@ package dev.tqqn.modules.game.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import dev.tqqn.modules.game.GameModule;
-import dev.tqqn.modules.game.framework.GameStates;
-import dev.tqqn.modules.game.framework.menu.RecipeMenu;
+import dev.tqqn.modules.game.framework.menu.recipe.PagedRecipeMenu;
 import dev.tqqn.modules.game.framework.states.abstraction.AbstractState;
 import dev.tqqn.modules.game.framework.states.lobby.LobbyState;
 import dev.tqqn.utils.ChatUtils;
@@ -13,13 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.RecipeChoice;
-import org.bukkit.inventory.ShapedRecipe;
-import oshi.jna.platform.windows.NtDll;
+import org.bukkit.inventory.*;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -136,6 +130,14 @@ public final class BingoCommands extends BaseCommand {
                         player.sendMessage(ChatUtils.format("<blue>" + set.getKey() + " " + set.getValue()));
                     }
                 }
+
+                if (recipe instanceof ShapelessRecipe shapelessRecipe) {
+                    for (RecipeChoice recipeChoice : shapelessRecipe.getChoiceList()) {
+                        if (recipeChoice instanceof RecipeChoice.MaterialChoice materialChoice) {
+                            player.sendMessage(ChatUtils.format("<blue>" + materialChoice.getItemStack()));
+                        }
+                    }
+                }
             }
         }
 
@@ -155,7 +157,7 @@ public final class BingoCommands extends BaseCommand {
                 return;
             }
 
-            new RecipeMenu(player, itemStack).open();
+            new PagedRecipeMenu(player, itemStack).open();
         }
     }
 }

@@ -127,6 +127,11 @@ public final class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder removeDisplayName() {
+        itemMeta.displayName(Component.empty());
+        return this;
+    }
+
     /**
      * Builds the ItemStack with the specified attributes.
      *
@@ -150,4 +155,6 @@ public final class ItemBuilder {
     public static ItemBuilder getBuilder(ItemStack itemStack) {
         return new ItemBuilder(itemStack);
     }
+
+
 }
