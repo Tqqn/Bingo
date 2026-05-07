@@ -6,6 +6,7 @@ import dev.tqqn.modules.game.framework.states.active.ActiveState;
 import dev.tqqn.modules.game.framework.team.GameTeam;
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapCanvas;
+import org.bukkit.map.MapPalette;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.jetbrains.annotations.NotNull;
@@ -16,13 +17,11 @@ import java.util.Map;
 
 public final class BingoMapRenderer extends MapRenderer {
 
-    private final ActiveState state;
     private final IconCache iconCache;
 
     private BingoTask[][] grid;
 
     public BingoMapRenderer(ActiveState state, IconCache iconCache) {
-        this.state = state;
         this.iconCache = iconCache;
 
         grid = new BingoTask[5][5];
@@ -40,7 +39,11 @@ public final class BingoMapRenderer extends MapRenderer {
         final int iconSize = 16;
         final int pad = (cellSize - iconSize) / 2;
 
-        mapCanvas.getBasePixelColor(0, 0);
+        for (int x = 0; x < 128; x++) {
+            for (int y = 0; y < 128; y++) {
+                mapCanvas.setPixelColor(x, y, new Color(237, 226, 194));
+            }
+        }
 
         for (int row = 0; row < 5; row++) {
             for (int col = 0; col < 5; col++) {
@@ -55,10 +58,18 @@ public final class BingoMapRenderer extends MapRenderer {
                 int cellX = offset + col * cellSize;
                 int cellY = offset + row * cellSize;
 
+                if (!task.getCompleted().isEmpty()) {
+                    for (int dx = 1; dx < cellSize; dx++) {
+                        for (int dy = 1; dy < cellSize; dy++) {
+                            mapCanvas.setPixelColor(cellX + dx, cellY + dy, new Color(114, 207, 112));
+                        }
+                    }
+                }
+
                 if (image == null) {
                     System.out.println("MISSING ICON: " + task.getPng() + " at row=" + row + " col=" + col);
                 } else {
-                    mapCanvas.drawImage(cellX + pad + 1, cellY + pad, image);
+                    drawImageTransparent(mapCanvas, cellX + pad + 1, cellY + pad, image);
                 }
 
                 for (GameTeam gameTeam : task.getCompleted()) {
@@ -68,6 +79,18 @@ public final class BingoMapRenderer extends MapRenderer {
         }
 
         drawGrid(mapCanvas);
+    }
+
+    private void drawImageTransparent(MapCanvas canvas, int startX, int startY, BufferedImage image) {
+        for (int ix = 0; ix < image.getWidth(); ix++) {
+            for (int iy = 0; iy < image.getHeight(); iy++) {
+                int argb = image.getRGB(ix, iy);
+                int alpha = (argb >> 24) & 0xFF;
+                if (alpha < 128) continue;
+
+                canvas.setPixelColor(startX + ix, startY + iy, new Color(argb, true));
+            }
+        }
     }
 
     private void drawGrid(MapCanvas canvas) {
@@ -88,14 +111,18 @@ public final class BingoMapRenderer extends MapRenderer {
             case 1 -> {
                 for (int i = 0; i <= size; i++) {
                     canvas.setPixelColor(x, y + i, color);
+                    canvas.setPixelColor(x + 1, y + i, color);
                     canvas.setPixelColor(x + i, y, color);
+                    canvas.setPixelColor(x + i, y + 1, color);
                 }
             }
             case 2 -> {
                 y = y + 11;
                 for (int i = 0; i <= size; i++) {
                     canvas.setPixelColor(x, y + i, color);
+                    canvas.setPixelColor(x + 1, y + i, color);
                     canvas.setPixelColor(x + i, y + size, color);
+                    canvas.setPixelColor(x + i, y + size + 1, color);
                 }
             }
             case 3 -> {
@@ -103,14 +130,18 @@ public final class BingoMapRenderer extends MapRenderer {
                 y = y + 22;
                 for (int i = 0; i <= size; i++) {
                     canvas.setPixelColor(x - i, y, color);
+                    canvas.setPixelColor(x - i, y - 1, color);
                     canvas.setPixelColor(x, y - i, color);
+                    canvas.setPixelColor(x - 1, y - i, color);
                 }
             }
             case 4 -> {
                 x = x + 22;
                 for (int i = 0; i <= size; i++) {
                     canvas.setPixelColor(x - i, y, color);
+                    canvas.setPixelColor(x - i, y + 1, color);
                     canvas.setPixelColor(x, y + i, color);
+                    canvas.setPixelColor(x - 1, y + i, color);
                 }
             }
         }
