@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -137,6 +138,13 @@ public abstract class Menu implements InventoryHolder {
     public MenuButton getCloseButton() {
         return new MenuButton(ItemBuilder.getBuilder(Material.BARRIER).setDisplayName("<red>Close").hideAttributes().build())
                 .setClicker(player -> close());
+    }
+
+    public void setSlotsBasedOfList(List<Integer> slots, Material material) {
+        for (int slot : slots) {
+            if (!isSlotEmpty(slot)) continue;
+            registerButton(new MenuButton(ItemBuilder.getBuilder(material).removeDisplayName().build()), slot);
+        }
     }
 
     /**

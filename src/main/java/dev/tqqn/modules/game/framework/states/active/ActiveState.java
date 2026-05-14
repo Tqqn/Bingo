@@ -13,6 +13,7 @@ import dev.tqqn.modules.scoreboard.boards.ActiveScoreboard;
 import dev.tqqn.utils.ChatUtils;
 import dev.tqqn.utils.Notify;
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -24,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -32,8 +34,7 @@ import java.util.List;
 public final class ActiveState extends AbstractState {
 
     public static final NamespacedKey KIT_ITEM_KEY = new NamespacedKey("bingo", "kit_item");
-
-    private BingoMapRenderer mapRenderer;
+    public static final NamespacedKey BINGO_MAP_KEY = new NamespacedKey("bingo", "bingo_map");
 
     @Getter private ItemStack mapItem;
     @Getter private ItemStack pickaxe;
@@ -47,10 +48,9 @@ public final class ActiveState extends AbstractState {
     public void onEnable() {
         final MapView mapView = Bukkit.createMap(Bukkit.getWorlds().getFirst());
 
-        this.mapRenderer = new BingoMapRenderer(this, new IconCache(getGameInstance().getGameModule().getPlugin()));
+        final BingoMapRenderer mapRenderer = new BingoMapRenderer(this, new IconCache(getGameInstance().getGameModule().getPlugin()));
         mapView.getRenderers().clear();
         mapView.addRenderer(mapRenderer);
-        mapView.setLocked(true);
         mapView.setTrackingPosition(false);
         mapItem = getBingoMapItem(mapView);
 
@@ -103,8 +103,12 @@ public final class ActiveState extends AbstractState {
         final MapMeta mapMeta = (MapMeta) mapItem.getItemMeta();
         mapMeta.displayName(ChatUtils.format("<red>Bingo Map"));
         mapMeta.setMapView(mapView);
-        mapMeta.lore(List.of(ChatUtils.format("<gray>Collect all tasks to win!")));
-        mapMeta.getPersistentDataContainer().set(KIT_ITEM_KEY, org.bukkit.persistence.PersistentDataType.STRING, "true");
+
+        final List<Component> lore = List.of(ChatUtils.format("<gray>Collect all tasks to win!"), ChatUtils.format("<yellow>[RIGHT-CLICK] To open Bingo menu!"));
+        mapMeta.lore(lore);
+
+        mapMeta.getPersistentDataContainer().set(KIT_ITEM_KEY, PersistentDataType.STRING, "true");
+        mapMeta.getPersistentDataContainer().set(BINGO_MAP_KEY, PersistentDataType.STRING, "true");
         mapItem.setItemMeta(mapMeta);
         return mapItem;
     }
@@ -112,7 +116,7 @@ public final class ActiveState extends AbstractState {
     private ItemStack getDefaultPickaxe() {
         final ItemStack pickaxe = new ItemStack(Material.NETHERITE_PICKAXE);
         final ItemMeta itemMeta = pickaxe.getItemMeta();
-        itemMeta.getPersistentDataContainer().set(KIT_ITEM_KEY, org.bukkit.persistence.PersistentDataType.STRING, "true");
+        itemMeta.getPersistentDataContainer().set(KIT_ITEM_KEY, PersistentDataType.STRING, "true");
         itemMeta.displayName(ChatUtils.format("<red>Pickaxe"));
         itemMeta.setUnbreakable(true);
         itemMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);

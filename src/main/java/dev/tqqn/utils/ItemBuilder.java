@@ -112,8 +112,7 @@ public final class ItemBuilder {
      * @return The ItemBuilder instance.
      */
     public ItemBuilder setGlow() {
-        itemMeta.addEnchant(Enchantment.UNBREAKING, 0, true);
-        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        itemMeta.setEnchantmentGlintOverride(true);
         return this;
     }
 
@@ -149,11 +148,11 @@ public final class ItemBuilder {
      * @return A new ItemBuilder instance.
      */
     public static ItemBuilder getBuilder(Material material) {
-        return new ItemBuilder(new ItemStack(material, 1));
+        return new ItemBuilder(new ItemStack(material, 1).clone());
     }
 
     public static ItemBuilder getBuilder(ItemStack itemStack) {
-        return new ItemBuilder(itemStack);
+        return new ItemBuilder(itemStack.clone());
     }
 
 

@@ -2,6 +2,7 @@ package dev.tqqn.modules.game.framework.states.active.listeners;
 
 import dev.tqqn.modules.database.framework.events.PlayerModelQuitEvent;
 import dev.tqqn.modules.database.framework.objects.PlayerModel;
+import dev.tqqn.modules.game.framework.menu.BingoMenu;
 import dev.tqqn.modules.game.framework.objects.BingoTask;
 import dev.tqqn.modules.game.framework.states.active.ActiveState;
 import lombok.RequiredArgsConstructor;
@@ -10,18 +11,37 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 @RequiredArgsConstructor
 public final class ActiveListeners implements Listener {
 
     private final ActiveState state;
+
+    @EventHandler
+    public void onItemInteract(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (event.getHand() != EquipmentSlot.HAND) return;
+
+        final ItemStack item = event.getItem();
+        if (item == null) return;
+
+        final ItemMeta itemMeta = item.getItemMeta();
+        if (itemMeta == null) return;
+        if (!itemMeta.getPersistentDataContainer().has(ActiveState.BINGO_MAP_KEY)) return;
+        final Player player = event.getPlayer();
+        new BingoMenu(player, state.getGameInstance()).open();
+    }
 
     @EventHandler
     public void onItemPickup(EntityPickupItemEvent event) {

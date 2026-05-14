@@ -1,5 +1,6 @@
 package dev.tqqn.modules.game.framework.menu.recipe;
 
+import dev.tqqn.modules.game.framework.menu.BingoMenu;
 import dev.tqqn.modules.menu.framework.objects.MenuButton;
 import dev.tqqn.modules.menu.framework.objects.PagedMenu;
 import dev.tqqn.utils.ItemBuilder;
@@ -24,19 +25,28 @@ public class PagedRecipeMenu extends PagedMenu {
 
     private final List<RecipeShapePart> shapeParts = new ArrayList<>();
 
-    private PagedRecipeMenu possibleOldMenu = null;
+    private final PagedRecipeMenu possibleOldMenu;
+    private final BingoMenu bingoMenu;
 
-    public PagedRecipeMenu(Player viewer, ItemStack itemStack, PagedRecipeMenu possibleOldMenu) {
+    public PagedRecipeMenu(Player viewer, ItemStack itemStack, PagedRecipeMenu possibleOldMenu, BingoMenu bingoMenu) {
         super(itemStack.getItemMeta().itemName(), 6, viewer);
         this.itemStack = itemStack;
         this.possibleOldMenu = possibleOldMenu;
-        System.out.println(Bukkit.getServer().getRecipesFor(itemStack));
+        this.bingoMenu = bingoMenu;
         recipes = Bukkit.getServer().getRecipesFor(itemStack).stream().filter(recipe -> recipe instanceof ShapedRecipe || recipe instanceof ShapelessRecipe || recipe instanceof FurnaceRecipe).toList();
         initialize();
     }
 
+    public PagedRecipeMenu(Player viewer, ItemStack itemStack, PagedRecipeMenu possibleOldMenu) {
+        this(viewer, itemStack, possibleOldMenu, null);
+    }
+
+    public PagedRecipeMenu(Player viewer, ItemStack itemStack, BingoMenu bingoMenu) {
+        this(viewer, itemStack, null, bingoMenu);
+    }
+
     public PagedRecipeMenu(Player viewer, ItemStack itemStack) {
-        this(viewer, itemStack, null);
+        this(viewer, itemStack, null, null);
     }
 
     @Override
@@ -54,11 +64,7 @@ public class PagedRecipeMenu extends PagedMenu {
         shapeParts.add(new RecipeShapePart(List.of(10, 11, 12)));
         shapeParts.add(new RecipeShapePart(List.of(19, 20, 21)));
         shapeParts.add(new RecipeShapePart(List.of(28, 29, 30)));
-        if (possibleOldMenu != null) {
-            registerButton(new MenuButton(ItemBuilder.getBuilder(Material.BARRIER).setDisplayName("<red>Go Back - Previous Recipe").build()), 45);
-        } else {
-            addPageButton(PageButton.CLOSE, 45);
-        }
+
         if (recipes.size() > 1) {
             addPageButton(PageButton.BACK, 48);
             addPageButton(PageButton.HOME, 49);
@@ -121,6 +127,16 @@ public class PagedRecipeMenu extends PagedMenu {
 
         registerButton(new MenuButton(recipe.getResult()), 25);
 
+        if (possibleOldMenu != null) {
+            registerButton(new MenuButton(ItemBuilder.getBuilder(Material.BARRIER).setDisplayName("<red>Go Back - Previous Recipe").build()).setClicker(player -> possibleOldMenu.open()), 45);
+        } else {
+            addPageButton(PageButton.CLOSE, 45);
+        }
+
+        if (bingoMenu != null) {
+            registerButton(new MenuButton(ItemBuilder.getBuilder(Material.MAP).setDisplayName("<red>Bingo Menu").build()).setClicker(player -> bingoMenu.open()), 53);
+        }
+
         fillInventoryBorder(recipeType);
     }
 
@@ -166,13 +182,6 @@ public class PagedRecipeMenu extends PagedMenu {
             }
         }
 
-    }
-
-    private void setSlotsBasedOfList(List<Integer> slots, Material material) {
-        for (int slot : slots) {
-            if (!isSlotEmpty(slot)) continue;
-            registerButton(new MenuButton(ItemBuilder.getBuilder(material).removeDisplayName().build()), slot);
-        }
     }
 
     @Override
