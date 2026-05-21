@@ -84,7 +84,9 @@ public final class LobbyState extends AbstractState {
             player.setGameMode(GameMode.SURVIVAL);
         });
 
-        broadcast("<yellow>[<aqua>" + (getGameInstance().getInGamePlayers().size()) + "<yellow>/<aqua>" + GameModule.GAME_MAX_PLAYERS + "<yellow>] <green>+ " + playerModel.getName());
+        final int maxPlayers = getGameInstance().getGameSettings().getMaxGamePlayers();
+
+        broadcast("<yellow>[<aqua>" + (getGameInstance().getInGamePlayers().size()) + "<yellow>/<aqua>" + maxPlayers + "<yellow>] <green>+ " + playerModel.getName());
 
     }
 
@@ -105,5 +107,8 @@ public final class LobbyState extends AbstractState {
 
     public void quickStart() {
         setTimer(11);
+
+
+        //TODO: send message that it started, also a option for force starting.
     }
 }

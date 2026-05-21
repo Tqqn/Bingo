@@ -12,6 +12,7 @@ import dev.tqqn.modules.game.framework.states.abstraction.AbstractStateSeries;
 import dev.tqqn.modules.game.framework.states.active.ActiveState;
 import dev.tqqn.modules.game.framework.states.end.EndState;
 import dev.tqqn.modules.game.framework.states.lobby.LobbyState;
+import dev.tqqn.modules.game.framework.type.GameType;
 import dev.tqqn.utils.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -71,6 +72,6 @@ public class GameStateSeries extends AbstractStateSeries {
 
     @Override
     public boolean canStart() {
-        return getInGamePlayers().values().stream().filter(role -> role == Roles.ALIVE).toList().size() >= GameModule.GAME_MIN_PLAYERS_TO_START;
+        return getInGamePlayers().values().stream().filter(role -> role == Roles.ALIVE).toList().size() >= getGameSettings().getMinGamePlayersToStart();
     }
 }

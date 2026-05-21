@@ -19,7 +19,10 @@ public final class TeamProvider {
 
     private final List<GameTeam> assignedTeams = new ArrayList<>();
 
-    public TeamProvider(int howManyTeams) {
+    private final int playersPerTeam;
+
+    public TeamProvider(int howManyTeams, int playersPerTeam) {
+        this.playersPerTeam = playersPerTeam;
         final List<TeamType> teamTypes = new ArrayList<>(EnumSet.allOf(TeamType.class));
         Collections.shuffle(teamTypes);
         for (int i = 1; i < howManyTeams + 1; i++) {
@@ -33,7 +36,12 @@ public final class TeamProvider {
         final TeamData gottenTeam = availableTeams.removeFirst();
         if (gottenTeam == null) return null;
         final GameTeam team = new GameTeam(gottenTeam);
-        assignedTeams.add(team);
+        if (!team.isFull(playersPerTeam)) {
+            availableTeams.add(gottenTeam);
+        } else {
+            assignedTeams.add(team);
+        }
+
         return team;
     }
 

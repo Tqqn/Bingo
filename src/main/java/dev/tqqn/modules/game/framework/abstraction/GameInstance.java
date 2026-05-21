@@ -6,6 +6,7 @@ import dev.tqqn.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.game.framework.roles.Roles;
 import dev.tqqn.modules.game.framework.states.abstraction.AbstractState;
+import dev.tqqn.modules.game.framework.type.GameType;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -14,16 +15,18 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
-@Getter
 public abstract class GameInstance extends BukkitRunnable {
 
-    private final int id;
-    private final GameModule gameModule;
-    private final Map<Player, Roles> inGamePlayers = new HashMap<>();
+    @Getter private final int id;
+    @Getter private final GameModule gameModule;
+    @Getter private final Map<Player, Roles> inGamePlayers = new HashMap<>();
+
+    @Getter private final GameSettings gameSettings;
 
     public GameInstance(int id, GameModule gameModule) {
         this.id = id;
         this.gameModule = gameModule;
+        this.gameSettings = new GameSettings();
     }
 
     public abstract void start();
@@ -48,5 +51,21 @@ public abstract class GameInstance extends BukkitRunnable {
 
     public void onPlayerPreJoin(PlayerModel playerModel, PlayerModelPreJoinEvent event) {
         getCurrentState().get().onPlayerPreJoin(playerModel, event);
+    }
+
+    public void setGameType(GameType gameType) {
+        this.gameSettings.setGameType(gameType);
+    }
+
+    public void setMinGamePlayersToStart(int minPlayers) {
+        this.gameSettings.setMinGamePlayersToStart(minPlayers);
+    }
+
+    public void setMaxGamePlayers(int maxPlayers) {
+        this.gameSettings.setMaxGamePlayers(maxPlayers);
+    }
+
+    public void setPlayersPerTeam(int playersPerTeam) {
+        this.gameSettings.setPlayersPerTeam(playersPerTeam);
     }
 }

@@ -2,6 +2,7 @@ package dev.tqqn.modules.game.framework.states.abstraction;
 
 import dev.tqqn.modules.game.GameModule;
 import dev.tqqn.modules.game.framework.abstraction.GameInstance;
+import dev.tqqn.modules.game.framework.type.GameType;
 import lombok.Getter;
 import org.bukkit.scheduler.BukkitRunnable;
 

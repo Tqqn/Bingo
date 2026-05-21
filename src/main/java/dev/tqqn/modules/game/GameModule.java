@@ -13,6 +13,7 @@ import dev.tqqn.modules.game.framework.map.schematic.SchematicProvider;
 import dev.tqqn.modules.game.framework.objects.BingoTask;
 import dev.tqqn.modules.game.framework.states.GameStateSeries;
 import dev.tqqn.modules.game.framework.team.TeamProvider;
+import dev.tqqn.modules.game.framework.type.GameType;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -20,6 +21,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
 
 public final class GameModule extends AbstractModule {
 
@@ -29,19 +31,15 @@ public final class GameModule extends AbstractModule {
 
     private final List<BingoTask> availableTasks = new ArrayList<>();
 
-    private final TeamProvider teamProvider;
+    private TeamProvider teamProvider;
 
     @Getter private Arena arena;
 
     @Getter private final SchematicProvider schematicProvider = new SchematicProvider(this);
 
-    public static int GAME_MIN_PLAYERS_TO_START;
-    public static int GAME_MAX_PLAYERS;
-
     public GameModule(BingoMain plugin, DatabaseModule databaseModule) {
         super(plugin, "Game");
         this.databaseModule = databaseModule;
-        this.teamProvider = new TeamProvider(4);
     }
 
     @Override
@@ -51,15 +49,20 @@ public final class GameModule extends AbstractModule {
             arena.setUp();
         });
 
-        GAME_MIN_PLAYERS_TO_START = BingoMain.getInstance().getModuleManager().getModule(DatabaseModule.class).getDefaultConfig().getNeededPlayersToStart();
-        GAME_MAX_PLAYERS = BingoMain.getInstance().getModuleManager().getModule(DatabaseModule.class).getDefaultConfig().getMaxPlayers();
-
-        availableTasks.addAll(databaseModule.getBingoTaskConfig().getAllTasks());
-        this.currentInstance = new GameStateSeries(this, provideNewInstanceId());
-        this.currentInstance.start();
         register(new PlayerJoinListener(this));
         register(new PlayerQuitListener(this));
         register(new BingoCommands(this));
+
+        availableTasks.addAll(databaseModule.getBingoTaskConfig().getAllTasks());
+
+        this.currentInstance = new GameStateSeries(this, provideNewInstanceId());
+        registerEnvironmentVariables();
+        this.teamProvider = new TeamProvider(4, this.currentInstance.getGameSettings().getPlayersPerTeam());
+        GameType gameType = (this.currentInstance.getGameSettings().getPlayersPerTeam() > 1 ? GameType.TEAM : GameType.SOLO);
+        this.currentInstance.setGameType(gameType);
+
+        this.currentInstance.setMaxGamePlayers(this.currentInstance.getGameSettings().getPlayersPerTeam() * 4);
+        this.currentInstance.start();
     }
 
     public List<BingoTask> getAvailableTasks() {
@@ -75,6 +78,28 @@ public final class GameModule extends AbstractModule {
 
             teamProvider.assignTeam(playerModel);
         }
+    }
+
+    private int getIntEnv(String envVarName) {
+        final String envString = System.getenv(envVarName);
+
+        int value = -1;
+
+        try {
+            value = Integer.parseInt(envString);
+        } catch (NumberFormatException e) {
+            getLogger().log(Level.SEVERE, "Invalid int value for " + envVarName + " environment variable: " + envString);
+        }
+
+        return value;
+    }
+
+    private void registerEnvironmentVariables() {
+        final int playersPerTeam = getIntEnv("PLAYERS_PER_TEAM");
+        if (playersPerTeam != -1) currentInstance.setPlayersPerTeam(playersPerTeam);
+
+        final int minGamePlayersToStart = getIntEnv("MIN_GAME_PLAYERS_TO_START");
+        if (minGamePlayersToStart != -1) currentInstance.setMinGamePlayersToStart(minGamePlayersToStart);
     }
 
     private int provideNewInstanceId() {

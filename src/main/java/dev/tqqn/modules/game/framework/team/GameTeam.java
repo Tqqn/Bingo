@@ -22,4 +22,8 @@ public final class GameTeam {
         this.data = data;
         this.mapPlace = data.mapPlace();
     }
+
+    public boolean isFull(int maxPlayers) {
+        return players.size() >= maxPlayers;
+    }
 }
