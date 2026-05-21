@@ -29,7 +29,7 @@ public final class LobbyScoreboard extends SingleScoreboard {
 
         final List<Component> lines = new ArrayList<>();
         lines.add(ChatUtils.empty());
-        lines.add(ChatUtils.format("<red>Players: <gold>" + gameInstance.getInGameAlivePlayerCount() + "<red>/<gold>" + GameModule.GAME_MAX_PLAYERS));
+        lines.add(ChatUtils.format("<red>Players: <gold>" + gameInstance.getInGameAlivePlayerCount() + "<red>/<gold>" + gameInstance.getGameSettings().getMaxGamePlayers()));
 
         if (gameInstance.canStart()) {
             lines.add(ChatUtils.format("<red>Status: Starting in <white>" + ChatUtils.convertSecondsToHMmSs(currentState.getTimer())));
@@ -37,7 +37,7 @@ public final class LobbyScoreboard extends SingleScoreboard {
             lines.add(ChatUtils.format("<red>Status: <gold>Waiting..."));
         }
 
-        lines.add(ChatUtils.format("<red>Mode: <gold>Solo"));
+        lines.add(ChatUtils.format("<red>Mode: <gold>" + gameInstance.getGameSettings().getGameType().getDisplayName()));
         lines.add(ChatUtils.format("<red>------------------------"));
         lines.add(ChatUtils.format("<red>play.communitycraft.nl"));
 

@@ -87,7 +87,7 @@ public class BingoMenu extends Menu {
         }
 
         if (hasRecipes) {
-            itemBuilder.addLore("<yellow><bold>[CLICK] <reset><yellow>To show recipes of this item.");
+            itemBuilder.addLore("<yellow><bold>[CLICK]<!bold> To show recipes of this item.");
         } else {
             itemBuilder.addLore("<red>This item has no recipe. Try to find it!");
         }

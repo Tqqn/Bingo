@@ -71,6 +71,7 @@ public final class PlayerLoadListener implements Listener {
         event.joinMessage(Component.empty());
         final Player player = event.getPlayer();
         PlayerModel playerModel = joiningPlayers.remove(player.getUniqueId());
+        if (playerModel == null) return;
         playerModel.initialize();
 
         PlayerModel.cache(playerModel);

@@ -45,7 +45,7 @@ public final class PlayerModel extends MongoObject<UUID> {
             final Player player = Bukkit.getPlayer(getKey());
             if (player == null) return Optional.empty();
 
-            playerWeakReference = new WeakReference<>(Bukkit.getPlayer(getKey()));
+            playerWeakReference = new WeakReference<>(player);
             return Optional.ofNullable(playerWeakReference.get());
         }
         return Optional.ofNullable(playerWeakReference.get());

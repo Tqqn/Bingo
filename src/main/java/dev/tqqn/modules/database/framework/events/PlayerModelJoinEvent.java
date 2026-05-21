@@ -8,11 +8,14 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 public final class PlayerModelJoinEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
+
     @Getter
+    @NotNull
     private final PlayerModel playerModel;
 
     @Setter
@@ -20,7 +23,7 @@ public final class PlayerModelJoinEvent extends Event {
     @Nullable
     private Component kickMessage = null;
 
-    public PlayerModelJoinEvent(PlayerModel playerModel) {
+    public PlayerModelJoinEvent(@NonNull PlayerModel playerModel) {
         this.playerModel = playerModel;
     }
 
