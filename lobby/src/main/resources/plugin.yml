@@ -1,0 +1,6 @@
+name: lobby
+version: '${version}'
+
+main: dev.tqqn.lobby.Lobby
+api-version: '1.21.10'
+load: POSTWORLD

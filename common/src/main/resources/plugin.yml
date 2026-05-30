@@ -1,0 +1,6 @@
+name: common
+version: '${version}'
+
+main: dev.tqqn.common
+api-version: '1.21.10'
+load: POSTWORLD

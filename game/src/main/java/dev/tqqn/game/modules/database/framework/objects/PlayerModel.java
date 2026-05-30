@@ -1,18 +1,16 @@
-package dev.tqqn.modules.database.framework.objects;
+package dev.tqqn.game.modules.database.framework.objects;
 
-import dev.tqqn.BingoMain;
-import dev.tqqn.modules.database.DatabaseModule;
-import dev.tqqn.modules.database.framework.mongo.MongoItem;
-import dev.tqqn.modules.database.framework.mongo.MongoObject;
-import dev.tqqn.modules.game.framework.data.TempPlayerData;
-import dev.tqqn.modules.game.framework.objects.BingoTask;
-import dev.tqqn.modules.game.framework.objects.stats.PlayerStats;
-import dev.tqqn.utils.MojangAPI;
+import dev.tqqn.game.BingoMain;
+import dev.tqqn.game.modules.database.DatabaseModule;
+import dev.tqqn.game.modules.database.framework.mongo.MongoItem;
+import dev.tqqn.game.modules.database.framework.mongo.MongoObject;
+import dev.tqqn.game.modules.game.framework.data.TempPlayerData;
+import dev.tqqn.game.modules.game.framework.objects.stats.PlayerStats;
+import dev.tqqn.game.utils.MojangAPI;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.ref.WeakReference;
 import java.util.Map;

@@ -1,0 +1,6 @@
+name: game
+version: '${version}'
+
+main: dev.tqqn.game.Game
+api-version: '26.1.2'
+load: POSTWORLD
