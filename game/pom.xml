@@ -12,12 +12,13 @@
   <name>game</name>
 
   <properties>
-    <java.version>25</java.version>
+    <java.version>21</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <remapped.version>1.21.10-R0.1-SNAPSHOT</remapped.version>
   </properties>
 
   <build>
+    <finalName>bingo-game-${project.version}</finalName>
     <defaultGoal>clean package</defaultGoal>
     <plugins>
       <plugin>
@@ -62,7 +63,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version>
+        <version>3.15.0</version>
         <configuration>
           <source>${java.version}</source>
           <target>${java.version}</target>
@@ -75,6 +76,7 @@
         <executions>
           <execution>
             <configuration>
+              <finalName>bingo-game-shaded-${project.version}</finalName>
               <shadedArtifactAttached>true</shadedArtifactAttached>
             </configuration>
             <phase>package</phase>

@@ -1,0 +1,8 @@
+database:
+  host: "CHANGE_ME"
+  database: "CHANGE_ME"
+  username: "CHANGE_ME"
+  password: "CHANGE_ME"
+game:
+  needed_players: 2
+  max_players: 8
