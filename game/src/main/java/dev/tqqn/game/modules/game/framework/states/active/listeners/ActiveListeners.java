@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -29,6 +30,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 public final class ActiveListeners implements Listener {
 
     private final ActiveState state;
+
+    @EventHandler
+    public void onDamage(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player)) return;
+        if (state.isGracePeriod()) event.setCancelled(true);
+    }
 
     @EventHandler
     public void onItemInteract(PlayerInteractEvent event) {

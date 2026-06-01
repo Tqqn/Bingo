@@ -11,6 +11,7 @@ import dev.tqqn.game.modules.game.framework.visualizer.BingoMapRenderer;
 import dev.tqqn.game.modules.game.framework.visualizer.IconCache;
 import dev.tqqn.game.modules.scoreboard.boards.ActiveScoreboard;
 import dev.tqqn.game.utils.ChatUtils;
+import dev.tqqn.game.utils.NMSUtils;
 import dev.tqqn.game.utils.Notify;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
@@ -35,6 +36,9 @@ public final class ActiveState extends AbstractState {
 
     public static final NamespacedKey KIT_ITEM_KEY = new NamespacedKey("bingo", "kit_item");
     public static final NamespacedKey BINGO_MAP_KEY = new NamespacedKey("bingo", "bingo_map");
+
+    @Getter private boolean gracePeriod = true;
+    private int gracePeriodTimer = 121;
 
     @Getter private ItemStack mapItem;
     @Getter private ItemStack pickaxe;
@@ -69,6 +73,13 @@ public final class ActiveState extends AbstractState {
 
     @Override
     public void onTick() {
+        if (gracePeriod) {
+            gracePeriodTimer--;
+            NMSUtils.sendGracePeriodActionBarMessageToAll(ChatUtils.convertSecondsToHMmSs(gracePeriodTimer));
+            if (gracePeriodTimer <= 0) {
+                gracePeriod = false;
+            }
+        }
     }
 
     @Override
@@ -78,7 +89,7 @@ public final class ActiveState extends AbstractState {
 
     @Override
     public void setScoreboard(Player player) {
-        applyScoreboard(new ActiveScoreboard(player, getGameInstance()), player);
+        applyScoreboard(new ActiveScoreboard(player, this), player);
     }
 
     @Override
@@ -96,6 +107,10 @@ public final class ActiveState extends AbstractState {
     public void completeTask(PlayerModel playerModel, BingoTask task) {
         task.complete(playerModel.getTempPlayerData().getTeam());
         playerModel.getPlayer().ifPresent(player -> Notify.INFO.chat(player, "You collected: " + task.getName()));
+    }
+
+    public String getFormattedGracePeriodTimer() {
+        return ChatUtils.convertSecondsToHMmSs(gracePeriodTimer);
     }
 
     private ItemStack getBingoMapItem(MapView mapView) {

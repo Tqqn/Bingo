@@ -1,21 +1,19 @@
 package dev.tqqn.game.modules.scoreboard.boards;
 
-import dev.tqqn.game.modules.game.framework.abstraction.GameInstance;
-import dev.tqqn.game.modules.scoreboard.framework.SingleScoreboard;
+import dev.tqqn.game.modules.game.framework.states.active.ActiveState;
+import dev.tqqn.game.modules.scoreboard.framework.StateScoreboard;
 import dev.tqqn.game.utils.ChatUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class ActiveScoreboard extends SingleScoreboard {
+public final class ActiveScoreboard extends StateScoreboard<ActiveState> {
 
-    private final GameInstance gameInstance;
-
-    public ActiveScoreboard(Player player, GameInstance gameInstance) {
-        super(player);
-        this.gameInstance = gameInstance;
+    public ActiveScoreboard(Player player, ActiveState state) {
+        super(player, state);
     }
 
     @Override
@@ -23,12 +21,18 @@ public final class ActiveScoreboard extends SingleScoreboard {
         final List<Component> lines = new ArrayList<>();
 
         Component title = ChatUtils.format("<red><bold>BINGO");
+        lines.add(ChatUtils.empty());
 
-        lines.add(ChatUtils.format("<red>Round ending in <white><bold>" + gameInstance.getCurrentState().get().getFormattedTimer()));
+        if (getState().isGracePeriod()) {
+            lines.add(ChatUtils.format("<red><bold>Grace period: <yellow>" + getState().getFormattedGracePeriodTimer()));
+        } else {
+            lines.add(ChatUtils.format("<red>Game End: <yellow>" + getState().getFormattedTimer()));
+        }
 
+        lines.add(ChatUtils.empty());
 
-        lines.add(ChatUtils.format("<red>------------------------"));
-        lines.add(ChatUtils.format("<red>play.communitycraft.nl"));
+        lines.add(ChatUtils.format("<gray>" + ChatUtils.getFormattedDate(LocalDateTime.now(), ChatUtils.DATE_FORMATTER_YY_DASH_MM_DASH_DD)));
+        lines.add(ChatUtils.format("<yellow>play.communitycraft.nl"));
 
         getFastBoard().updateTitle(title);
 

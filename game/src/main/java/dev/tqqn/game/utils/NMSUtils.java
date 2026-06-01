@@ -4,6 +4,7 @@ import dev.tqqn.game.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.game.modules.game.framework.team.GameTeam;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetPlayerTeamPacket;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraft.world.scores.Scoreboard;
@@ -17,6 +18,13 @@ import org.bukkit.entity.Player;
  * Created on 04/04/2026
  */
 public class NMSUtils {
+
+    public static void sendGracePeriodActionBarMessageToAll(String formattedTime) {
+        final ClientboundSetActionBarTextPacket packet = new ClientboundSetActionBarTextPacket(CraftChatMessage.fromStringOrNull("§cGrace Period active for §e" + formattedTime));
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            sendPacket(player, packet);
+        }
+    }
 
     public static void refreshTag(Player receiver) {
         final PlayerModel joiningPlayer = PlayerModel.from(receiver);

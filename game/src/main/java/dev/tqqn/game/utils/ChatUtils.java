@@ -8,6 +8,8 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.ChatColor;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,8 @@ public final class ChatUtils {
 
     private static final MiniMessage MINI_MESSAGE = MiniMessage.builder().build();
     private static final PlainTextComponentSerializer PLAIN_TEXT_COMPONENT_SERIALIZER = PlainTextComponentSerializer.plainText();
+
+    public static final DateTimeFormatter DATE_FORMATTER_YY_DASH_MM_DASH_DD = DateTimeFormatter.ofPattern("yy/MM/dd");
 
     public static Component format(String message) {
         return MINI_MESSAGE.deserialize(message).decoration(TextDecoration.ITALIC, false);
@@ -74,5 +78,9 @@ public final class ChatUtils {
 
     public static Component empty() {
         return Component.empty();
+    }
+
+    public String getFormattedDate(LocalDateTime time, DateTimeFormatter formatter) {
+        return time.format(formatter);
     }
 }

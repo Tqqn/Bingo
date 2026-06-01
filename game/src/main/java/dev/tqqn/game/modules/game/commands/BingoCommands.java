@@ -5,6 +5,7 @@ import co.aikar.commands.annotation.*;
 import dev.tqqn.game.modules.game.GameModule;
 import dev.tqqn.game.modules.game.framework.menu.recipe.PagedRecipeMenu;
 import dev.tqqn.game.modules.game.framework.states.abstraction.AbstractState;
+import dev.tqqn.game.modules.game.framework.states.lobby.LobbyState;
 import dev.tqqn.game.utils.ChatUtils;
 import dev.tqqn.game.utils.Notify;
 import lombok.RequiredArgsConstructor;
