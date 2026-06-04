@@ -101,7 +101,7 @@ public final class LobbyState extends AbstractState {
 
     @Override
     public void setScoreboard(Player player) {
-        applyScoreboard(new LobbyScoreboard(player, getGameInstance()), player);
+        applyScoreboard(new LobbyScoreboard(player, this), player);
     }
 
     public void quickStart() {
