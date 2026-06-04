@@ -9,6 +9,7 @@ import dev.tqqn.game.modules.game.framework.states.active.ActiveState;
 import dev.tqqn.game.utils.Notify;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,8 +36,19 @@ public final class ActiveListeners implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player)) return;
+        if (!(event.getEntity() instanceof Player player)) return;
         if (state.isGracePeriod()) event.setCancelled(true);
+
+        if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+            final Location loc = player.getLocation();
+            final Location center = state.getGameInstance().getGameModule().getArena().getSpawnLocation();
+            double dx = loc.getX() - center.getX();
+            double dz = loc.getZ() - center.getZ();
+
+            if (dx * dx + dz * dz <= 20 * 20) {
+                event.setCancelled(true);
+            }
+        }
     }
 
     @EventHandler

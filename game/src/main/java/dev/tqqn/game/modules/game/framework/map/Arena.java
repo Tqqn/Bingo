@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
 
 @RequiredArgsConstructor
 public final class Arena {
@@ -51,14 +52,22 @@ public final class Arena {
                    }
                    spawnLocation = locations.getFirst().toCenterLocation();
                    arenaWorld.setSpawnLocation(spawnLocation);
-                   spawnLocation.getChunk().addPluginChunkTicket(gameModule.getPlugin());
+                   Bukkit.getScheduler().runTask(gameModule.getPlugin(), () -> loadChunksInRadius(spawnLocation.toBlockLocation(), 4));
                });
 
-               provideSpawnBorderLocations(pastedLocations).whenComplete((locations, throwable2) -> {
-                   spawnBorderLocations.addAll(locations);
-               });
+               provideSpawnBorderLocations(pastedLocations).whenComplete((locations, throwable2) -> spawnBorderLocations.addAll(locations));
             });
         });
+    }
+
+    private void loadChunksInRadius(Location center, int radius) {
+        gameModule.getLogger().log(Level.INFO, "Loading spawn-chunks in radius for arena {0}", name);
+
+        for (int x = -radius; x <= radius; x++) {
+            for (int z = -radius; z <= radius; z++) {
+                center.getWorld().getChunkAt(x, z).addPluginChunkTicket(gameModule.getPlugin());
+            }
+        }
     }
 
     private CompletableFuture<World> createNewWorld() {
