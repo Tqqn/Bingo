@@ -2,11 +2,13 @@ package dev.tqqn.game.modules.game.framework.states.active;
 
 import dev.tqqn.game.modules.database.framework.objects.PlayerModel;
 import dev.tqqn.game.modules.game.framework.GameStates;
+import dev.tqqn.game.modules.game.framework.events.CompleteBingoTaskEvent;
 import dev.tqqn.game.modules.game.framework.objects.BingoTask;
 import dev.tqqn.game.modules.game.framework.states.GameStateSeries;
 import dev.tqqn.game.modules.game.framework.states.abstraction.AbstractState;
 import dev.tqqn.game.modules.game.framework.states.abstraction.AbstractStateSeries;
 import dev.tqqn.game.modules.game.framework.states.active.listeners.ActiveListeners;
+import dev.tqqn.game.modules.game.framework.team.GameTeam;
 import dev.tqqn.game.modules.game.framework.visualizer.BingoMapRenderer;
 import dev.tqqn.game.modules.game.framework.visualizer.IconCache;
 import dev.tqqn.game.modules.scoreboard.boards.ActiveScoreboard;
@@ -105,8 +107,10 @@ public final class ActiveState extends AbstractState {
     }
 
     public void completeTask(PlayerModel playerModel, BingoTask task) {
-        task.complete(playerModel.getTempPlayerData().getTeam());
-        playerModel.getPlayer().ifPresent(player -> Notify.INFO.chat(player, "You collected: " + task.getName()));
+        final GameTeam playerTeam = playerModel.getTempPlayerData().getTeam();
+        task.complete(playerTeam);
+
+        playerModel.getPlayer().ifPresent(player -> Bukkit.getPluginManager().callEvent(new CompleteBingoTaskEvent(player, task, playerTeam)));
     }
 
     public String getFormattedGracePeriodTimer() {

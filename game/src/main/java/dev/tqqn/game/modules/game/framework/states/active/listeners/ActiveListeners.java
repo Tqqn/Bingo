@@ -2,9 +2,11 @@ package dev.tqqn.game.modules.game.framework.states.active.listeners;
 
 import dev.tqqn.game.modules.database.framework.events.PlayerModelQuitEvent;
 import dev.tqqn.game.modules.database.framework.objects.PlayerModel;
+import dev.tqqn.game.modules.game.framework.events.CompleteBingoTaskEvent;
 import dev.tqqn.game.modules.game.framework.menu.BingoMenu;
 import dev.tqqn.game.modules.game.framework.objects.BingoTask;
 import dev.tqqn.game.modules.game.framework.states.active.ActiveState;
+import dev.tqqn.game.utils.Notify;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -100,6 +102,15 @@ public final class ActiveListeners implements Listener {
             if (!inventoryView.getTopInventory().equals(inventoryView.getBottomInventory())) {
                 if (inventoryView.getTopInventory().getType() != InventoryType.CRAFTING) event.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler
+    public void onBingoTaskComplete(CompleteBingoTaskEvent event) {
+        Notify.INFO.chat(event.getPlayer(), "You collected: " + event.getCompletedTask().getName());
+        for (Player player : state.getGameInstance().getInGamePlayers().keySet()) {
+            final String teamColor = event.getTeam().getData().teamType().getPrefixColor();
+            Notify.INFO.chat(player, teamColor + event.getPlayer().getName() + " has collected: <bold>" + event.getCompletedTask().getName() + "</bold> for their team.");
         }
     }
 
