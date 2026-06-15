@@ -2,7 +2,7 @@ package dev.tqqn.game.modules.game.framework.states;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import dev.tqqn.game.modules.database.framework.objects.PlayerModel;
+import dev.tqqn.game.modules.database.player.BingoPlayerModel;
 import dev.tqqn.game.modules.game.GameModule;
 import dev.tqqn.game.modules.game.framework.objects.BingoPlacement;
 import dev.tqqn.game.modules.game.framework.objects.BingoProgress;
@@ -47,7 +47,7 @@ public class GameStateSeries extends AbstractStateSeries {
         }
     }
 
-    public boolean hasBingo(PlayerModel playerModel) {
+    public boolean hasBingo(BingoPlayerModel playerModel) {
         return bingoProgress.hasBingo(playerModel);
     }
 

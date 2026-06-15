@@ -121,7 +121,7 @@ public class SchematicProvider {
         for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
             for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
                 final Chunk chunk = bukkitWorld.getChunkAt(chunkX, chunkZ);
-                chunk.addPluginChunkTicket(gameModule.getPlugin());
+                chunk.addPluginChunkTicket(gameModule.getModuleManager().getPlugin());
                 loadedChunks.add(chunk);
             }
         }
@@ -129,7 +129,7 @@ public class SchematicProvider {
         final BlockVector3 minRelight = BlockVector3.at(to.x(), to.y(), to.z());
         final BlockVector3 maxRelight = BlockVector3.at(to.x() + size.x(), to.y() + size.y(), to.z() + size.z());
 
-        Bukkit.getScheduler().runTaskLater(gameModule.getPlugin(), () -> {
+        Bukkit.getScheduler().runTaskLater(gameModule.getModuleManager().getPlugin(), () -> {
             for (int x = minRelight.x(); x <= maxRelight.x(); x++) {
                 for (int z = minRelight.z(); z <= maxRelight.z(); z++) {
                     for (int y = minRelight.y(); y <= maxRelight.y(); y++) {
@@ -153,7 +153,7 @@ public class SchematicProvider {
                 schematicLocations.add(blockLocation);
             }
             future.complete(schematicLocations);
-            loadedChunks.forEach(chunk -> chunk.removePluginChunkTicket(gameModule.getPlugin()));
+            loadedChunks.forEach(chunk -> chunk.removePluginChunkTicket(gameModule.getModuleManager().getPlugin()));
         }, 1L);
         return future;
     }
@@ -177,7 +177,7 @@ public class SchematicProvider {
             final Location location = new Location(world, blockLocation.x(), blockLocation.y(), blockLocation.z());
             final Chunk chunk = location.getChunk();
             if (!loadedChunks.contains(chunk)) {
-                chunk.addPluginChunkTicket(gameModule.getPlugin());
+                chunk.addPluginChunkTicket(gameModule.getModuleManager().getPlugin());
                 loadedChunks.add(chunk);
             }
 
@@ -187,7 +187,7 @@ public class SchematicProvider {
 
         final List<Location> wantedLocations = new ArrayList<>();
 
-        Bukkit.getScheduler().runTaskLater(gameModule.getPlugin(), () -> {
+        Bukkit.getScheduler().runTaskLater(gameModule.getModuleManager().getPlugin(), () -> {
             for (Location location : cachedLocations) {
                 if (location.getBlock().getType() == type) {
                     wantedLocations.add(location);
@@ -197,7 +197,7 @@ public class SchematicProvider {
             future.complete(wantedLocations);
 
             for (Chunk chunk : loadedChunks) {
-                chunk.removePluginChunkTicket(gameModule.getPlugin());
+                chunk.removePluginChunkTicket(gameModule.getModuleManager().getPlugin());
             }
         }, 2L);
 

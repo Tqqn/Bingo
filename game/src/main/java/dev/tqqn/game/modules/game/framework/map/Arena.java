@@ -52,7 +52,7 @@ public final class Arena {
                    }
                    spawnLocation = locations.getFirst().toCenterLocation();
                    arenaWorld.setSpawnLocation(spawnLocation);
-                   Bukkit.getScheduler().runTask(gameModule.getPlugin(), () -> loadChunksInRadius(spawnLocation.toBlockLocation(), 4));
+                   Bukkit.getScheduler().runTask(gameModule.getModuleManager().getPlugin(), () -> loadChunksInRadius(spawnLocation.toBlockLocation(), 4));
                });
 
                provideSpawnBorderLocations(pastedLocations).whenComplete((locations, throwable2) -> spawnBorderLocations.addAll(locations));
@@ -65,7 +65,7 @@ public final class Arena {
 
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
-                center.getWorld().getChunkAt(x, z).addPluginChunkTicket(gameModule.getPlugin());
+                center.getWorld().getChunkAt(x, z).addPluginChunkTicket(gameModule.getModuleManager().getPlugin());
             }
         }
     }
@@ -100,7 +100,7 @@ public final class Arena {
         Clipboard clipboard;
 
         try {
-            clipboard = gameModule.getSchematicProvider().loadSchematic(new File(gameModule.getPlugin().getDataFolder().getPath() + "/schematics/spawn.schem")).join();
+            clipboard = gameModule.getSchematicProvider().loadSchematic(new File(gameModule.getModuleManager().getPlugin().getDataFolder().getPath() + "/schematics/spawn.schem")).join();
         } catch (IOException ignored) {
             return null;
         }

@@ -1,8 +1,9 @@
 package dev.tqqn.game.modules.game.framework.states.lobby;
 
-import dev.tqqn.game.modules.database.framework.events.PlayerModelJoinEvent;
-import dev.tqqn.game.modules.database.framework.events.PlayerModelPreJoinEvent;
-import dev.tqqn.game.modules.database.framework.objects.PlayerModel;
+import dev.tqqn.common.database.framework.events.PlayerModelJoinEvent;
+import dev.tqqn.common.database.framework.events.PlayerModelPreJoinEvent;
+import dev.tqqn.common.database.framework.objects.BasePlayerModel;
+import dev.tqqn.game.modules.database.player.BingoPlayerModel;
 import dev.tqqn.game.modules.game.framework.GameStates;
 import dev.tqqn.game.modules.game.framework.roles.Roles;
 import dev.tqqn.game.modules.game.framework.states.GameStateSeries;
@@ -70,7 +71,7 @@ public final class LobbyState extends AbstractState {
     }
 
     @Override
-    public void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event) {
+    public void onPlayerJoin(BasePlayerModel playerModel, PlayerModelJoinEvent event) {
         final AbstractState currentState = getGameInstance().getCurrentState().get();
         if (currentState == null) return;
         event.getPlayerModel().getPlayer().ifPresent(player -> {
@@ -90,7 +91,7 @@ public final class LobbyState extends AbstractState {
     }
 
     @Override
-    public void onPlayerPreJoin(PlayerModel playerModel, PlayerModelPreJoinEvent event) {
+    public void onPlayerPreJoin(BasePlayerModel playerModel, PlayerModelPreJoinEvent event) {
         if (event.isCancelled()) return;
 
         if (!getGameInstance().getGameModule().getArena().isReadyToJoin()) {

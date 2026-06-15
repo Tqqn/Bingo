@@ -1,6 +1,6 @@
 package dev.tqqn.game.utils;
 
-import dev.tqqn.game.modules.database.framework.objects.PlayerModel;
+import dev.tqqn.game.modules.database.player.BingoPlayerModel;
 import dev.tqqn.game.modules.game.framework.team.GameTeam;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.protocol.Packet;
@@ -27,11 +27,11 @@ public class NMSUtils {
     }
 
     public static void refreshTag(Player receiver) {
-        final PlayerModel joiningPlayer = PlayerModel.from(receiver);
+        final BingoPlayerModel joiningPlayer = BingoPlayerModel.from(receiver);
         final GameTeam joiningTeam = joiningPlayer.getTempPlayerData().getTeam();
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            final PlayerModel playerModel = PlayerModel.from(player);
+            final BingoPlayerModel playerModel = BingoPlayerModel.from(player);
             final GameTeam gameTeam = playerModel.getTempPlayerData().getTeam();
             if (gameTeam == null) continue;
 

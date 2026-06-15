@@ -1,6 +1,5 @@
 package dev.tqqn.game.modules.game.framework.states.abstraction;
 
-
 import dev.tqqn.game.modules.game.GameModule;
 import dev.tqqn.game.modules.game.framework.abstraction.GameInstance;
 
@@ -27,7 +26,7 @@ public abstract class AbstractStateSeries extends GameInstance {
             return;
         }
         this.currentState = new WeakReference<>(states.getFirst());
-        this.runTaskTimer(getGameModule().getPlugin(), 0L, 20L);
+        this.runTaskTimer(getGameModule().getModuleManager().getPlugin(), 0L, 20L);
         onEnable();
         this.currentState.get().enable();
     }

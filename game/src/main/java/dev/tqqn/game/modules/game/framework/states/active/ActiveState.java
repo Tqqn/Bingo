@@ -1,6 +1,6 @@
 package dev.tqqn.game.modules.game.framework.states.active;
 
-import dev.tqqn.game.modules.database.framework.objects.PlayerModel;
+import dev.tqqn.game.modules.database.player.BingoPlayerModel;
 import dev.tqqn.game.modules.game.framework.GameStates;
 import dev.tqqn.game.modules.game.framework.events.CompleteBingoTaskEvent;
 import dev.tqqn.game.modules.game.framework.objects.BingoTask;
@@ -14,7 +14,6 @@ import dev.tqqn.game.modules.game.framework.visualizer.IconCache;
 import dev.tqqn.game.modules.scoreboard.boards.ActiveScoreboard;
 import dev.tqqn.game.utils.ChatUtils;
 import dev.tqqn.game.utils.NMSUtils;
-import dev.tqqn.game.utils.Notify;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -54,8 +53,8 @@ public final class ActiveState extends AbstractState {
     public void onEnable() {
         final MapView mapView = Bukkit.createMap(Bukkit.getWorlds().getFirst());
 
-        final BingoMapRenderer mapRenderer = new BingoMapRenderer(this, new IconCache(getGameInstance().getGameModule().getPlugin()));
         mapView.getRenderers().clear();
+        final BingoMapRenderer mapRenderer = new BingoMapRenderer(this, new IconCache(getGameInstance().getGameModule().getModuleManager().getPlugin()));
         mapView.addRenderer(mapRenderer);
         mapView.setTrackingPosition(false);
         mapItem = getBingoMapItem(mapView);
@@ -106,7 +105,7 @@ public final class ActiveState extends AbstractState {
         return (GameStateSeries) super.getGameInstance();
     }
 
-    public void completeTask(PlayerModel playerModel, BingoTask task) {
+    public void completeTask(BingoPlayerModel playerModel, BingoTask task) {
         final GameTeam playerTeam = playerModel.getTempPlayerData().getTeam();
         task.complete(playerTeam);
 

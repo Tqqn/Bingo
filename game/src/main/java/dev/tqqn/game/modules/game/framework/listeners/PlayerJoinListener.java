@@ -1,7 +1,7 @@
 package dev.tqqn.game.modules.game.framework.listeners;
 
-import dev.tqqn.game.modules.database.framework.events.PlayerModelJoinEvent;
-import dev.tqqn.game.modules.database.framework.events.PlayerModelPreJoinEvent;
+import dev.tqqn.common.database.framework.events.PlayerModelJoinEvent;
+import dev.tqqn.common.database.framework.events.PlayerModelPreJoinEvent;
 import dev.tqqn.game.modules.game.GameModule;
 import dev.tqqn.game.utils.NMSUtils;
 import org.bukkit.event.EventHandler;

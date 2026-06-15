@@ -1,6 +1,6 @@
 package dev.tqqn.game.modules.game.framework.team;
 
-import dev.tqqn.game.modules.database.framework.objects.PlayerModel;
+import dev.tqqn.game.modules.database.player.BingoPlayerModel;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.List;
 public final class GameTeam {
 
     private final TeamProvider.TeamData data;
-    private final List<PlayerModel> players = new ArrayList<>();
+    private final List<BingoPlayerModel> players = new ArrayList<>();
     private final int mapPlace;
 
     public GameTeam(TeamProvider.TeamData data) {

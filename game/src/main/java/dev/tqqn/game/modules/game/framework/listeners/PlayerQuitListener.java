@@ -1,6 +1,6 @@
 package dev.tqqn.game.modules.game.framework.listeners;
 
-import dev.tqqn.game.modules.database.framework.events.PlayerModelQuitEvent;
+import dev.tqqn.common.database.framework.events.PlayerModelQuitEvent;
 import dev.tqqn.game.modules.game.GameModule;
 import dev.tqqn.game.modules.game.framework.GameStates;
 import lombok.RequiredArgsConstructor;

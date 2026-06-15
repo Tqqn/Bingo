@@ -1,7 +1,7 @@
 package dev.tqqn.game.modules.game.framework.states.active.listeners;
 
-import dev.tqqn.game.modules.database.framework.events.PlayerModelQuitEvent;
-import dev.tqqn.game.modules.database.framework.objects.PlayerModel;
+import dev.tqqn.common.database.framework.events.PlayerModelQuitEvent;
+import dev.tqqn.game.modules.database.player.BingoPlayerModel;
 import dev.tqqn.game.modules.game.framework.events.CompleteBingoTaskEvent;
 import dev.tqqn.game.modules.game.framework.menu.BingoMenu;
 import dev.tqqn.game.modules.game.framework.objects.BingoTask;
@@ -132,7 +132,7 @@ public final class ActiveListeners implements Listener {
     }
 
     private void processPossibleBingo(Player player, ItemStack item) {
-        final PlayerModel playerModel = PlayerModel.from(player.getUniqueId());
+        final BingoPlayerModel playerModel = BingoPlayerModel.from(player.getUniqueId());
         for (BingoTask task : state.getGameInstance().getBingoTasks()) {
             if (!(task.getGoal().getType() == item.getType())) continue;
             if (task.hasCompleted(playerModel.getTempPlayerData().getTeam())) return;

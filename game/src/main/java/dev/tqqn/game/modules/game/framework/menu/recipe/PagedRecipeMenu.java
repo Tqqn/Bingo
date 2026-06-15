@@ -1,8 +1,8 @@
 package dev.tqqn.game.modules.game.framework.menu.recipe;
 
+import dev.tqqn.common.menu.framework.objects.MenuButton;
+import dev.tqqn.common.menu.framework.objects.PagedMenu;
 import dev.tqqn.game.modules.game.framework.menu.BingoMenu;
-import dev.tqqn.game.modules.menu.framework.objects.MenuButton;
-import dev.tqqn.game.modules.menu.framework.objects.PagedMenu;
 import dev.tqqn.game.utils.ItemBuilder;
 import lombok.Getter;
 import org.bukkit.Bukkit;

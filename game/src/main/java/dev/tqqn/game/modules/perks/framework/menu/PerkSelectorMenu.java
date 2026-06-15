@@ -1,10 +1,10 @@
 package dev.tqqn.game.modules.perks.framework.menu;
 
+import dev.tqqn.common.menu.framework.objects.Menu;
+import dev.tqqn.common.menu.framework.objects.MenuButton;
 import dev.tqqn.game.BingoMain;
-import dev.tqqn.game.modules.database.framework.objects.PlayerModel;
+import dev.tqqn.game.modules.database.player.BingoPlayerModel;
 import dev.tqqn.game.modules.game.framework.data.TempPlayerData;
-import dev.tqqn.game.modules.menu.framework.objects.Menu;
-import dev.tqqn.game.modules.menu.framework.objects.MenuButton;
 import dev.tqqn.game.modules.perks.PerkModule;
 import dev.tqqn.game.modules.perks.framework.AbstractPerk;
 import dev.tqqn.game.utils.ItemBuilder;
@@ -16,11 +16,11 @@ public final class PerkSelectorMenu extends Menu {
 
     private static final PerkModule perkModule = BingoMain.getInstance().getModuleManager().getModule(PerkModule.class);
 
-    private final PlayerModel playerModel;
+    private final BingoPlayerModel playerModel;
 
     public PerkSelectorMenu(Player viewer) {
         super("<red>Perk Selector", 1, viewer);
-        this.playerModel = PlayerModel.from(viewer);
+        this.playerModel = BingoPlayerModel.from(viewer);
     }
 
     @Override

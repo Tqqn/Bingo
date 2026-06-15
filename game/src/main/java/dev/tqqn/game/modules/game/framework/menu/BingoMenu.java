@@ -1,13 +1,13 @@
 package dev.tqqn.game.modules.game.framework.menu;
 
-import dev.tqqn.game.modules.database.framework.objects.PlayerModel;
+import dev.tqqn.common.menu.framework.objects.Menu;
+import dev.tqqn.common.menu.framework.objects.MenuButton;
+import dev.tqqn.game.modules.database.player.BingoPlayerModel;
 import dev.tqqn.game.modules.game.framework.menu.recipe.PagedRecipeMenu;
 import dev.tqqn.game.modules.game.framework.objects.BingoPlacement;
 import dev.tqqn.game.modules.game.framework.objects.BingoTask;
 import dev.tqqn.game.modules.game.framework.states.GameStateSeries;
 import dev.tqqn.game.modules.game.framework.team.GameTeam;
-import dev.tqqn.game.modules.menu.framework.objects.Menu;
-import dev.tqqn.game.modules.menu.framework.objects.MenuButton;
 import dev.tqqn.game.utils.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -30,13 +30,13 @@ public class BingoMenu extends Menu {
 
     private static final List<Integer> bingoSlots = Arrays.asList(2, 3, 4, 5, 6, 11, 12, 13, 14, 15, 20, 21, 22, 23, 24, 29, 30, 31, 32, 33, 38, 39, 40, 41, 42);
 
-    private final PlayerModel playerModel;
+    private final BingoPlayerModel playerModel;
     private final GameStateSeries gameStateSeries;
     private final BingoTask[][] grid;
 
     public BingoMenu(Player viewer, GameStateSeries gameStateSeries) {
         super("<red>Bingo Menu", 6, viewer);
-        this.playerModel = PlayerModel.from(viewer);
+        this.playerModel = BingoPlayerModel.from(viewer);
         this.gameStateSeries = gameStateSeries;
         this.grid = new BingoTask[5][5];
         if (playerModel == null) return;

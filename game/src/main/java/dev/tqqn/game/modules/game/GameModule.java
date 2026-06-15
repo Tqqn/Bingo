@@ -1,10 +1,11 @@
 package dev.tqqn.game.modules.game;
 
 import com.google.common.collect.ImmutableList;
+import dev.tqqn.common.modular.AbstractModule;
 import dev.tqqn.game.BingoMain;
-import dev.tqqn.game.modules.AbstractModule;
-import dev.tqqn.game.modules.database.DatabaseModule;
-import dev.tqqn.game.modules.database.framework.objects.PlayerModel;
+import dev.tqqn.game.BingoModuleManager;
+import dev.tqqn.game.modules.database.GameDatabaseModule;
+import dev.tqqn.game.modules.database.player.BingoPlayerModel;
 import dev.tqqn.game.modules.game.commands.BingoCommands;
 import dev.tqqn.game.modules.game.framework.listeners.PlayerJoinListener;
 import dev.tqqn.game.modules.game.framework.listeners.PlayerQuitListener;
@@ -23,9 +24,9 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 
-public final class GameModule extends AbstractModule {
+public final class GameModule extends AbstractModule<BingoModuleManager> {
 
-    private final DatabaseModule databaseModule;
+    private final GameDatabaseModule databaseModule;
 
     @Getter private GameStateSeries currentInstance = null;
 
@@ -37,14 +38,14 @@ public final class GameModule extends AbstractModule {
 
     @Getter private final SchematicProvider schematicProvider = new SchematicProvider(this);
 
-    public GameModule(BingoMain plugin, DatabaseModule databaseModule) {
-        super(plugin, "Game");
+    public GameModule(BingoModuleManager moduleManager, GameDatabaseModule databaseModule) {
+        super(moduleManager, "Game");
         this.databaseModule = databaseModule;
     }
 
     @Override
     protected void onEnable() {
-        Bukkit.getScheduler().runTask(getPlugin(), () -> {
+        Bukkit.getScheduler().runTask(getModuleManager().getPlugin().getPlugin(), () -> {
             arena = new Arena(this, "bingo");
             arena.setUp();
         });
@@ -71,7 +72,7 @@ public final class GameModule extends AbstractModule {
 
     public void putPlayersInTeams() {
         for (Player player : currentInstance.getInGamePlayers().keySet()) {
-            final PlayerModel playerModel = PlayerModel.from(player);
+            final BingoPlayerModel playerModel = BingoPlayerModel.from(player);
             if (playerModel == null) {
                 continue;
             }

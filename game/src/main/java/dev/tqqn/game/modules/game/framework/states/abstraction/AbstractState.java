@@ -1,8 +1,9 @@
 package dev.tqqn.game.modules.game.framework.states.abstraction;
 
-import dev.tqqn.game.modules.database.framework.events.PlayerModelJoinEvent;
-import dev.tqqn.game.modules.database.framework.events.PlayerModelPreJoinEvent;
-import dev.tqqn.game.modules.database.framework.objects.PlayerModel;
+import dev.tqqn.common.database.framework.events.PlayerModelJoinEvent;
+import dev.tqqn.common.database.framework.events.PlayerModelPreJoinEvent;
+import dev.tqqn.common.database.framework.objects.BasePlayerModel;
+import dev.tqqn.game.modules.database.player.BingoPlayerModel;
 import dev.tqqn.game.modules.game.framework.GameStates;
 import dev.tqqn.game.modules.game.framework.data.TempPlayerData;
 import dev.tqqn.game.modules.scoreboard.framework.SingleScoreboard;
@@ -78,11 +79,11 @@ public abstract class AbstractState {
         timer = getInitialTimer();
     }
 
-    public void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event) {
+    public void onPlayerJoin(BasePlayerModel playerModel, PlayerModelJoinEvent event) {
         // empty to override if needed.
     }
 
-    public void onPlayerPreJoin(PlayerModel playerModel, PlayerModelPreJoinEvent event) {
+    public void onPlayerPreJoin(BasePlayerModel playerModel, PlayerModelPreJoinEvent event) {
         // empty to override if needed.
     }
 
@@ -109,9 +110,9 @@ public abstract class AbstractState {
 
     public void registerListeners() {
         if (listeners.isEmpty()) return;
-        final PluginManager manager = getGameInstance().getGameModule().getPlugin().getServer().getPluginManager();
+        final PluginManager manager = getGameInstance().getGameModule().getModuleManager().getPlugin().getServer().getPluginManager();
         listeners.forEach(listener -> {
-            manager.registerEvents(listener, getGameInstance().getGameModule().getPlugin());
+            manager.registerEvents(listener, getGameInstance().getGameModule().getModuleManager().getPlugin());
             gameInstance.getGameModule().getLogger().log(Level.INFO, "State: " + name + " has registered listener: " + listener);
         });
     }
@@ -141,18 +142,18 @@ public abstract class AbstractState {
         }
     }
 
-    protected <O extends SingleScoreboard> void applyScoreboard(O scoreboard, PlayerModel playerModel) {
+    protected <O extends SingleScoreboard> void applyScoreboard(O scoreboard, BingoPlayerModel playerModel) {
         playerModel.getTempPlayerData().setScoreboard(scoreboard);
     }
 
     protected  <O extends SingleScoreboard> void applyScoreboard(O scoreboard, Player player) {
-        final PlayerModel playerModel = PlayerModel.from(player);
+        final BingoPlayerModel playerModel = BingoPlayerModel.from(player);
         if (playerModel == null) return;
         applyScoreboard(scoreboard, playerModel);
     }
 
     protected void removeScoreboard(Class<? extends SingleScoreboard> scoreboardClass, Player player) {
-        final PlayerModel playerModel = PlayerModel.from(player);
+        final BingoPlayerModel playerModel = BingoPlayerModel.from(player);
         if (playerModel == null) return;
 
         final TempPlayerData tempPlayerData = playerModel.getTempPlayerData();

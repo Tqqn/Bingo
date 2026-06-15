@@ -1,6 +1,6 @@
 package dev.tqqn.game.modules.game.framework.team;
 
-import dev.tqqn.game.modules.database.framework.objects.PlayerModel;
+import dev.tqqn.game.modules.database.player.BingoPlayerModel;
 import lombok.Getter;
 import org.bukkit.Color;
 
@@ -53,7 +53,7 @@ public final class TeamProvider {
         return Collections.unmodifiableList(assignedTeams);
     }
 
-    public void assignTeam(PlayerModel playerModel) {
+    public void assignTeam(BingoPlayerModel playerModel) {
         final GameTeam gameTeam = getFreeTeam();
         if (gameTeam == null) return;
         playerModel.getTempPlayerData().setTeam(gameTeam);

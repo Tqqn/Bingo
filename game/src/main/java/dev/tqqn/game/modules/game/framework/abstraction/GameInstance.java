@@ -1,8 +1,9 @@
 package dev.tqqn.game.modules.game.framework.abstraction;
 
-import dev.tqqn.game.modules.database.framework.events.PlayerModelJoinEvent;
-import dev.tqqn.game.modules.database.framework.events.PlayerModelPreJoinEvent;
-import dev.tqqn.game.modules.database.framework.objects.PlayerModel;
+import dev.tqqn.common.database.framework.events.PlayerModelJoinEvent;
+import dev.tqqn.common.database.framework.events.PlayerModelPreJoinEvent;
+import dev.tqqn.common.database.framework.objects.BasePlayerModel;
+import dev.tqqn.game.modules.database.player.BingoPlayerModel;
 import dev.tqqn.game.modules.game.GameModule;
 import dev.tqqn.game.modules.game.framework.roles.Roles;
 import dev.tqqn.game.modules.game.framework.states.abstraction.AbstractState;
@@ -45,11 +46,11 @@ public abstract class GameInstance extends BukkitRunnable {
 
     public abstract boolean canStart();
 
-    public void onPlayerJoin(PlayerModel playerModel, PlayerModelJoinEvent event) {
+    public void onPlayerJoin(BasePlayerModel playerModel, PlayerModelJoinEvent event) {
         getCurrentState().get().onPlayerJoin(playerModel, event);
     }
 
-    public void onPlayerPreJoin(PlayerModel playerModel, PlayerModelPreJoinEvent event) {
+    public void onPlayerPreJoin(BasePlayerModel playerModel, PlayerModelPreJoinEvent event) {
         getCurrentState().get().onPlayerPreJoin(playerModel, event);
     }
 

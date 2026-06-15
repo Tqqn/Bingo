@@ -1,6 +1,6 @@
 package dev.tqqn.game.modules.game.framework.states.lobby.listeners;
 
-import dev.tqqn.game.modules.database.framework.events.PlayerModelJoinEvent;
+import dev.tqqn.common.database.framework.events.PlayerModelJoinEvent;
 import dev.tqqn.game.modules.game.GameModule;
 import dev.tqqn.game.modules.game.framework.map.Arena;
 import org.bukkit.event.EventHandler;

@@ -1,6 +1,6 @@
 package dev.tqqn.game.modules.game.framework.objects;
 
-import dev.tqqn.game.modules.database.framework.objects.PlayerModel;
+import dev.tqqn.game.modules.database.player.BingoPlayerModel;
 import lombok.Getter;
 
 import java.util.*;
@@ -27,7 +27,7 @@ public final class BingoProgress {
         }
     }
 
-    public boolean hasBingo(PlayerModel playerModel) {
+    public boolean hasBingo(BingoPlayerModel playerModel) {
         int[] rowCount = new int[5];
         int[] colCount = new int[5];
         int mainDiag = 0;
