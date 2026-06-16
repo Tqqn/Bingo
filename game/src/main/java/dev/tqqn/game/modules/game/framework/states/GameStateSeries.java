@@ -71,6 +71,11 @@ public class GameStateSeries extends AbstractStateSeries {
 
     @Override
     public boolean canStart() {
+        if (getCurrentState().get() instanceof LobbyState lobbyState) {
+            if (lobbyState.isForceStart()) {
+                return true;
+            }
+        }
         return getInGamePlayers().values().stream().filter(role -> role == Roles.ALIVE).toList().size() >= getGameSettings().getMinGamePlayersToStart();
     }
 }

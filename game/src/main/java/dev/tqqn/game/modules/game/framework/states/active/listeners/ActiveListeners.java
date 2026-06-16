@@ -10,6 +10,7 @@ import dev.tqqn.game.utils.Notify;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +20,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.FurnaceExtractEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -64,6 +66,12 @@ public final class ActiveListeners implements Listener {
         if (!itemMeta.getPersistentDataContainer().has(ActiveState.BINGO_MAP_KEY)) return;
         final Player player = event.getPlayer();
         new BingoMenu(player, state.getGameInstance()).open();
+    }
+
+    @EventHandler
+    public void onFurnaceItemTake(FurnaceExtractEvent event) {
+        final Material item = event.getItemType();
+        processPossibleBingo(event.getPlayer(), new ItemStack(item));
     }
 
     @EventHandler
@@ -131,11 +139,11 @@ public final class ActiveListeners implements Listener {
         return itemStack.getPersistentDataContainer().has(ActiveState.KIT_ITEM_KEY);
     }
 
-    private void processPossibleBingo(Player player, ItemStack item) {
+    private void processPossibleBingo(Player player, Material itemMaterial) {
         final BingoPlayerModel playerModel = BingoPlayerModel.from(player.getUniqueId());
         for (BingoTask task : state.getGameInstance().getBingoTasks()) {
-            if (!(task.getGoal().getType() == item.getType())) continue;
-            if (task.hasCompleted(playerModel.getTempPlayerData().getTeam())) return;
+            if (!(task.getGoal().getType() == itemMaterial)) continue;
+            if (task.hasCompleted(playerModel.getTempPlayerData().getTeam())) continue;
             state.completeTask(playerModel, task);
         }
 
@@ -144,5 +152,9 @@ public final class ActiveListeners implements Listener {
             state.broadcastWithSound("<red>" + player.getName() + " has completed a bingo! Congratulations!", Sound.ITEM_GOAT_HORN_SOUND_2);
             state.getGameInstance().nextState();
         }
+    }
+
+    private void processPossibleBingo(Player player, ItemStack item) {
+        processPossibleBingo(player, item.getType());
     }
 }

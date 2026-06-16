@@ -3,7 +3,6 @@ package dev.tqqn.game.modules.game.framework.states.lobby;
 import dev.tqqn.common.database.framework.events.PlayerModelJoinEvent;
 import dev.tqqn.common.database.framework.events.PlayerModelPreJoinEvent;
 import dev.tqqn.common.database.framework.objects.BasePlayerModel;
-import dev.tqqn.game.modules.database.player.BingoPlayerModel;
 import dev.tqqn.game.modules.game.framework.GameStates;
 import dev.tqqn.game.modules.game.framework.roles.Roles;
 import dev.tqqn.game.modules.game.framework.states.GameStateSeries;
@@ -12,6 +11,7 @@ import dev.tqqn.game.modules.game.framework.states.lobby.listeners.LobbyListener
 import dev.tqqn.game.modules.scoreboard.boards.LobbyScoreboard;
 import dev.tqqn.game.utils.ChatUtils;
 import dev.tqqn.game.utils.NMSUtils;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
@@ -23,6 +23,8 @@ public final class LobbyState extends AbstractState {
     private boolean isStartCountdown = false;
     private static final String message = "<red>Game is starting in <white><bold>%s<reset><red>s.";
 
+    @Getter private boolean forceStart = false;
+
     public LobbyState(GameStateSeries instance) {
         super(instance, GameStates.LOBBY, "Lobby", 10000, true);
     }
@@ -31,7 +33,7 @@ public final class LobbyState extends AbstractState {
     public void onTick() {
         if (getGameInstance().canStart()) {
             if (!isStartCountdown) {
-                setTimer(60);
+                if (getTimer() > 60) setTimer(60);
                 isStartCountdown = true;
                 broadcastWithSound("<green>Enough players have joined, game starting in <red><bold>" + getTimer() + "s<reset><green>.", Sound.ENTITY_PARROT_IMITATE_BLAZE);
             }
@@ -107,8 +109,10 @@ public final class LobbyState extends AbstractState {
 
     public void quickStart() {
         setTimer(11);
+    }
 
-
-        //TODO: send message that it started, also a option for force starting.
+    public void quickStart(boolean force) {
+        forceStart = force;
+        quickStart();
     }
 }

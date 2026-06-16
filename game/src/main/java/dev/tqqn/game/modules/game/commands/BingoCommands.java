@@ -104,8 +104,22 @@ public final class BingoCommands extends BaseCommand {
                 Notify.ERROR.chat(player, "The current state does not support quick start.");
                 return;
             }
+
             lobbyState.quickStart();
             Notify.SUCCESS.chat(player, "You quick started the game.");
+        }
+
+        @Subcommand("quick-start")
+        @CommandPermission("bingo.command.admin.quick-start.force")
+        @Description("Force Quick start the current game.")
+        public void quickStart(Player player, boolean force) {
+            if (!(gameModule.getCurrentInstance().getCurrentState().get() instanceof LobbyState lobbyState)) {
+                Notify.ERROR.chat(player, "The current state does not support quick start.");
+                return;
+            }
+
+            lobbyState.quickStart(force);
+            Notify.SUCCESS.chat(player, "You quick and force started the game.");
         }
 
         @Subcommand("debug")
