@@ -53,5 +53,9 @@
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
     </dependency>
+    <dependency>
+      <groupId>fr.mrmicky</groupId>
+      <artifactId>fastboard</artifactId>
+    </dependency>
   </dependencies>
 </project>

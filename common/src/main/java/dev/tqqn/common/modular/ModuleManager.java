@@ -12,18 +12,25 @@ public abstract class ModuleManager<T extends JavaPlugin & GamePlugin<T>> {
     private final Map<Class<? extends AbstractModule>, AbstractModule> modules = new LinkedHashMap<>();
     @Getter private final T plugin;
 
+    private boolean shouldDisable = false;
+
     protected ModuleManager(T plugin) {
         this.plugin = plugin;
     }
 
     public void load() {
-        this.modules.values().forEach(AbstractModule::load);
+        for (AbstractModule<?> module : modules.values()) {
+            if (module.load()) continue;
+            shouldDisable = true;
+            break;
+        }
     }
 
     /**
      * Initializes all modules.
      */
     public void init() {
+        if (shouldDisable) return;
         this.registerModules();
     }
 

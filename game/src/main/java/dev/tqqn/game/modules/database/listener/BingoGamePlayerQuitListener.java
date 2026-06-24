@@ -16,11 +16,11 @@ import java.util.UUID;
  * @author Tqqn (tqqn.dev)
  * Created on 12/06/2026
  */
-public final class BingoPlayerQuitListener extends AbstractPlayerQuitListener<BingoPlayerModel> {
+public final class BingoGamePlayerQuitListener extends AbstractPlayerQuitListener<BingoPlayerModel> {
 
     private final GameModule gameModule;
 
-    public BingoPlayerQuitListener(JavaPlugin plugin, GameModule gameModule) {
+    public BingoGamePlayerQuitListener(JavaPlugin plugin, GameModule gameModule) {
         super(plugin);
         this.gameModule = gameModule;
     }

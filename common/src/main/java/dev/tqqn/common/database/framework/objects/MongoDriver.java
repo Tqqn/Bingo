@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.ReplaceOptions;
@@ -17,6 +18,8 @@ import org.bson.json.JsonMode;
 import org.bson.json.JsonWriterSettings;
 import org.bukkit.Location;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -47,15 +50,27 @@ public class MongoDriver implements IDataBaseDriver {
     }
 
     @Override
-    public void connect(String database, String host, int port) {
+    public boolean connect(String database, String host, int port) {
         MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://" + host + ":" + port));
         this.mongoDatabase = mongoClient.getDatabase(database);
+        return validateDatabase();
     }
 
     @Override
-    public void connect(String database, String host, String userName, String password) {
+    public boolean connect(String database, String host, String userName, String password) {
+        if (validateDatabase()) return false;
         MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb+srv://" + userName + ":" + password + "@" + host + "/?retryWrites=true&w=majority&appName=" + database));
         this.mongoDatabase = mongoClient.getDatabase(database);
+        return validateDatabase();
+    }
+
+    private boolean validateDatabase() {
+        try {
+            mongoDatabase.getName();
+        } catch (MongoException e) {
+            return false;
+        }
+        return true;
     }
 
     public <O extends MongoObject<?>> void save(O object) {

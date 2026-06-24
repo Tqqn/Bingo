@@ -1,5 +1,6 @@
 package dev.tqqn.game.modules.scoreboard.framework;
 
+import dev.tqqn.common.scoreboard.framework.SingleScoreboard;
 import dev.tqqn.game.modules.game.framework.states.abstraction.AbstractState;
 import org.bukkit.entity.Player;
 

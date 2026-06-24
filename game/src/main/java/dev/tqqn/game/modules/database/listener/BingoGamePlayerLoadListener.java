@@ -19,11 +19,11 @@ import java.util.UUID;
  * @author Tqqn (tqqn.dev)
  * Created on 12/06/2026
  */
-public final class BingoPlayerLoadListener extends AbstractPlayerLoadListener<BingoPlayerModel> {
+public final class BingoGamePlayerLoadListener extends AbstractPlayerLoadListener<BingoPlayerModel> {
 
     private final GameDatabaseModule databaseModule;
 
-    public BingoPlayerLoadListener(GameDatabaseModule databaseModule, MongoDriver mongoDriver) {
+    public BingoGamePlayerLoadListener(GameDatabaseModule databaseModule, MongoDriver mongoDriver) {
         super(mongoDriver, databaseModule);
         this.databaseModule = databaseModule;
     }

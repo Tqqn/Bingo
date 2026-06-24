@@ -32,6 +32,7 @@ public final class BingoPlayerModel extends BasePlayerModel {
         super(key, name);
     }
 
+    @Override
     public void initialize() {
         if (tempPlayerData == null) this.tempPlayerData = new TempPlayerData(getKey()); // Yes a null check, sometimes its weirdly null :/
         if (playerStats == null) this.playerStats = new PlayerStats();
@@ -58,10 +59,12 @@ public final class BingoPlayerModel extends BasePlayerModel {
                 .read(BingoPlayerModel.class, uuid);
     }
 
+    @Override
     public void save() {
         BingoMain.getInstance().getModuleManager().getModule(GameDatabaseModule.class).getMongoDriver().saveAsync(this);
     }
 
+    @Override
     public void cleanUp() {
         save();
         CACHE.remove(getKey());

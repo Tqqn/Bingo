@@ -3,6 +3,8 @@ package dev.tqqn.common.modular;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -25,6 +27,8 @@ public abstract class AbstractModule<T extends ModuleManager<?>> {
 
     @Getter private final String name;
 
+    @Setter private boolean shouldDisablePluginOnFail = false;
+
     public AbstractModule(T moduleManager, String name) {
         this.moduleManager = moduleManager;
         this.logger = new ModuleLogger(moduleManager.getPlugin(),  name);
@@ -34,23 +38,30 @@ public abstract class AbstractModule<T extends ModuleManager<?>> {
     /**
      * Loads the module.
      */
-    public void load() {
+    public boolean load() {
         logger.log(Level.INFO, "Is loading...");
         onLoad();
+
+        if (testDisableOnFail()) return false;
+
         logger.log(Level.INFO, "Finished loading!");
+        return true;
     }
 
     /**
      * Enables the module by registering listeners and commands.
      */
-    public void enable() {
+    public boolean enable() {
         logger.log(Level.INFO, "Is enabling...");
         this.commandManager = moduleManager.getPlugin().getCommandManager();
         onEnable();
+
+        if (testDisableOnFail()) return false;
+
         registerListeners();
         registerCommands();
         logger.log(Level.INFO, "Finished enabling!");
-
+        return true;
     }
 
     /**
@@ -124,6 +135,15 @@ public abstract class AbstractModule<T extends ModuleManager<?>> {
             HandlerList.unregisterAll(listener);
             moduleManager.getPlugin().getLogger().info("Has unregistered listener: " + listener.getClass());
         });
+    }
+
+    private boolean testDisableOnFail() {
+        if (shouldDisablePluginOnFail) {
+            logger.log(Level.SEVERE, "Failed to load module - shutting down plugin");
+            moduleManager.getPlugin().setShutdown();
+            return true;
+        }
+        return false;
     }
 
     public static class ModuleLogger extends Logger {

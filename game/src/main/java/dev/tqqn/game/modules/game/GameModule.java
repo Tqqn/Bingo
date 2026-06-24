@@ -2,7 +2,6 @@ package dev.tqqn.game.modules.game;
 
 import com.google.common.collect.ImmutableList;
 import dev.tqqn.common.modular.AbstractModule;
-import dev.tqqn.game.BingoMain;
 import dev.tqqn.game.BingoModuleManager;
 import dev.tqqn.game.modules.database.GameDatabaseModule;
 import dev.tqqn.game.modules.database.player.BingoPlayerModel;

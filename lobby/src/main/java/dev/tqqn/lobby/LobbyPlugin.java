@@ -1,33 +1,30 @@
-package dev.tqqn.game;
+package dev.tqqn.lobby;
 
 import co.aikar.commands.PaperCommandManager;
 import dev.tqqn.common.GamePlugin;
+import dev.tqqn.common.modular.ModuleManager;
 import dev.tqqn.common.modular.PluginProvider;
-import lombok.Getter;
+import dev.tqqn.lobby.modules.BingoLobbyModuleManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-@Getter
-public final class BingoMain extends JavaPlugin implements GamePlugin<BingoMain> {
+public final class LobbyPlugin extends JavaPlugin implements GamePlugin<LobbyPlugin> {
 
-    @Getter
-    private static final String PREFIX = "[Bingo]";
-    private static BingoMain INSTANCE;
-
-    private BingoModuleManager moduleManager;
-    private PaperCommandManager commandManager;
+    private static LobbyPlugin INSTANCE;
 
     private boolean shouldShutdown = false;
+
+    private BingoLobbyModuleManager moduleManager;
+    private PaperCommandManager commandManager;
 
     @Override
     public void onLoad() {
         INSTANCE = this;
-        moduleManager = new BingoModuleManager(this);
-        moduleManager.load();
+        this.moduleManager = new BingoLobbyModuleManager(this);
+        this.moduleManager.load();
         PluginProvider.register(this);
     }
-
 
     @Override
     public void onEnable() {
@@ -36,17 +33,21 @@ public final class BingoMain extends JavaPlugin implements GamePlugin<BingoMain>
             return;
         }
         commandManager = new PaperCommandManager(this);
-        moduleManager.init();
+        this.moduleManager.init();
     }
 
     @Override
     public void onDisable() {
-        moduleManager.disable();
         PluginProvider.unregister();
     }
 
-    public static BingoMain getInstance() {
+    public static LobbyPlugin getInstance() {
         return INSTANCE;
+    }
+
+    @Override
+    public PaperCommandManager getCommandManager() {
+        return commandManager;
     }
 
     @Override
@@ -55,12 +56,12 @@ public final class BingoMain extends JavaPlugin implements GamePlugin<BingoMain>
     }
 
     @Override
-    public BingoModuleManager getModuleManager() {
+    public ModuleManager<LobbyPlugin> getModuleManager() {
         return moduleManager;
     }
 
     @Override
     public void setShutdown() {
-        Bukkit.getPluginManager().disablePlugin(this);
+        shouldShutdown = true;
     }
 }

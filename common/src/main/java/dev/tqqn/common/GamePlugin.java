@@ -16,4 +16,6 @@ public interface GamePlugin<P extends JavaPlugin & GamePlugin<P>> {
 
     ModuleManager<P> getModuleManager();
 
+    void setShutdown();
+
 }

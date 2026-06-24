@@ -1,6 +1,7 @@
 package dev.tqqn.common.database.framework.objects;
 
 import dev.tqqn.common.database.framework.mongo.MongoObject;
+import dev.tqqn.common.scoreboard.framework.SingleScoreboard;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -11,11 +12,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Getter
-public abstract class BasePlayerModel extends MongoObject<UUID> {
+public abstract class BasePlayerModel extends MongoObject<UUID> implements SaveAble, CleanupAble {
 
     @Setter
     private String name;
     private transient WeakReference<Player> playerWeakReference;
+    private transient SingleScoreboard playerScoreboard;
 
     public BasePlayerModel(UUID key, String name) {
         super(key);
@@ -32,4 +34,16 @@ public abstract class BasePlayerModel extends MongoObject<UUID> {
         }
         return Optional.ofNullable(playerWeakReference.get());
     }
+
+    public void cleanUpScoreboard() {
+        playerScoreboard = null;
+    }
+
+    public void updateScoreboard(SingleScoreboard scoreboard) {
+        this.playerScoreboard = scoreboard;
+    }
+
+    public abstract void initialize();
+
+
 }

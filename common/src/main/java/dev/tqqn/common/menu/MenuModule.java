@@ -4,9 +4,9 @@ import dev.tqqn.common.menu.framework.listeners.MenuListener;
 import dev.tqqn.common.modular.AbstractModule;
 import dev.tqqn.common.modular.ModuleManager;
 
-public final class MenuModule extends AbstractModule {
+public final class MenuModule extends AbstractModule<ModuleManager<?>> {
 
-    public MenuModule(ModuleManager moduleManager) {
+    public MenuModule(ModuleManager<?> moduleManager) {
         super(moduleManager, "Menu");
     }
 

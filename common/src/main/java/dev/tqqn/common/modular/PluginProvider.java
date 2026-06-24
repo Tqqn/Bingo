@@ -11,6 +11,7 @@ public final class PluginProvider {
     private static GamePlugin<?> instance;
 
     public static void register(GamePlugin<?> plugin) {
+        if (instance != null) throw new IllegalStateException("PluginProvider has already been initialized.");
         instance = plugin;
     }
 

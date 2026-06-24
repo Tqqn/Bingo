@@ -1,6 +1,6 @@
-name: lobby
+name: Bingo-Lobby
 version: '${version}'
 
-main: dev.tqqn.lobby.Lobby
+main: dev.tqqn.lobby.LobbyPlugin
 api-version: '1.21.10'
 load: POSTWORLD

@@ -1,9 +1,9 @@
 package dev.tqqn.game.modules.game.framework.data;
 
+import dev.tqqn.common.scoreboard.framework.SingleScoreboard;
 import dev.tqqn.game.modules.game.framework.roles.Roles;
 import dev.tqqn.game.modules.game.framework.team.GameTeam;
 import dev.tqqn.game.modules.perks.framework.AbstractPerk;
-import dev.tqqn.game.modules.scoreboard.framework.SingleScoreboard;
 import lombok.Getter;
 import lombok.Setter;
 
