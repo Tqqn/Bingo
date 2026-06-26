@@ -42,12 +42,16 @@ public class LobbyPlayerModel extends BasePlayerModel {
 
     @Override
     public void save() {
-        LobbyPlugin.getInstance().getModuleManager().getModule(LobbyDatabaseModule.class).getMongoDriver().saveAsync(this);
+        LobbyPlugin.getInstance().getModuleManager().getModule(LobbyDatabaseModule.class).getMongoDriver().upsertFieldsAsync(this);
     }
 
     @Override
     public void cleanUp() {
         save();
         CACHE.remove(getKey());
+    }
+
+    public void setTesting(String test123) {
+        this.test123 = test123;
     }
 }

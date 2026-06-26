@@ -61,7 +61,7 @@ public final class BingoPlayerModel extends BasePlayerModel {
 
     @Override
     public void save() {
-        BingoMain.getInstance().getModuleManager().getModule(GameDatabaseModule.class).getMongoDriver().saveAsync(this);
+        BingoMain.getInstance().getModuleManager().getModule(GameDatabaseModule.class).getMongoDriver().upsertFieldsAsync(this);
     }
 
     @Override

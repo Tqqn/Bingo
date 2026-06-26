@@ -8,6 +8,7 @@ import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.ReplaceOptions;
+import com.mongodb.client.model.UpdateOptions;
 import dev.tqqn.common.database.AbstractDatabaseModule;
 import dev.tqqn.common.database.framework.adapters.LocationAdapter;
 import dev.tqqn.common.database.framework.adapters.UUIDAdapter;
@@ -71,6 +72,24 @@ public class MongoDriver implements IDataBaseDriver {
             return false;
         }
         return true;
+    }
+
+    public <O extends MongoObject<?>> void upsertFields(O object) {
+        Document document = Document.parse(gson.toJson(object));
+        Object id = document.remove("_id"); // _id is immutable, must not appear in $set
+        getCollection(object.getClass()).updateOne(
+                eq("_id", id),
+                new Document("$set", document),
+                new UpdateOptions().upsert(true)
+        );
+    }
+
+    public <O extends MongoObject<?>> void upsertFieldsAsync(O object) {
+        CompletableFuture.runAsync(() -> upsertFields(object), executors)
+                .exceptionally(exception -> {
+                    databaseModule.getLogger().log(Level.SEVERE, "Could not save " + object.getClass(), exception);
+                    return null;
+                });
     }
 
     public <O extends MongoObject<?>> void save(O object) {
