@@ -25,5 +25,4 @@ public final class LobbyListeners implements Listener {
         if (playerOptional.isEmpty()) return;
         lobbyPlayerModel.updateScoreboard(new LobbyScoreboard(playerOptional.get()));
     }
-
 }

@@ -50,8 +50,4 @@ public class LobbyPlayerModel extends BasePlayerModel {
         save();
         CACHE.remove(getKey());
     }
-
-    public void setTesting(String test123) {
-        this.test123 = test123;
-    }
 }

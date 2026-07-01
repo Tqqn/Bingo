@@ -55,7 +55,6 @@ public abstract class AbstractState {
     public void tick() {
         if (freeze) return;
 
-
         if (!hasTimerEnded()) {
             int nextTimer = getTimer();
 
@@ -93,6 +92,8 @@ public abstract class AbstractState {
 
     public void enable() {
         gameInstance.getGameModule().getLogger().log(Level.INFO, "State: " + name + " is enabling...");
+        this.hasEnded = false;
+        this.timer = getInitialTimer();
         addScoreboardAllPlayers();
         onEnable();
         registerListeners();
